@@ -1,24 +1,28 @@
 {
-  "total_flows": 1466,
+  "total_flows": 385,
   "by_context": {
-    "environmental": 1442,
-    "emission/air": 10,
-    "emission/water": 6,
-    "resource/natural": 5,
-    "economic": 3
+    "resource/water": 194,
+    "emission/air": 82,
+    "resource/natural": 61,
+    "resource/land": 32,
+    "economic": 12,
+    "resource/energy": 4
   },
   "by_compartment": {
-    "environmental": 1442,
-    "air": 10,
-    "water": 6,
-    "natural resources": 5,
-    "economic": 3
+    "water": 194,
+    "air": 82,
+    "natural resources": 61,
+    "land": 32,
+    "economic": 12,
+    "energy": 4
   },
   "by_flow_class": {
-    "environmental": 1458,
-    "resource": 5,
-    "economic": 3
+    "resource": 291,
+    "environmental": 55,
+    "Chemicals": 20,
+    "economic": 12,
+    "Groups": 7
   },
-  "high_relevance_flows": 12,
-  "preferred_flows": 1466
+  "high_relevance_flows": 212,
+  "preferred_flows": 358
 }

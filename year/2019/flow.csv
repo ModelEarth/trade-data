@@ -1,25 +1,386 @@
 flow_uuid,flowable,context,unit,compartment,flow_class,preferred,external_reference,cas_number,formula,synonyms,trade_relevance
-21l21l21-a764-3063-af2d-bcb8309a97d8,Employment,economic,person*year,economic,economic,True,BEA,,,,20
-22m22m22-a764-3063-af2d-bcb8309a97d9,Value added,economic,USD,economic,economic,True,BEA,,,,20
-b6f010fb-a764-3063-af2d-bcb8309a97b7,Carbon dioxide,emission/air,kg,air,environmental,True,EPA,,,,15
-7b8b7b8b-a764-3063-af2d-bcb8309a97b8,Methane,emission/air,kg,air,environmental,True,EPA,,,,15
-17h17h17-a764-3063-af2d-bcb8309a97d4,Energy use,resource/natural,MJ,natural resources,resource,True,EPA,,,,14
-18i18i18-a764-3063-af2d-bcb8309a97d5,Land use,resource/natural,m2,natural resources,resource,True,EPA,,,,14
-16g16g16-a764-3063-af2d-bcb8309a97d3,Water use,resource/natural,L,natural resources,resource,True,EPA,,,,14
-a1e1a1e1-a764-3063-af2d-bcb8309a97c1,Nitrogen oxides,emission/air,kg,air,environmental,True,EPA,,,,10
-13d13d13-a764-3063-af2d-bcb8309a97d0,Nitrogen total,emission/water,kg,water,environmental,True,EPA,,,,10
-b2f2b2f2-a764-3063-af2d-bcb8309a97c2,Particulate matter,emission/air,kg,air,environmental,True,EPA,,,,10
-9d0d9d0d-a764-3063-af2d-bcb8309a97c0,Sulfur dioxide,emission/air,kg,air,environmental,True,EPA,,,,10
-23n23n23-a764-3063-af2d-bcb8309a97e0,Tax revenue,economic,USD,economic,economic,True,BEA,,,,10
-19j19j19-a764-3063-af2d-bcb8309a97d6,Fossil fuel depletion,resource/natural,MJ surplus,natural resources,resource,True,EPA,,,,9
-20k20k20-a764-3063-af2d-bcb8309a97d7,Mineral depletion,resource/natural,kg Fe equiv,natural resources,resource,True,EPA,,,,9
-e5i5e5i5-a764-3063-af2d-bcb8309a97c5,Ammonia,emission/air,kg,air,environmental,True,EPA,,,,5
-f6j6f6j6-a764-3063-af2d-bcb8309a97c6,Benzene,emission/air,kg,air,environmental,True,EPA,,,,5
-10a10a10-a764-3063-af2d-bcb8309a97c7,Biological oxygen demand,emission/water,kg,water,environmental,True,EPA,,,,5
-c3g3c3g3-a764-3063-af2d-bcb8309a97c3,Carbon monoxide,emission/air,kg,air,environmental,True,EPA,,,,5
-11b11b11-a764-3063-af2d-bcb8309a97c8,Chemical oxygen demand,emission/water,kg,water,environmental,True,EPA,,,,5
-15f15f15-a764-3063-af2d-bcb8309a97d2,Heavy metals,emission/water,kg,water,environmental,True,EPA,,,,5
-8c9c8c9c-a764-3063-af2d-bcb8309a97b9,Nitrous oxide,emission/air,kg,air,environmental,True,EPA,,,,5
-14e14e14-a764-3063-af2d-bcb8309a97d1,Phosphorus total,emission/water,kg,water,environmental,True,EPA,,,,5
-12c12c12-a764-3063-af2d-bcb8309a97c9,Suspended solids,emission/water,kg,water,environmental,True,EPA,,,,5
-d4h4d4h4-a764-3063-af2d-bcb8309a97c4,Volatile organic compounds,emission/air,kg,air,environmental,True,EPA,,,,5
+39368f6a-7fbb-5814-821e-bdcb3b66c9e7,Employment hours: High-skilled female,economic,M.hr,economic,economic,True,Exiobase,,,factor_id:430; extension:employment,20
+78055096-9c27-5ac1-93f6-5ed480aeda3d,Employment hours: High-skilled male,economic,M.hr,economic,economic,True,Exiobase,,,factor_id:429; extension:employment,20
+55694695-9a44-53d3-b64b-23f4b1db8add,Employment hours: Low-skilled female,economic,M.hr,economic,economic,True,Exiobase,,,factor_id:426; extension:employment,20
+7ff3363a-6953-570e-acd3-f9579f79d299,Employment hours: Low-skilled male,economic,M.hr,economic,economic,True,Exiobase,,,factor_id:425; extension:employment,20
+727cfc22-1de0-5675-95b6-0f48f3f64480,Employment hours: Medium-skilled female,economic,M.hr,economic,economic,True,Exiobase,,,factor_id:428; extension:employment,20
+595788b9-f726-57c8-80bf-6a2d83252da5,Employment hours: Medium-skilled male,economic,M.hr,economic,economic,True,Exiobase,,,factor_id:427; extension:employment,20
+2f7020ee-9432-59b8-ba44-cbdfa999f603,Employment people: High-skilled female,economic,1000 p,economic,economic,True,Exiobase,,,factor_id:424; extension:employment,20
+66a60968-0e33-58f7-bec9-a47b7e8b84f5,Employment people: High-skilled male,economic,1000 p,economic,economic,True,Exiobase,,,factor_id:423; extension:employment,20
+7b4918d5-5184-5b98-8846-01c7fa8ae782,Employment people: Low-skilled female,economic,1000 p,economic,economic,True,Exiobase,,,factor_id:420; extension:employment,20
+172a85ee-2126-578e-b591-4b871f7109bd,Employment people: Low-skilled male,economic,1000 p,economic,economic,True,Exiobase,,,factor_id:419; extension:employment,20
+32eb3755-ce2e-5be8-974b-217d20b2e5c3,Employment people: Medium-skilled female,economic,1000 p,economic,economic,True,Exiobase,,,factor_id:422; extension:employment,20
+aed9fddb-3748-574f-b64f-1ea37f745d73,Employment people: Medium-skilled male,economic,1000 p,economic,economic,True,Exiobase,,,factor_id:421; extension:employment,20
+5e014042-c97a-58b5-b601-2c956b0f3d77,Energy use - Emission relevant,resource/energy,TJ,energy,resource,True,Exiobase,,,factor_id:431; extension:energy,14
+dadd1eb1-6ea9-57c5-8917-1fda5563a220,Energy use - Final,resource/energy,TJ,energy,resource,True,Exiobase,,,factor_id:432; extension:energy,14
+8d7f4481-c255-5705-ba3b-2e3ca481e3cf,Energy use - Gross,resource/energy,TJ,energy,resource,True,Exiobase,,,factor_id:433; extension:energy,14
+62a22f01-c0cb-5466-9b6b-2c57204714e3,Energy use - Net,resource/energy,TJ,energy,resource,True,Exiobase,,,factor_id:434; extension:energy,14
+edeb3ae5-0abd-511b-854c-f913768cdc13,Water Consumption Blue - Agriculture - fibres,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:551; extension:water,14
+b1635ecf-6ac0-5f36-9cc7-6933985591eb,Water Consumption Blue - Agriculture - fodder crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:553; extension:water,14
+8a12bb27-c563-5625-9732-afa7ceead3ca,Water Consumption Blue - Agriculture - fruits,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:550; extension:water,14
+1f0d3726-30d0-5519-962c-350e52c01a14,Water Consumption Blue - Agriculture - nuts,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:547; extension:water,14
+3d9e2730-4b52-5c47-ae07-d758338032e5,Water Consumption Blue - Agriculture - oil crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:548; extension:water,14
+f5ff77b2-0e4b-51b5-a88e-16715c679319,Water Consumption Blue - Agriculture - other cereals,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:543; extension:water,14
+d682fc05-d724-580b-af3e-221992ea8627,Water Consumption Blue - Agriculture - other crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:552; extension:water,14
+d770a38d-b083-55f9-8ca2-ee8e541f7e0f,Water Consumption Blue - Agriculture - pulses,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:546; extension:water,14
+30af2589-16f2-518f-8b97-0c763445c55e,Water Consumption Blue - Agriculture - rice,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:541; extension:water,14
+be573947-a761-5b47-b96b-ece712aca852,Water Consumption Blue - Agriculture - roots and tubers,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:544; extension:water,14
+f9130709-8bb2-5faa-bc93-03e627f6b738,Water Consumption Blue - Agriculture - sugar crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:545; extension:water,14
+3cc51393-2216-572e-9907-2073c531c64a,Water Consumption Blue - Agriculture - vegetables,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:549; extension:water,14
+fba9b1e8-7ad9-582a-9894-2749a9f35c02,Water Consumption Blue - Agriculture - wheat,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:542; extension:water,14
+5578b45a-ef72-5db0-93b8-062951f3e15d,Water Consumption Blue - Domestic - domestic Water Consumption Blue,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:643; extension:water,14
+fd82b41e-8ff7-560d-a17b-8473ce3de9d7,Water Consumption Blue - Electricity - once-through - Electricity by Geothermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:641; extension:water,14
+538a06eb-3f6b-5305-a2a8-481a8bc6b4f8,Water Consumption Blue - Electricity - once-through - Electricity by biomass and waste,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:637; extension:water,14
+8a6abf01-9403-5102-8f2b-89159ceff76b,Water Consumption Blue - Electricity - once-through - Electricity by coal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:631; extension:water,14
+d3818d75-0376-5959-b2a1-8b4b528bad0a,Water Consumption Blue - Electricity - once-through - Electricity by gas,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:632; extension:water,14
+769959c3-1a98-5c3d-b5a6-d6ca85cc35a3,Water Consumption Blue - Electricity - once-through - Electricity by hydro,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:634; extension:water,14
+62c55bba-93f7-5e83-bf32-a6a57e5f933e,Water Consumption Blue - Electricity - once-through - Electricity by nuclear,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:633; extension:water,14
+930abec9-60e5-5aa2-844f-25d8bb94eb11,Water Consumption Blue - Electricity - once-through - Electricity by petroleum and other oil derivatives,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:636; extension:water,14
+4a8068d8-679e-54d8-830a-14ec2ecf50a9,Water Consumption Blue - Electricity - once-through - Electricity by solar photovoltaic,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:638; extension:water,14
+4128462c-b3fe-548b-bc3c-e98b00eeda2e,Water Consumption Blue - Electricity - once-through - Electricity by solar thermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:639; extension:water,14
+bb95bc82-e5ba-5ccb-8200-c94ccd6a3073,"Water Consumption Blue - Electricity - once-through - Electricity by tide, wave, ocean",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:640; extension:water,14
+1f1a4903-ac0a-50b5-b703-dd6665552c1c,Water Consumption Blue - Electricity - once-through - Electricity by wind,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:635; extension:water,14
+030378ad-64f8-5ead-b785-d16a0a90ca6c,Water Consumption Blue - Electricity - once-through - Electricity nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:642; extension:water,14
+694e48fb-3620-51d0-b367-2e041f1c1f5a,Water Consumption Blue - Electricity - tower - Electricity by Geothermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:629; extension:water,14
+bd069f10-6665-5901-80e0-a45dc13e67d0,Water Consumption Blue - Electricity - tower - Electricity by biomass and waste,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:625; extension:water,14
+85aad956-06d8-50f6-ab01-bc40aa1a35b8,Water Consumption Blue - Electricity - tower - Electricity by coal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:619; extension:water,14
+8b32194b-c51f-57a3-9483-0cdf8cd778d0,Water Consumption Blue - Electricity - tower - Electricity by gas,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:620; extension:water,14
+b68c6cbd-e75d-5e3b-b9fa-8c402d0817ff,Water Consumption Blue - Electricity - tower - Electricity by hydro,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:622; extension:water,14
+35838d2b-b33c-5184-a2bb-110a06187131,Water Consumption Blue - Electricity - tower - Electricity by nuclear,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:621; extension:water,14
+79e986cc-43d0-5f07-8982-22b1457a875b,Water Consumption Blue - Electricity - tower - Electricity by petroleum and other oil derivatives,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:624; extension:water,14
+b3826e74-d106-5e5b-af08-b8b17967dec3,Water Consumption Blue - Electricity - tower - Electricity by solar photovoltaic,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:626; extension:water,14
+1063776e-ba6c-555e-a442-22d24a3f8d2d,Water Consumption Blue - Electricity - tower - Electricity by solar thermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:627; extension:water,14
+9e0d4d04-a6a3-5518-aebf-0570c720bb82,"Water Consumption Blue - Electricity - tower - Electricity by tide, wave, ocean",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:628; extension:water,14
+8e4dc3fe-3818-584b-a189-cd0c5829861d,Water Consumption Blue - Electricity - tower - Electricity by wind,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:623; extension:water,14
+0240e49b-dfb4-5d8b-8e66-25ce32d0f568,Water Consumption Blue - Electricity - tower - Electricity nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:630; extension:water,14
+be8e4685-b227-588b-81b6-088e61494c54,Water Consumption Blue - Livestock - buffaloes,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:559; extension:water,14
+37db3436-8601-5006-a9ed-7d596bbebe32,Water Consumption Blue - Livestock - camels,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:560; extension:water,14
+6107f70a-0634-59ae-babb-bac9311b8384,Water Consumption Blue - Livestock - chicken,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:562; extension:water,14
+facd3434-2829-54ff-9a35-e38252f24b47,Water Consumption Blue - Livestock - dairy cattle,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:554; extension:water,14
+8e0723d9-ba4b-50f2-92af-bc5376e2c0e1,Water Consumption Blue - Livestock - ducks,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:564; extension:water,14
+7af5a3e0-b1ea-5720-b5f5-9a03d6ee0229,Water Consumption Blue - Livestock - geese,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:565; extension:water,14
+6f10468d-b187-504a-aa15-65eee25df4cf,Water Consumption Blue - Livestock - goats,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:558; extension:water,14
+5735dab5-efbe-5885-a3e9-49e3c43855bb,Water Consumption Blue - Livestock - horses,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:561; extension:water,14
+da4474dc-3568-5287-a357-2abf04d679db,Water Consumption Blue - Livestock - nondairy cattle,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:555; extension:water,14
+216b0860-cc67-53a6-b3a8-c4463e52c714,Water Consumption Blue - Livestock - pigs,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:556; extension:water,14
+64136888-fe78-5279-ba98-7feafbf98a6f,Water Consumption Blue - Livestock - sheep,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:557; extension:water,14
+f9f6894e-dffb-5699-8217-8fe435306564,Water Consumption Blue - Livestock - turkeys,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:563; extension:water,14
+20717907-aa26-57c7-88df-0538073b19ee,Water Consumption Blue - Manufacturing - Aluminium and aluminium products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:602; extension:water,14
+cffa7141-5495-55f4-bd9a-c8fc6dff8bac,"Water Consumption Blue - Manufacturing - Ash for treatment, Re-processing of ash into clinker",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:596; extension:water,14
+41cedb5c-6d74-56f8-8d61-364a36a1ced5,Water Consumption Blue - Manufacturing - Basic iron and steel and of ferro-alloys and first products thereof,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:598; extension:water,14
+b57ae031-7e12-5939-8f33-9af967b8b9c2,Water Consumption Blue - Manufacturing - Beverages,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:575; extension:water,14
+f7ba15f2-7c1c-5b9a-a56d-58cce2054341,"Water Consumption Blue - Manufacturing - Bricks, tiles and construction products, in baked clay",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:594; extension:water,14
+4c649ad3-152a-5b14-a344-1b381a421c33,"Water Consumption Blue - Manufacturing - Cement, lime and plaster",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:595; extension:water,14
+523ac886-4cbe-5467-8bdc-8a335a73029a,Water Consumption Blue - Manufacturing - Ceramic goods,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:593; extension:water,14
+95156ea8-cc58-517f-a7db-8e34369c221a,Water Consumption Blue - Manufacturing - Chemicals nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:589; extension:water,14
+3c55aeaa-311f-5740-a276-a0fe1a1d0f81,Water Consumption Blue - Manufacturing - Copper products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:606; extension:water,14
+cfc0d3b2-761f-5c2b-8afe-b8318058ebf3,Water Consumption Blue - Manufacturing - Dairy products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:571; extension:water,14
+05beb6cb-b0d0-5e76-972b-b62a87ed3aa6,Water Consumption Blue - Manufacturing - Electrical machinery and apparatus n.e.c. (31),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:613; extension:water,14
+cd3ef73c-9680-591d-b041-cb11b38da733,"Water Consumption Blue - Manufacturing - Fabricated metal products, except machinery and equipment (28)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:610; extension:water,14
+354ee6f5-4670-5d02-a3df-9a7a1e96af1c,Water Consumption Blue - Manufacturing - Fish products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:576; extension:water,14
+f79dfd07-403b-5094-a39a-98cc3df180d5,Water Consumption Blue - Manufacturing - Food products nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:574; extension:water,14
+67c38dc1-97ca-5964-8373-f2f15f50c83d,Water Consumption Blue - Manufacturing - Furniture; other manufactured goods n.e.c. (36),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:618; extension:water,14
+24e36002-99b1-562c-977a-8e0cc5fa44ac,Water Consumption Blue - Manufacturing - Glass and glass products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:591; extension:water,14
+2987bf87-7e84-5cb5-98e2-8b67cc94b59a,"Water Consumption Blue - Manufacturing - Lead, zinc and tin and products thereof",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:604; extension:water,14
+6888ce2c-619a-56dc-8c43-b48bc93d76b0,Water Consumption Blue - Manufacturing - Leather and leather products (19),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:580; extension:water,14
+b8d18b6d-9079-542b-828f-0070189d2035,Water Consumption Blue - Manufacturing - Machinery and equipment n.e.c. (29),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:611; extension:water,14
+fe8cd216-dce0-5ccc-95be-24720aad3adc,Water Consumption Blue - Manufacturing - Meat products nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:569; extension:water,14
+f491b53a-5cf5-5817-8f73-96f48d71c1f0,"Water Consumption Blue - Manufacturing - Medical, precision and optical instruments, watches and clocks (33)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:615; extension:water,14
+782f8248-4032-55d7-b8a5-80797f3d653d,"Water Consumption Blue - Manufacturing - Motor vehicles, trailers and semi-trailers (34)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:616; extension:water,14
+49c66ddd-94ad-5b51-bbef-bcb85c2d8703,Water Consumption Blue - Manufacturing - N-fertiliser,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:587; extension:water,14
+f156c616-632f-5c47-bc8c-79712e241ffe,Water Consumption Blue - Manufacturing - Office machinery and computers (30),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:612; extension:water,14
+95273167-b7aa-5962-b82c-bd43d1e0797a,Water Consumption Blue - Manufacturing - Other non-ferrous metal products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:608; extension:water,14
+e0ac54b5-28a6-5cef-af4e-348aca2d36ad,Water Consumption Blue - Manufacturing - Other non-metallic mineral products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:597; extension:water,14
+d684c9d6-5fc1-53e5-9c38-92280f82e530,Water Consumption Blue - Manufacturing - Other transport equipment (35),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:617; extension:water,14
+815e6ac1-d067-530c-acd2-106dc3f158aa,Water Consumption Blue - Manufacturing - P- and other fertiliser,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:588; extension:water,14
+a5ec11da-6fdd-578e-b45e-57eaadc75034,Water Consumption Blue - Manufacturing - Paper and paper products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:583; extension:water,14
+93696b83-91a8-5c9c-911c-eac2f673320c,"Water Consumption Blue - Manufacturing - Plastics, basic",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:585; extension:water,14
+8b080fc2-a28e-5ffe-a74c-e094cdf302e8,Water Consumption Blue - Manufacturing - Precious metals,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:600; extension:water,14
+ac7e1f4a-97f5-59a7-b571-7958ab3346ed,Water Consumption Blue - Manufacturing - Printed matter and recorded media (22),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:584; extension:water,14
+c78480f4-5141-59cd-ba83-049c1e1cea54,Water Consumption Blue - Manufacturing - Processed rice,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:572; extension:water,14
+b8a69901-1df2-5b92-9e74-54f9e40dbed0,Water Consumption Blue - Manufacturing - Products of meat cattle,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:566; extension:water,14
+67b16b7f-75c6-54b7-9ecf-393b6db4a1f6,Water Consumption Blue - Manufacturing - Products of meat pigs,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:567; extension:water,14
+045a58d4-c3a2-5881-968f-60bc64a1ce2a,Water Consumption Blue - Manufacturing - Products of meat poultry,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:568; extension:water,14
+e5adae45-2171-555f-a6c3-67b53a018368,Water Consumption Blue - Manufacturing - Pulp,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:581; extension:water,14
+fc494b82-2032-5c3b-80ef-eb9f1ae95105,"Water Consumption Blue - Manufacturing - Radio, television and communication equipment and apparatus (32)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:614; extension:water,14
+0f805c11-a088-5699-ab24-cc0ac341ee9f,Water Consumption Blue - Manufacturing - Rubber and plastic products (25),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:590; extension:water,14
+411ef47e-d5cd-5bde-a5ec-bbda31dab04e,"Water Consumption Blue - Manufacturing - Secondary aluminium for treatment, Re-processing of secondary aluminium into new aluminium",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:603; extension:water,14
+4863e314-085a-5419-be61-36c4775726de,"Water Consumption Blue - Manufacturing - Secondary copper for treatment, Re-processing of secondary copper into new copper",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:607; extension:water,14
+9a0f3f1f-af24-5226-ad5f-1c5eebcb37d9,"Water Consumption Blue - Manufacturing - Secondary glass for treatment, Re-processing of secondary glass into new glass",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:592; extension:water,14
+6d8ab83e-c812-551a-8ec7-0deffb0431d5,"Water Consumption Blue - Manufacturing - Secondary lead for treatment, Re-processing of secondary lead into new lead",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:605; extension:water,14
+c5f12d2e-d953-5e29-afd3-38a43e9c0f66,"Water Consumption Blue - Manufacturing - Secondary other non-ferrous metals for treatment, Re-processing of secondary other non-ferrous metals into new other non-ferrous metals",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:609; extension:water,14
+39a2e34a-a014-572b-a9b2-064dea50e8e1,"Water Consumption Blue - Manufacturing - Secondary paper for treatment, Re-processing of secondary paper into new pulp",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:582; extension:water,14
+0118c97d-bd38-5838-b12d-9ad2beb77030,"Water Consumption Blue - Manufacturing - Secondary plastic for treatment, Re-processing of secondary plastic into new plastic",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:586; extension:water,14
+b394da03-8d73-5994-96d0-045e536829ac,"Water Consumption Blue - Manufacturing - Secondary preciuos metals for treatment, Re-processing of secondary preciuos metals into new preciuos metals",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:601; extension:water,14
+d06f2291-9b1f-5f98-a05d-432800d18d79,"Water Consumption Blue - Manufacturing - Secondary steel for treatment, Re-processing of secondary steel into new steel",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:599; extension:water,14
+2857d9f5-c5d2-554b-a206-42e0ec31d70c,Water Consumption Blue - Manufacturing - Sugar,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:573; extension:water,14
+3e90a95a-44da-5ec8-81a5-27949ead4bf2,Water Consumption Blue - Manufacturing - Textiles (17),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:578; extension:water,14
+1b33ffe0-72fd-53d0-ba5d-81dae06fb29f,Water Consumption Blue - Manufacturing - Tobacco products (16),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:577; extension:water,14
+68b311e4-fb9c-5006-a9d3-69fef790bcc5,Water Consumption Blue - Manufacturing - Wearing apparel; furs (18),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:579; extension:water,14
+19b8555d-0c05-5fe1-b76a-2a156a065169,Water Consumption Blue - Manufacturing - products of Vegetable oils and fats,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:570; extension:water,14
+a50e9709-ad3f-56ab-9578-637d7651d073,Water Consumption Green - Agriculture - fibres,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:538; extension:water,14
+e1596ff1-218e-5d3f-a87a-7354c916e7fb,Water Consumption Green - Agriculture - fodder crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:540; extension:water,14
+26c51f9f-9b11-523a-8a0c-b4a6b4a8a526,Water Consumption Green - Agriculture - fruits,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:537; extension:water,14
+82b791dc-2437-5ec1-a0b2-32948bfbb081,Water Consumption Green - Agriculture - nuts,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:534; extension:water,14
+2d21d4f6-865c-56a5-b33a-36b7c51f50a7,Water Consumption Green - Agriculture - oil crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:535; extension:water,14
+0e9af22a-bb95-5974-8301-f127ba3bbd25,Water Consumption Green - Agriculture - other cereals,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:530; extension:water,14
+39110625-c574-59fa-abcf-d0149f77fe21,Water Consumption Green - Agriculture - other crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:539; extension:water,14
+6234b86a-195c-5622-b88c-6c265e1cb259,Water Consumption Green - Agriculture - pulses,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:533; extension:water,14
+e0b711ab-e04a-5cf7-93ea-f0409eef04ba,Water Consumption Green - Agriculture - rice,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:528; extension:water,14
+2f42c970-1017-5a6c-8f9f-631daec9d9ab,Water Consumption Green - Agriculture - roots and tubers,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:531; extension:water,14
+669838fd-7292-5c08-b8c1-517b9c2361a8,Water Consumption Green - Agriculture - sugar crops,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:532; extension:water,14
+413ce284-0e3c-5fab-b71e-06d7800e8342,Water Consumption Green - Agriculture - vegetables,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:536; extension:water,14
+8ee78135-a57d-536e-9a2e-12d763a2e4f5,Water Consumption Green - Agriculture - wheat,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:529; extension:water,14
+5f9971ad-56d7-5feb-bce0-f682cce31a45,Water Withdrawal Blue - Domestic - domestic Water Withdrawal Blue,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:721; extension:water,14
+e0c372da-8b73-53ba-afff-8edb5a2cb34c,Water Withdrawal Blue - Electricity - once-through - Electricity by Geothermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:719; extension:water,14
+c95f5a50-194e-5ac6-8ebd-d2aa90c42dc0,Water Withdrawal Blue - Electricity - once-through - Electricity by biomass and waste,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:715; extension:water,14
+5dce310b-4c1c-5cbf-9bab-16762bb1320b,Water Withdrawal Blue - Electricity - once-through - Electricity by coal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:709; extension:water,14
+fb597481-9f96-5b4a-a3c5-dc16948c6497,Water Withdrawal Blue - Electricity - once-through - Electricity by gas,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:710; extension:water,14
+1d3cf9e6-280b-5703-b6bc-7a2527e44518,Water Withdrawal Blue - Electricity - once-through - Electricity by hydro,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:712; extension:water,14
+ae78ac1a-5368-5565-a787-615e1f84c5f0,Water Withdrawal Blue - Electricity - once-through - Electricity by nuclear,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:711; extension:water,14
+54d5c450-607b-5dd1-8b4e-49944d377d32,Water Withdrawal Blue - Electricity - once-through - Electricity by petroleum and other oil derivatives,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:714; extension:water,14
+b42a2d79-c3fa-5f52-a12d-367540666e34,Water Withdrawal Blue - Electricity - once-through - Electricity by solar photovoltaic,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:716; extension:water,14
+52e0db02-4b8e-5a65-9ec9-f67b040dc32e,Water Withdrawal Blue - Electricity - once-through - Electricity by solar thermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:717; extension:water,14
+72904911-c3a9-50b7-ab5e-0ef5bbe710cb,"Water Withdrawal Blue - Electricity - once-through - Electricity by tide, wave, ocean",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:718; extension:water,14
+3d7ccf03-a2c3-5b6e-9dd7-7f230a7efb6f,Water Withdrawal Blue - Electricity - once-through - Electricity by wind,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:713; extension:water,14
+5980b7c9-ce60-55c0-8570-c8c31f152221,Water Withdrawal Blue - Electricity - once-through - Electricity nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:720; extension:water,14
+adf4332e-db6d-5610-b931-b5d70237ac66,Water Withdrawal Blue - Electricity - tower - Electricity by Geothermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:707; extension:water,14
+65207569-2ca6-59ef-ada7-920413101918,Water Withdrawal Blue - Electricity - tower - Electricity by biomass and waste,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:703; extension:water,14
+859fd565-a8ff-507b-935d-84b2523d7951,Water Withdrawal Blue - Electricity - tower - Electricity by coal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:697; extension:water,14
+fce162f9-fbcc-5c41-8470-14e963f03694,Water Withdrawal Blue - Electricity - tower - Electricity by gas,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:698; extension:water,14
+86c41388-40a9-5e9e-9590-2ab076854f4f,Water Withdrawal Blue - Electricity - tower - Electricity by hydro,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:700; extension:water,14
+23249817-09cc-5f8a-adef-d016652a1a1e,Water Withdrawal Blue - Electricity - tower - Electricity by nuclear,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:699; extension:water,14
+7244243c-2375-5f98-b60d-d4de4c019abe,Water Withdrawal Blue - Electricity - tower - Electricity by petroleum and other oil derivatives,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:702; extension:water,14
+2492aef1-3f22-599e-b8c3-3f4d90a84847,Water Withdrawal Blue - Electricity - tower - Electricity by solar photovoltaic,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:704; extension:water,14
+ce5cfb2a-b684-5984-97ef-616bf340989d,Water Withdrawal Blue - Electricity - tower - Electricity by solar thermal,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:705; extension:water,14
+5899bc87-cbd4-54ac-853a-b25ad4a09fca,"Water Withdrawal Blue - Electricity - tower - Electricity by tide, wave, ocean",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:706; extension:water,14
+e94ccfd5-ca65-56e4-a38f-7f50a483b155,Water Withdrawal Blue - Electricity - tower - Electricity by wind,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:701; extension:water,14
+77f4c017-05ef-53c5-8140-acc46799d33d,Water Withdrawal Blue - Electricity - tower - Electricity nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:708; extension:water,14
+c28da57d-3fbc-5477-9c12-a6bc1977f979,Water Withdrawal Blue - Manufacturing - Aluminium and aluminium products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:680; extension:water,14
+6ba6d945-6153-5eb0-95a9-9973098561db,"Water Withdrawal Blue - Manufacturing - Ash for treatment, Re-processing of ash into clinker",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:674; extension:water,14
+f67293d0-508c-5a6d-833f-c8d13caec8fc,Water Withdrawal Blue - Manufacturing - Basic iron and steel and of ferro-alloys and first products thereof,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:676; extension:water,14
+61251d29-a564-54ec-aae5-1192776e9472,Water Withdrawal Blue - Manufacturing - Beverages,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:653; extension:water,14
+96f4d938-b7a0-5cdd-96f5-bdb8ea7393c5,"Water Withdrawal Blue - Manufacturing - Bricks, tiles and construction products, in baked clay",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:672; extension:water,14
+456a2aac-3e0f-50b8-b2ba-5492c9f514e1,"Water Withdrawal Blue - Manufacturing - Cement, lime and plaster",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:673; extension:water,14
+9a605355-e378-5b0b-be44-6cfba768631c,Water Withdrawal Blue - Manufacturing - Ceramic goods,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:671; extension:water,14
+1d51f08c-ec69-554d-9281-9a16d4fe3c0a,Water Withdrawal Blue - Manufacturing - Chemicals nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:667; extension:water,14
+9ba154da-f2f8-5830-a58b-36cd7aaedebc,Water Withdrawal Blue - Manufacturing - Copper products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:684; extension:water,14
+bc496a06-c57d-5efb-867e-037baf55e535,Water Withdrawal Blue - Manufacturing - Dairy products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:649; extension:water,14
+82c4535a-1797-5495-96ad-eafac254ed1c,Water Withdrawal Blue - Manufacturing - Electrical machinery and apparatus n.e.c. (31),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:691; extension:water,14
+054d6288-0450-567c-b138-fa74f267f54a,"Water Withdrawal Blue - Manufacturing - Fabricated metal products, except machinery and equipment (28)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:688; extension:water,14
+0c44921c-7faf-5b0c-9ab1-1b31ac4b26d4,Water Withdrawal Blue - Manufacturing - Fish products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:654; extension:water,14
+52219b49-0d96-5b17-bdcd-532d93b7e553,Water Withdrawal Blue - Manufacturing - Food products nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:652; extension:water,14
+bd164283-4d6c-5c36-b26a-ccddfff806ff,Water Withdrawal Blue - Manufacturing - Furniture; other manufactured goods n.e.c. (36),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:696; extension:water,14
+45940909-576a-5a63-a64d-97e9d62391d3,Water Withdrawal Blue - Manufacturing - Glass and glass products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:669; extension:water,14
+5dc78f87-fc35-561e-a370-c5286ff7c120,"Water Withdrawal Blue - Manufacturing - Lead, zinc and tin and products thereof",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:682; extension:water,14
+22f558eb-a3ca-5790-af57-4cc73bc73c12,Water Withdrawal Blue - Manufacturing - Leather and leather products (19),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:658; extension:water,14
+dc90b4a6-8bb9-5e59-9cb1-e0beb39ada3a,Water Withdrawal Blue - Manufacturing - Machinery and equipment n.e.c. (29),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:689; extension:water,14
+20b8a963-2b34-5987-a159-3b840d326ac0,Water Withdrawal Blue - Manufacturing - Meat products nec,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:647; extension:water,14
+4fcbfc02-75aa-5b69-a0c8-2ccedfb1d4a9,"Water Withdrawal Blue - Manufacturing - Medical, precision and optical instruments, watches and clocks (33)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:693; extension:water,14
+d9756d10-61d9-5d27-8191-b90d652a1551,"Water Withdrawal Blue - Manufacturing - Motor vehicles, trailers and semi-trailers (34)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:694; extension:water,14
+bcf5ad5b-8fa7-5fba-8c70-2f3bd312787a,Water Withdrawal Blue - Manufacturing - N-fertiliser,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:665; extension:water,14
+2663c404-cd36-581d-807e-4c3136e78fe6,Water Withdrawal Blue - Manufacturing - Office machinery and computers (30),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:690; extension:water,14
+93332c56-1278-5937-b7d1-8c322c9495d9,Water Withdrawal Blue - Manufacturing - Other non-ferrous metal products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:686; extension:water,14
+dcd35706-ed51-5455-b4fa-1afa5d4be123,Water Withdrawal Blue - Manufacturing - Other non-metallic mineral products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:675; extension:water,14
+8c495652-b226-505e-91a9-b3d317e8a431,Water Withdrawal Blue - Manufacturing - Other transport equipment (35),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:695; extension:water,14
+ddb60678-c7e0-599e-958c-5aa12e87c948,Water Withdrawal Blue - Manufacturing - P- and other fertiliser,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:666; extension:water,14
+251c99cc-ecf3-5fbf-a274-6bbc2a87962f,Water Withdrawal Blue - Manufacturing - Paper and paper products,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:661; extension:water,14
+92875974-ef0c-5429-a67e-6cf74a44cfc2,"Water Withdrawal Blue - Manufacturing - Plastics, basic",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:663; extension:water,14
+3e598363-0acc-51cf-a164-d176b1800587,Water Withdrawal Blue - Manufacturing - Precious metals,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:678; extension:water,14
+3dfe5b73-b4f8-5fa1-b9c1-ca0e76be01da,Water Withdrawal Blue - Manufacturing - Printed matter and recorded media (22),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:662; extension:water,14
+e6eecad5-398c-59b6-a7e7-c5c622d1fbcc,Water Withdrawal Blue - Manufacturing - Processed rice,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:650; extension:water,14
+5658f01c-eb91-5e61-9ed0-67f3e82129fb,Water Withdrawal Blue - Manufacturing - Products of meat cattle,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:644; extension:water,14
+64779f86-bcfc-5869-a43a-a68e0fe13d68,Water Withdrawal Blue - Manufacturing - Products of meat pigs,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:645; extension:water,14
+3a47be7c-b751-5982-8e27-8ce8a07f65b9,Water Withdrawal Blue - Manufacturing - Products of meat poultry,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:646; extension:water,14
+5bc8dcbb-8148-5b61-9a96-78f456febd10,Water Withdrawal Blue - Manufacturing - Pulp,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:659; extension:water,14
+7c7e9b24-4fb7-5d28-bc21-eb5b450880f5,"Water Withdrawal Blue - Manufacturing - Radio, television and communication equipment and apparatus (32)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:692; extension:water,14
+c840d83f-6556-56d0-8faa-ebf93ec6e2f1,Water Withdrawal Blue - Manufacturing - Rubber and plastic products (25),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:668; extension:water,14
+2b20e3f2-c882-5e57-8e8f-208f7982326d,"Water Withdrawal Blue - Manufacturing - Secondary aluminium for treatment, Re-processing of secondary aluminium into new aluminium",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:681; extension:water,14
+ce3b7503-6643-5e12-85ac-e3dc05e2431e,"Water Withdrawal Blue - Manufacturing - Secondary copper for treatment, Re-processing of secondary copper into new copper",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:685; extension:water,14
+f70fba41-0843-5fa8-a0dc-1c7894cbae9c,"Water Withdrawal Blue - Manufacturing - Secondary glass for treatment, Re-processing of secondary glass into new glass",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:670; extension:water,14
+e61dcef8-6553-5f44-93ba-ababa4f69939,"Water Withdrawal Blue - Manufacturing - Secondary lead for treatment, Re-processing of secondary lead into new lead",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:683; extension:water,14
+4bffaf2e-a4e0-5f3e-b168-d63d4bbe6210,"Water Withdrawal Blue - Manufacturing - Secondary other non-ferrous metals for treatment, Re-processing of secondary other non-ferrous metals into new other non-ferrous metals",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:687; extension:water,14
+a69801f7-7d8a-5c84-97e9-26312b52266b,"Water Withdrawal Blue - Manufacturing - Secondary paper for treatment, Re-processing of secondary paper into new pulp",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:660; extension:water,14
+4c1e853b-8060-5fe0-8850-b6724e87d30b,"Water Withdrawal Blue - Manufacturing - Secondary plastic for treatment, Re-processing of secondary plastic into new plastic",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:664; extension:water,14
+61ad7145-fbf5-54a4-b82f-aed51f8ee6e1,"Water Withdrawal Blue - Manufacturing - Secondary preciuos metals for treatment, Re-processing of secondary preciuos metals into new preciuos metals",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:679; extension:water,14
+21ee1da1-faf7-5b16-93e6-fe84fb1d4362,"Water Withdrawal Blue - Manufacturing - Secondary steel for treatment, Re-processing of secondary steel into new steel",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:677; extension:water,14
+b6fdfa96-4929-5d40-9037-16d47c673bdc,Water Withdrawal Blue - Manufacturing - Sugar,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:651; extension:water,14
+4d9bbb53-3f10-53db-ba5f-f65ff09d9297,Water Withdrawal Blue - Manufacturing - Textiles (17),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:656; extension:water,14
+828fe58f-b81e-5c7b-9f79-f82b15effbed,Water Withdrawal Blue - Manufacturing - Tobacco products (16),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:655; extension:water,14
+75d56c89-2aa2-5119-91fa-5b33e1d0306c,Water Withdrawal Blue - Manufacturing - Wearing apparel; furs (18),resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:657; extension:water,14
+29b3343a-60ac-595a-8d8a-b754bb2a85f7,Water Withdrawal Blue - Manufacturing - products of Vegetable oils and fats,resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:648; extension:water,14
+b6f010fb-a764-3063-af2d-bcb8309a97b7,Carbon dioxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=46795,124-38-9,CO2,,13
+aab83476-ec6c-3742-af85-15d320b7ce80,Methane,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=48548,74-82-8,CH4,,13
+dd6b162e-67fc-5da3-8ef7-1b876753ea02,Domestic Extraction Used - Fossil Fuels - Anthracite,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:489; extension:material,9
+998effe4-1c8c-5910-ab79-3e890356c548,Domestic Extraction Used - Fossil Fuels - Coking Coal,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:490; extension:material,9
+e9f0dddb-69f1-56bb-96a3-5f8d97d4ea9e,Domestic Extraction Used - Fossil Fuels - Crude oil,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:495; extension:material,9
+28f2b31a-5d1d-5b32-8bd1-e012e1f190bb,Domestic Extraction Used - Fossil Fuels - Lignite (brown coal),resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:493; extension:material,9
+099f9889-148e-5460-824b-7900648c5d7e,Domestic Extraction Used - Fossil Fuels - Natural gas,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:497; extension:material,9
+273ea95e-0bf0-5953-83d9-b8ee3c373a25,Domestic Extraction Used - Fossil Fuels - Natural gas liquids,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:498; extension:material,9
+40f7850a-3521-5593-935d-39ce0cd551d0,Domestic Extraction Used - Fossil Fuels - Oil shale and tar sands,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:496; extension:material,9
+6824b7e5-eaa2-5f67-ab7d-d1c9ce254d92,Domestic Extraction Used - Fossil Fuels - Other Bituminous Coal,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:491; extension:material,9
+be5d463d-aafe-51df-8cd1-b4a94c5af1ef,Domestic Extraction Used - Fossil Fuels - Other Sub-Bituminous Coal,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:492; extension:material,9
+e1cb0f88-0802-581c-9c29-48bfff7471ce,Domestic Extraction Used - Fossil Fuels - Peat,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:494; extension:material,9
+e542a0db-40bd-541c-abf4-32d15417dee5,Domestic Extraction Used - Non-Metallic Minerals - Chalk,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:515; extension:material,9
+c039e2df-19c0-5211-a644-7f87adf8818b,Domestic Extraction Used - Non-Metallic Minerals - Chemical minerals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:524; extension:material,9
+3077e5fd-4c91-55fd-a525-d99b3db23993,Domestic Extraction Used - Non-Metallic Minerals - Dolomite,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:516; extension:material,9
+2b175d7c-34dd-57e2-9e69-96ff9aaced46,Domestic Extraction Used - Non-Metallic Minerals - Fertilizer minerals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:523; extension:material,9
+2707f852-f7e7-5564-b0bc-6500830d7243,Domestic Extraction Used - Non-Metallic Minerals - Gypsum,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:518; extension:material,9
+898a949e-e5fa-58e3-bf80-4ed52f9fceba,Domestic Extraction Used - Non-Metallic Minerals - Industrial minerals n.e.c,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:525; extension:material,9
+3bde20e7-70c5-509d-9295-8c101f2eeefd,Domestic Extraction Used - Non-Metallic Minerals - Industrial sand and gravel,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:521; extension:material,9
+bf077951-1c98-5289-a641-f065a806078a,Domestic Extraction Used - Non-Metallic Minerals - Limestone,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:517; extension:material,9
+54f7e9b0-52c6-5ab5-8929-2341f33e3967,Domestic Extraction Used - Non-Metallic Minerals - Ornamental or building stone,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:514; extension:material,9
+09da0778-21ae-51fe-b046-ec21d174eca7,Domestic Extraction Used - Non-Metallic Minerals - Other non-metallic minerals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:527; extension:material,9
+2635b61d-2f2d-5d53-92d2-4176cf963380,Domestic Extraction Used - Non-Metallic Minerals - Salt,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:526; extension:material,9
+1aac81b7-69f7-5b81-a2ba-61ff816b78b4,Domestic Extraction Used - Non-Metallic Minerals - Sand gravel and crushed rock for construction,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:522; extension:material,9
+2464493f-cc4e-5058-a502-82fd51cbe1d2,Domestic Extraction Used - Non-Metallic Minerals - Specialty clays,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:520; extension:material,9
+b8a7a901-c118-5176-85ed-2b92d8dd75ae,Domestic Extraction Used - Non-Metallic Minerals - Structural clays,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:519; extension:material,9
+4382ba18-dd21-3837-80b2-94283ef5490e,Nitrogen oxides,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=38802,11104-93-1,-,,8
+0418b561-ecf8-33c8-9c81-225789f15bd3,Particulate matter,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=79627,,,Particulates,8
+5a939c2b-cebf-3060-8862-4a8650caf6dd,"Particulate matter, ≤ 10μm",emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=79583,n.a.,,,8
+49a9c581-7c83-36b0-b1bd-455ea4c665a6,"Particulate matter, ≤ 2.5μm",emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=79581,n.a.,,,8
+f4973035-59f5-3bdc-b257-b274dcc04e0f,Sulfur dioxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36802,7446-09-5,O2S,,8
+8334c424-1603-3274-bec1-15a7bd5c8e86,Sulfur hexafluoride,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=39886,2551-62-4,F6S,"Sulfur fluoride (SF6); Sulfur fluoride (SF6), (OC-6-11)-",8
+42e4c3cb-8468-3004-bd4b-19e6cbb81687,Sulfur oxides,emission/air,kg,air,Groups,False,,n.a.,,,8
+b81db912-264e-5dfc-88e6-ac84ffd544d0,B(b)F - combustion - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:3; extension:air_emissions,5
+856fac54-0c8c-5eb4-a144-20f6378f377d,B(b)F - non combustion - Primary aluminium production - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:41; extension:air_emissions,5
+e0579b8e-0155-5d60-850a-a86ef40952be,B(b)F - non combustion - Production of coke oven coke - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:42; extension:air_emissions,5
+63a63eec-6ef5-5166-84a2-1470693aa5f8,B(b)F - non combustion - Production of gascoke - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:43; extension:air_emissions,5
+09cfc4a9-0f4f-534a-a4c2-439e72a6c512,HFC - air,emission/air,kg CO2-eq,air,environmental,True,Exiobase,,,factor_id:404; extension:air_emissions,5
+a38160f8-eae2-5e8a-b4ae-671e5a9329b2,NMVOC - combustion - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:17; extension:air_emissions,5
+a1d922ca-5adb-5f12-8a56-f3562bd1fd48,NMVOC - non combustion - Beef and veal - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:121; extension:air_emissions,5
+762904d7-742c-59bc-890b-d7d48df57891,NMVOC - non combustion - Coil coating (coating of aluminum and steel) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:122; extension:air_emissions,5
+56175e90-962c-5568-bff5-44e2abbd0d88,NMVOC - non combustion - Decorative paint applicatoin - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:123; extension:air_emissions,5
+c599bd09-70a2-5a88-a02c-5259d284ba8a,NMVOC - non combustion - Degreasing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:124; extension:air_emissions,5
+3c0978c2-1e06-5fc6-a578-19237f7d49f2,NMVOC - non combustion - Diesel distribution - transport and depots (used in mobile sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:125; extension:air_emissions,5
+c96f4189-354e-5306-a481-ff409776536e,NMVOC - non combustion - Diesel distribution - transport and depots (used in stationary sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:126; extension:air_emissions,5
+9692ede6-ece0-5bc9-b554-26cee9a77ca5,NMVOC - non combustion - Dry cleaning - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:127; extension:air_emissions,5
+cbe066a6-15ed-5497-8a8c-89444f011e6c,"NMVOC - non combustion - Extraction, proc. and distribution of gaseous fuels - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:128; extension:air_emissions,5
+650096ee-94cd-51c0-9467-966db7fe2bcb,"NMVOC - non combustion - Extraction, proc. and distribution of liquid fuels - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:129; extension:air_emissions,5
+32cf6623-a0d5-5ab3-aba1-539c75350bb7,NMVOC - non combustion - Extraction/production of (natural) gas - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:130; extension:air_emissions,5
+b7a44be2-0cf2-545b-a101-78fb4ef3bb43,NMVOC - non combustion - Extraction/production of crude oil - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:131; extension:air_emissions,5
+91e6b5fb-8e77-52a5-bf30-97938e9886d7,"NMVOC - non combustion - Fat, edible and non-edible oil extraction - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:132; extension:air_emissions,5
+f0ae4911-1159-5cf3-8b25-b464721a3656,"NMVOC - non combustion - Fish, dried, salted or in brine; smoked fish; edible fish meal - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:133; extension:air_emissions,5
+9538e65a-232d-526c-b533-a63f25880a10,"NMVOC - non combustion - Fish, fish fillets, other fish meat and fish livers and roes, frozen - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:134; extension:air_emissions,5
+1fee3b98-16e5-5c51-99e2-5bea542447b9,"NMVOC - non combustion - Fish, otherwise prepared or preserved; caviar - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:135; extension:air_emissions,5
+2cc7defb-c40e-51b7-9b0e-79fec9e8bf7c,NMVOC - non combustion - Flexography and rotogravure in packaging - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:136; extension:air_emissions,5
+bb3b9203-9439-51a3-8796-9d47fa05a2c1,NMVOC - non combustion - Gasoline distribution - service stations - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:137; extension:air_emissions,5
+9d10e991-f218-5ed9-b7f7-03f2db7163fb,NMVOC - non combustion - Gasoline distribution - transport and depots (used in mobile sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:138; extension:air_emissions,5
+98dc299b-8496-53a1-a3d5-29fc3eb56653,NMVOC - non combustion - Gasoline distribution - transport and depots (used in stationary sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:139; extension:air_emissions,5
+648ee420-74e2-5cc6-b204-fcbcbf0017ba,NMVOC - non combustion - Industrial application of adhesives (use of high performance solvent based adhesives) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:140; extension:air_emissions,5
+3fa080f1-2318-534a-9f4c-c76990a0a144,NMVOC - non combustion - Industrial application of adhesives (use of traditional solvent based adhesives) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:141; extension:air_emissions,5
+f3da24b1-cd48-5c2e-971c-5d17a1bbcb8c,"NMVOC - non combustion - Industrial paint application, general industry (continuous processes) - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:142; extension:air_emissions,5
+c6f288ad-c707-5bf2-95be-f31921408869,"NMVOC - non combustion - Industrial paint application, general industry (plastic parts) - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:143; extension:air_emissions,5
+289eb8b3-6e98-5f17-bd7f-3da0425c3b13,"NMVOC - non combustion - Industrial paint application, general industry - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:144; extension:air_emissions,5
+e5c3a511-2be9-59d0-a94f-8cc1a1b37e3a,"NMVOC - non combustion - Inorganic chemical industry, fertilizers and other - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:145; extension:air_emissions,5
+3c40d4a3-d29f-5301-8b18-76b758150894,NMVOC - non combustion - Leather coating - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:146; extension:air_emissions,5
+273c0d57-c7b5-5e47-a911-0cfd57019031,NMVOC - non combustion - Manufacture of automobiles - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:147; extension:air_emissions,5
+90d51b05-ba75-5420-b1b0-566fd293495e,NMVOC - non combustion - Mutton and lamb - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:148; extension:air_emissions,5
+e59bfd01-1201-5355-a4cc-e8d5334b286d,NMVOC - non combustion - Oil refinery - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:149; extension:air_emissions,5
+69f2d001-1819-5bd5-85f3-f2c06f97f9b9,NMVOC - non combustion - Organic chemical industry - downstream units - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:150; extension:air_emissions,5
+c420adb0-184a-5929-8833-56483971322e,"NMVOC - non combustion - Organic chemical industry, storage - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:151; extension:air_emissions,5
+7e1003f1-a8f4-520b-8ea9-330e6c40d401,NMVOC - non combustion - Other industrial use of solvents - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:152; extension:air_emissions,5
+52218137-b0b3-52d6-8ef6-c47c15c7ebb1,NMVOC - non combustion - Pharmaceutical industry - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:153; extension:air_emissions,5
+a72a71c8-4441-549e-8e8a-b3f0eecfd197,NMVOC - non combustion - Polystyrene processing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:154; extension:air_emissions,5
+b8d01757-7a96-53d5-95ea-eedb724082ca,NMVOC - non combustion - Polyvinylchloride produceduction by suspension process - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:155; extension:air_emissions,5
+a702d693-89a7-5787-95e6-6cba9d12a057,NMVOC - non combustion - Pork - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:156; extension:air_emissions,5
+c2857534-cdb2-5af7-981a-93fbd418526e,"NMVOC - non combustion - Poultry, dressed - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:157; extension:air_emissions,5
+492fdeac-b4a6-5d96-9912-fb7099d35daf,"NMVOC - non combustion - Printing, offset - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:158; extension:air_emissions,5
+e8206f33-457a-50e2-acb5-c435857d57bd,NMVOC - non combustion - Products incorporating solvents - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:159; extension:air_emissions,5
+611f883c-050c-5961-92b3-bda1fa72587b,NMVOC - non combustion - Raw sugar - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:160; extension:air_emissions,5
+26c32f48-c850-541d-8eee-278042e2fe9f,NMVOC - non combustion - Rotogravure in publication - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:161; extension:air_emissions,5
+6549d965-b53f-528b-880d-41ff83771c3c,NMVOC - non combustion - Screen printing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:162; extension:air_emissions,5
+426da0de-77bc-597f-97c1-06cce23633bc,NMVOC - non combustion - Steam cracking (ethylene and propylene production) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:163; extension:air_emissions,5
+45d5becd-52d8-50d6-af10-ac49c0d2af93,NMVOC - non combustion - Synthetic rubber - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:164; extension:air_emissions,5
+65f6143a-5806-598c-8fcf-3d24a341c31d,NMVOC - non combustion - Tyre production - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:165; extension:air_emissions,5
+df97e8f4-99b2-53c3-8f7a-adb077c89889,NMVOC - non combustion - Vehicle refinishing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:166; extension:air_emissions,5
+c16ce2c3-6d0a-51be-815a-3ed44b30e330,NMVOC - non combustion - Wire coating - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:167; extension:air_emissions,5
+04be72d4-af01-5fdf-ad0f-e07b258fa798,PCDD/F - combustion - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:21; extension:air_emissions,5
+2d123c0b-ac18-526b-b9dc-75344abc6cc7,PFC - air,emission/air,kg CO2-eq,air,environmental,True,Exiobase,,,factor_id:405; extension:air_emissions,5
+06d6acf1-770c-59bc-8357-9e382dc958df,Artificial Surfaces,resource/land,km2,land,resource,True,Exiobase,,,factor_id:435; extension:land,4
+d704117b-c684-5d44-ab2b-8aa9406caf18,Cropland - cropped area - Cereal grains nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:436; extension:land,4
+f8a64581-2da5-5eec-afa2-74e6256183a4,Cropland - cropped area - Crops nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:437; extension:land,4
+f430baee-98c6-513c-b232-7c3310037df1,Cropland - cropped area - Oil seeds,resource/land,km2,land,resource,True,Exiobase,,,factor_id:438; extension:land,4
+e9046afc-11f9-58e7-bf3e-deb1eebff7e6,Cropland - cropped area - Paddy rice,resource/land,km2,land,resource,True,Exiobase,,,factor_id:439; extension:land,4
+85ef0609-9099-576b-aa05-91173b6a82be,Cropland - cropped area - Plant-based fibers,resource/land,km2,land,resource,True,Exiobase,,,factor_id:440; extension:land,4
+4988e075-edc1-5801-87e3-39d197ce6394,"Cropland - cropped area - Sugar cane, sugar beet",resource/land,km2,land,resource,True,Exiobase,,,factor_id:441; extension:land,4
+29a98fde-660e-5b37-8f6f-dfd20d9fee87,"Cropland - cropped area - Vegetables, fruit, nuts",resource/land,km2,land,resource,True,Exiobase,,,factor_id:442; extension:land,4
+75219552-f0be-59b1-b0c7-093474fea355,Cropland - cropped area - Wheat,resource/land,km2,land,resource,True,Exiobase,,,factor_id:443; extension:land,4
+7d7c9286-e8de-5aeb-b03e-639acf7151e0,Cropland - fallowed area - Cereal grains nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:444; extension:land,4
+dfc6a547-b959-5989-9d9e-041b2d265ea6,Cropland - fallowed area - Crops nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:445; extension:land,4
+d5522f88-40f3-5bcb-b12e-a491378c3ab3,Cropland - fallowed area - Oil seeds,resource/land,km2,land,resource,True,Exiobase,,,factor_id:446; extension:land,4
+9fe75496-5ce0-5431-9b7d-cd97e73ea072,Cropland - fallowed area - Paddy rice,resource/land,km2,land,resource,True,Exiobase,,,factor_id:447; extension:land,4
+eba8ec45-ab90-5edb-889d-e02517d2b319,Cropland - fallowed area - Plant-based fibers,resource/land,km2,land,resource,True,Exiobase,,,factor_id:448; extension:land,4
+71ac4d30-dac7-5581-a260-f01d525ca91f,"Cropland - fallowed area - Sugar cane, sugar beet",resource/land,km2,land,resource,True,Exiobase,,,factor_id:449; extension:land,4
+c5ceec2d-fb58-5a78-9aed-63ce2cad1709,"Cropland - fallowed area - Vegetables, fruit, nuts",resource/land,km2,land,resource,True,Exiobase,,,factor_id:450; extension:land,4
+4c2e425f-256e-522f-a6a7-194b895bcc80,Cropland - fallowed area - Wheat,resource/land,km2,land,resource,True,Exiobase,,,factor_id:451; extension:land,4
+7799a9d8-5c84-5429-b6c9-2dbaa2847337,Cropland - fallowed area-Cattle,resource/land,km2,land,resource,True,Exiobase,,,factor_id:452; extension:land,4
+a2baca8e-0bed-5a80-862a-df27eacaeab7,Cropland - fallowed area-Meat animals nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:453; extension:land,4
+5462716d-fa91-5f86-aa58-c8cbd81b529d,Cropland - fallowed area-Pigs,resource/land,km2,land,resource,True,Exiobase,,,factor_id:454; extension:land,4
+155a5d77-6440-500c-88d5-3e220997f9b0,Cropland - fallowed area-Poultry,resource/land,km2,land,resource,True,Exiobase,,,factor_id:455; extension:land,4
+26e85114-5aed-57a2-a8d1-ca1d3e9829f4,Cropland - fallowed area-Raw milk,resource/land,km2,land,resource,True,Exiobase,,,factor_id:456; extension:land,4
+0188cfb2-ee76-5e7e-b57c-a32e9b815895,Domestic Extraction Used - Crop residues - Other crop residues (sugar and fodder beet leaves etc),resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:481; extension:material,4
+64494e4b-9290-5991-91a4-2df10b52f780,Domestic Extraction Used - Crop residues - Straw,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:480; extension:material,4
+722a9061-dfd8-551c-97fe-95c760b2b7f2,Domestic Extraction Used - Fishery - All other aquatic animals,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:487; extension:material,4
+b2177f8e-baa2-508b-9862-ec0ae215fefa,Domestic Extraction Used - Fishery - Aquatic plants,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:488; extension:material,4
+c82da6d2-4914-5a1a-8977-03553f102e90,Domestic Extraction Used - Fishery - Wild fish catch,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:486; extension:material,4
+89d9f6a1-c8cc-57dc-9795-7cb093773157,Domestic Extraction Used - Forestry - Other crops n.e.c,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:483; extension:material,4
+e15630d1-2ce3-5045-9ddc-b60105fe2808,Domestic Extraction Used - Forestry - Timber (Industrial roundwood),resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:484; extension:material,4
+073f914f-a3ae-5b51-a6fd-c69416d37405,Domestic Extraction Used - Forestry - Wood fuel and other extraction,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:485; extension:material,4
+c1714f61-3f5c-5f96-986b-74b4a0117c62,Domestic Extraction Used - Grazed biomass,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:482; extension:material,4
+8ca29f27-7147-56ea-a296-de2da019434b,Domestic Extraction Used - Metal Ores - Bauxite and other aluminium ores - gross ore,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:503; extension:material,4
+cd1b586f-0f47-5014-919d-0bf5089a87a3,Domestic Extraction Used - Metal Ores - Chromium ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:510; extension:material,4
+93722bd5-aab4-5457-b86f-761ec51c9f65,Domestic Extraction Used - Metal Ores - Copper ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:501; extension:material,4
+2e61958d-b463-524c-8a35-14466f9150e7,Domestic Extraction Used - Metal Ores - Gold ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:505; extension:material,4
+9ec07522-64d3-5f88-a7a0-ac37a3e5b982,Domestic Extraction Used - Metal Ores - Iron ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:500; extension:material,4
+16bba035-73cd-5183-86c5-f0cfa09343ad,Domestic Extraction Used - Metal Ores - Lead ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:507; extension:material,4
+14b5155d-bcc9-5088-867d-83bb707f7a7c,Domestic Extraction Used - Metal Ores - Manganese ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:511; extension:material,4
+a6cbb0b0-fd26-52b8-ab90-81b3397b6b26,Domestic Extraction Used - Metal Ores - Nickel ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:502; extension:material,4
+666c0bff-8050-5763-bdf7-8a9f6dc68773,Domestic Extraction Used - Metal Ores - Other metal ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:512; extension:material,4
+3537f064-ae33-53ef-b8a4-f4a8a8b56e79,Domestic Extraction Used - Metal Ores - Platinum group metal ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:506; extension:material,4
+0329ca6a-4a3d-5517-b580-174c845a6f2d,Domestic Extraction Used - Metal Ores - Silver ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:504; extension:material,4
+2d011431-0c40-5092-9235-07e58ef1b4d2,Domestic Extraction Used - Metal Ores - Tin ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:508; extension:material,4
+37a88841-9f73-55a8-b93d-57e06598320d,Domestic Extraction Used - Metal Ores - Titanium ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:513; extension:material,4
+b39fe73d-19fe-5268-880f-76d77574e412,Domestic Extraction Used - Metal Ores - Uranium ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:499; extension:material,4
+2c0fbc19-eef1-51b5-be91-ccb66013d3b6,Domestic Extraction Used - Metal Ores - Zinc ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:509; extension:material,4
+0127aab4-ea6c-5db5-9756-120c26246016,Domestic Extraction Used - Primary Crops - Cereals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:469; extension:material,4
+ea130f0e-9dad-564f-b618-6aa1cc3589f8,Domestic Extraction Used - Primary Crops - Fibres,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:477; extension:material,4
+f3c3de7f-71f1-5cc3-b668-7e5296918ff5,Domestic Extraction Used - Primary Crops - Fruits,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:474; extension:material,4
+b19b320b-22b0-5fab-b5cd-767b20fca4ca,Domestic Extraction Used - Primary Crops - Nuts,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:472; extension:material,4
+82a31e8b-ce61-594a-bb6b-1255024ab737,Domestic Extraction Used - Primary Crops - Oil bearing crops,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:475; extension:material,4
+d1c14696-611a-59d4-8897-e551fd92354c,Domestic Extraction Used - Primary Crops - Pulses,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:471; extension:material,4
+8440f57c-7cde-5f8c-8bc8-00c13d75d30f,Domestic Extraction Used - Primary Crops - Rice,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:467; extension:material,4
+2e1ceeea-30fb-54ba-b8fc-7702aa0a59da,Domestic Extraction Used - Primary Crops - Roots and tubers,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:470; extension:material,4
+e877cc48-9dc2-5811-b985-6eee6a713f40,Domestic Extraction Used - Primary Crops - Spice - beverage - pharmaceutical crops,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:478; extension:material,4
+db8b8f98-a1f5-5efb-a453-5329911998a9,Domestic Extraction Used - Primary Crops - Sugar crops,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:476; extension:material,4
+c0991331-efd3-597a-8f73-ee0831011eaf,Domestic Extraction Used - Primary Crops - Tobacco,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:479; extension:material,4
+3c74fe92-ea83-53d1-aa7f-4f53f42afb4a,Domestic Extraction Used - Primary Crops - Vegetables,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:473; extension:material,4
+ef5a64da-e476-5d36-8d34-7363e5d64dda,Domestic Extraction Used - Primary Crops - Wheat,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:468; extension:material,4
+b9cce5ce-074f-5689-98d5-7cd7b20c39db,Forest,resource/land,km2,land,resource,True,Exiobase,,,factor_id:457; extension:land,4
+527a1996-cff9-5788-8954-8469954d61b7,Perm. meadows & pastures - Cultivated - Grazing-Cattle,resource/land,km2,land,resource,True,Exiobase,,,factor_id:458; extension:land,4
+b7093f5d-9d46-563b-a7e3-c80a69860a41,Perm. meadows & pastures - Cultivated - Grazing-Meat animals nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:459; extension:land,4
+fe1b253a-c77a-5401-b374-907f5fd4401b,Perm. meadows & pastures - Cultivated - Grazing-Raw milk,resource/land,km2,land,resource,True,Exiobase,,,factor_id:460; extension:land,4
+6dbc6dce-e281-5935-becd-2e5a2c2f4d3e,Perm. meadows & pastures - Nat. growing - Grazing-Cattle,resource/land,km2,land,resource,True,Exiobase,,,factor_id:461; extension:land,4
+dce1a9df-6050-5b06-aff1-53394c84c982,Perm. meadows & pastures - Nat. growing - Grazing-Meat animals nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:462; extension:land,4
+f22ae7aa-c26b-5276-b277-5ea2db595fa0,Perm. meadows & pastures - Nat. growing - Grazing-Raw milk,resource/land,km2,land,resource,True,Exiobase,,,factor_id:463; extension:land,4
+33a1a828-8e1b-545c-83b1-529fd9da6316,Permanent pastures - Grazing-Cattle,resource/land,km2,land,resource,True,Exiobase,,,factor_id:464; extension:land,4
+90488f96-7c73-59ea-9d90-ed7338c2948b,Permanent pastures - Grazing-Meat animals nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:465; extension:land,4
+7604e903-67ae-5c96-8e88-8d4a4ce13144,Permanent pastures - Grazing-Raw milk,resource/land,km2,land,resource,True,Exiobase,,,factor_id:466; extension:land,4
+65b5d5dd-95b5-36b2-8cb0-7c5501ff1e32,Ammonia,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=38644,7664-41-7,H3N,,3
+2b16d0b5-4713-3bb8-be5b-905382f0e8a8,Arsenic,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36973,7440-38-2,As,,3
+76bd7eb9-a592-319f-9234-9a469de5bd59,Benzo[a]pyrene,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=49190,50-32-8,C20H12,Benzo(a)pyrene,3
+fcf65d36-ae15-3066-80c2-b624e04c6380,Benzo[k]fluoranthene,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=93556,207-08-9,C20H12,Benzo(k)fluoranthene,3
+d5a296be-7219-3921-a430-cff172ac7911,Cadmium,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36835,7440-43-9,Cd,,3
+187c525c-3715-388c-b303-a0671524a615,Carbon monoxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=44569,630-08-0,CO,,3
+98bd36e1-fbe4-32ee-ba78-3b6726917c9b,Chromium,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36831,7440-47-3,Cr,,3
+b15117ec-3b8e-35de-bef2-00aec1b9636e,Copper,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36829,7440-50-8,Cu,,3
+28c8bbdf-1a2b-3c96-baf8-d965df47c0c6,Hexachlorobenzene,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=95480,118-74-1,C6Cl6,"Benzene, 1,2,3,4,5,6-hexachloro-",3
+e962ef47-cedd-36b6-b962-abacbab62a02,"Indeno[1,2,3-cd]pyrene",emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=46349,193-39-5,C22H12,"Indeno(1,2,3-cd)pyrene",3
+fe829136-3042-36e6-b4cb-7ff591e8db98,Lead,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=37012,7439-92-1,Pb,,3
+e2c65e04-f613-33db-9a6e-4cb4577b0005,Mercury,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=37007,7439-97-6,Hg,,3
+50f56ea3-e292-3c09-89d2-74466af5f11e,Nickel,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=37003,7440-02-0,Ni,,3
+cfee0524-7ad6-300b-b050-6249135a2492,Nitrous oxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=94780,10024-97-2,N2O,Nitrogen oxide (N2O),3
+18819e98-6dd1-3a8f-a27a-67ca826f3381,Polychlorinated biphenyls,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=16366,1336-36-3,C12,,3
+1c9f6a89-247d-30b0-8e48-f101382721c2,Polycyclic aromatic hydrocarbons - 15-PAH,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=78457,,,Polycyclic organic matter - 15-PAH,3
+b6db14bd-73e9-3f02-852a-e8b5e60bbc61,Selenium,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=38145,7782-49-2,Se,,3
+435bfa52-d2d3-3760-abf4-27de892972ac,Zinc,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36815,7440-66-6,Zn,,3

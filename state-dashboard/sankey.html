@@ -11,33 +11,35 @@
   const normalizedPath = (window.location.pathname || "").replace(/\\/g, "/");
   const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
   const isGitHubPages = /\.github\.io$/i.test(hostname);
-  const firstPathSegment = normalizedPath.split("/").filter(Boolean)[0] || "";
-  const isTradeDataMirror = /\/trade-data\//i.test(normalizedPath) || firstPathSegment.toLowerCase() === "trade-data";
-  const repoRootMarkers = {
-    "": true,
-    "index.html": true,
-    "bea-dashboard": true,
-    "state-dashboard": true,
-    "year": true,
-    "concordance": true,
-    "scripts": true,
-    "chart.js": true,
-    "sankey-data.js": true,
-    "trade-resource-data.js": true
-  };
+  const pathSegments = normalizedPath.split("/").filter(Boolean);
+  const localsiteMatch = normalizedPath.match(/^(.*?\/localsite)(?:\/|$)/i);
+  const pageFolderIndex = pathSegments.findIndex(function (segment) {
+    return String(segment || "").toLowerCase() === "state-dashboard";
+  });
+  const repoBase = !isFile && pageFolderIndex >= 0
+    ? "/" + pathSegments.slice(0, pageFolderIndex).join("/")
+    : "";
   const inferredPagesOwner = isGitHubPages
     ? hostname.replace(/\.github\.io$/i, "")
     : "";
   const inferredPagesRepo = isGitHubPages
-    ? (repoRootMarkers[firstPathSegment.toLowerCase()] || /\.[a-z0-9]+$/i.test(firstPathSegment)
-      ? (inferredPagesOwner + ".github.io")
-      : firstPathSegment)
+    ? (pathSegments[0] || "")
     : "";
-  const localsiteBase = (isFile || isLocalhost || (isTradeDataMirror && !isGitHubPages))
+  const localsiteBase = isFile
     ? "../../localsite"
-    : "https://cdn.jsdelivr.net/gh/ModelEarth/localsite@main";
+    : (localsiteMatch && isLocalhost
+      ? localsiteMatch[1]
+      : "https://cdn.jsdelivr.net/gh/ModelEarth/localsite@main");
 
   window.TRADE_LOCALSITE_BASE = localsiteBase;
+  window.TRADE_ENV = {
+    hostname: hostname,
+    isFile: isFile,
+    normalizedPath: normalizedPath,
+    isLocalhost: isLocalhost,
+    isGitHubPages: isGitHubPages,
+    repoBase: repoBase
+  };
   window.TRADE_GITHUB_FALLBACK = window.TRADE_GITHUB_FALLBACK || {
     owner: inferredPagesOwner || "savar25",
     name: inferredPagesRepo || "trade-data",
@@ -48,6 +50,7 @@
   document.write('<script type="text/javascript" src="' + localsiteBase + '/js/localsite.js?showheader=true&showsearch=true&showfilters=true"><\/script>');
 }());
 </script>
+<script src="../state-trade-data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
 <style>
   .content.contentpadding {
@@ -255,7 +258,7 @@
       <div>
         <h2>US State Trade Flow Sankey</h2>
         <p>
-          Domestic inter-state trade flows for the United States, using the state-only trade, impact, code, and specialization CSVs from the repo.
+          Domestic inter-state trade flows for the United States, using the current 2019 state-level trade, impact, code, and specialization CSVs.
         </p>
       </div>
       <button id="state-help-button" type="button" aria-expanded="false" aria-controls="state-help-panel">About This View</button>
@@ -302,6 +305,8 @@
       Indicator:
       <select id="metric-select">
         <option value="level">Trade Level</option>
+        <option value="price_adjusted_level">Price-adjusted Level</option>
+        <option value="factor_impact">Factor Impact</option>
         <option value="employment_impact">Employment Impact</option>
       </select>
     </label>
@@ -375,6 +380,16 @@ const METRICS = {
     key: "level",
     unit: "level"
   },
+  price_adjusted_level: {
+    label: "Price-adjusted Level",
+    key: "price_adjusted_level",
+    unit: "level"
+  },
+  factor_impact: {
+    label: "Factor Impact",
+    key: "factor_impact",
+    unit: "factor"
+  },
   employment_impact: {
     label: "Employment Impact",
     key: "employment_impact",
@@ -445,23 +460,42 @@ function titleCase(value) {
     });
 }
 
-function repoLocalPath(relativePath) {
-  return "../" + relativePath;
-}
+function buildRepoPathCandidates(relativePath) {
+  const env = window.TRADE_ENV || {};
+  const candidates = [];
+  const normalizedRelativePath = String(relativePath || "").replace(/^\/+/, "");
+  const push = function (value) {
+    if (value && !candidates.includes(value)) {
+      candidates.push(value);
+    }
+  };
 
-function repoRawPath(relativePath) {
-  if (window.location.protocol !== "file:") {
-    return repoLocalPath(relativePath);
+  push("../" + normalizedRelativePath);
+  push("./" + normalizedRelativePath);
+  push(normalizedRelativePath);
+
+  if (env.isFile) {
+    push("../../trade-data/" + normalizedRelativePath);
+    push("../../../trade-data/" + normalizedRelativePath);
+    push("../../../../trade-data/" + normalizedRelativePath);
+  } else {
+    if (typeof env.repoBase === "string") {
+      push((env.repoBase || "") + "/" + normalizedRelativePath);
+    }
+    if (/\/localsite\//i.test(env.normalizedPath || "")) {
+      push("../../trade-data/" + normalizedRelativePath);
+      push("../../../trade-data/" + normalizedRelativePath);
+      push("../../../../trade-data/" + normalizedRelativePath);
+    }
   }
-  return "https://raw.githubusercontent.com/" + repo.owner + "/" + repo.name + "/" + (repo.branch || "main") + "/" + relativePath;
+
+  push("https://raw.githubusercontent.com/" + repo.owner + "/" + repo.name + "/" + (repo.branch || "main") + "/" + normalizedRelativePath);
+
+  return candidates;
 }
 
-function dataLocalPath(filename) {
-  return repoLocalPath(DATASET_ROOT + filename);
-}
-
-function dataRawPath(filename) {
-  return repoRawPath(DATASET_ROOT + filename);
+function dataPathCandidates(filename) {
+  return buildRepoPathCandidates(DATASET_ROOT + filename);
 }
 
 async function fetchTextWithFallback(paths) {
@@ -484,7 +518,38 @@ async function fetchTextWithFallback(paths) {
 }
 
 function parseDelimitedLine(line) {
-  return String(line || "").split(",");
+  const text = String(line || "");
+  const values = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const next = text[index + 1];
+
+    if (char === '"') {
+      if (inQuotes && next === '"') {
+        current += '"';
+        index += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === "," && !inQuotes) {
+      values.push(current);
+      current = "";
+      continue;
+    }
+
+    current += char;
+  }
+
+  values.push(current);
+  return values.map(function (value) {
+    return String(value || "").trim();
+  });
 }
 
 function parseSmallCsv(text) {
@@ -505,21 +570,41 @@ function parseSmallCsv(text) {
   return rows;
 }
 
+function csvValue(row, names) {
+  for (let index = 0; index < names.length; index += 1) {
+    const key = names[index];
+    if (Object.prototype.hasOwnProperty.call(row, key)) {
+      return row[key];
+    }
+  }
+  return "";
+}
+
 function parseTradeFlows(text) {
   const lines = String(text || "").trim().split(/\r?\n/).filter(Boolean);
   const aggregate = new Map();
   const states = new Set();
   const industries = new Set();
   const flowTypes = new Set();
+  const headers = lines.length ? parseDelimitedLine(lines[0]) : [];
+  const normalizedHeaders = headers.map(function (header) {
+    return normalizeCode(header).toLowerCase();
+  });
 
   for (let index = 1; index < lines.length; index += 1) {
     const values = parseDelimitedLine(lines[index]);
-    const origin = normalizeCode(values[1]);
-    const destination = normalizeCode(values[2]);
-    const industry = normalizeCode(values[3]);
-    const level = parseNumber(values[4]);
-    const flowType = normalizeCode(values[5]);
-    const employmentImpact = parseNumber(values[6]);
+    const row = {};
+    normalizedHeaders.forEach(function (header, headerIndex) {
+      row[header] = values[headerIndex] || "";
+    });
+    const origin = normalizeCode(csvValue(row, ["origin_state", "origin", "source_state"]) || values[1]);
+    const destination = normalizeCode(csvValue(row, ["destination_state", "destination", "target_state"]) || values[2]);
+    const industry = normalizeCode(csvValue(row, ["state_industry_code", "industry_code", "industry"]) || values[3]);
+    const level = parseNumber(csvValue(row, ["level", "trade_level", "amount", "value"]) || values[4]);
+    const priceAdjustedLevel = parseNumber(csvValue(row, ["price_adjusted_level", "adjusted_level", "price_adjusted_value"]));
+    const factorImpact = parseNumber(csvValue(row, ["factor_impact", "factor_level", "trade_factor_level"]));
+    const flowType = normalizeCode(csvValue(row, ["flow_type", "trade_type", "type"]) || values[7] || values[5]);
+    const employmentImpact = parseNumber(csvValue(row, ["employment_impact", "jobs", "job_impact"]) || values[8] || values[6]);
 
     if (!origin || !destination || !industry) {
       continue;
@@ -532,10 +617,14 @@ function parseTradeFlows(text) {
       state_industry_code: industry,
       flow_type: flowType,
       level: 0,
+      price_adjusted_level: 0,
+      factor_impact: 0,
       employment_impact: 0
     };
 
     current.level += level;
+    current.price_adjusted_level += priceAdjustedLevel || level;
+    current.factor_impact += factorImpact;
     current.employment_impact += employmentImpact;
 
     aggregate.set(key, current);
@@ -568,8 +657,9 @@ function parseStateCodes(text) {
 
 function parseImpactRows(text) {
   impactRows = parseSmallCsv(text).map(function (row) {
+    const stateCode = normalizeCode(row.state_code || (row.region || "").replace(/^US-/, ""));
     return {
-      state_code: normalizeCode(row.state_code),
+      state_code: stateCode,
       industry_code: normalizeCode(row.industry_code),
       direct_jobs: parseNumber(row.direct_jobs),
       indirect_jobs: parseNumber(row.indirect_jobs),
@@ -593,6 +683,40 @@ function parseSpecializations(text) {
     }
     specializationsByState[code].push(titleCase(specialization));
   });
+}
+
+function applyStateTradePayloads(payloads, emptyMessage) {
+  if (payloads.some(function (text) { return !text; })) {
+    throw new Error("Missing state CSV input.");
+  }
+
+  const parsedFlows = parseTradeFlows(payloads[0]);
+  if (!parsedFlows.rows.length || !parsedFlows.states.length) {
+    throw new Error(emptyMessage || "State trade flow data is empty.");
+  }
+  aggregatedFlows = parsedFlows.rows;
+  availableStates = parsedFlows.states;
+  availableIndustries = parsedFlows.industries;
+  availableFlowTypes = parsedFlows.flowTypes;
+  parseStateCodes(payloads[1]);
+  parseImpactRows(payloads[2]);
+  parseSpecializations(payloads[3]);
+}
+
+function localStateTradePayloads() {
+  const localData = window.STATE_TRADE_LOCAL_DATA || null;
+  if (!localData) {
+    return null;
+  }
+  const payloads = [
+    localData.flowCsv,
+    localData.stateCodesCsv,
+    localData.impactCsv,
+    localData.specializationCsv
+  ];
+  return payloads.every(function (text) { return typeof text === "string" && text.length; })
+    ? payloads
+    : null;
 }
 
 function stateLabel(code) {
@@ -929,10 +1053,14 @@ function buildSankeyData(rows, selection) {
       target: row.destination_state,
       value: 0,
       level: 0,
+      price_adjusted_level: 0,
+      factor_impact: 0,
       employment_impact: 0
     };
     current.value += value;
     current.level += row.level;
+    current.price_adjusted_level += row.price_adjusted_level;
+    current.factor_impact += row.factor_impact;
     current.employment_impact += row.employment_impact;
     edgeMap.set(key, current);
   });
@@ -966,6 +1094,8 @@ function formatEdgeTooltip(data) {
     "<b>" + stateLabel(data.source) + " -> " + stateLabel(data.target) + "</b>",
     METRICS[activeSelection.metric].label + ": <b>" + fmtMetricValue(data.value, activeSelection.metric) + "</b>",
     "Trade Level: <b>" + fmtMetricValue(data.level, "level") + "</b>",
+    "Price-adjusted Level: <b>" + fmtMetricValue(data.price_adjusted_level, "price_adjusted_level") + "</b>",
+    "Factor Impact: <b>" + fmtMetricValue(data.factor_impact, "factor_impact") + "</b>",
     "Employment Impact: <b>" + fmtMetricValue(data.employment_impact, "employment_impact") + "</b>",
     "Industry: <b>" + industryLabel(activeSelection.industry) + "</b>"
   ].join("<br/>");
@@ -981,9 +1111,13 @@ function buildPartnerBreakdown(rows, selection) {
     const current = grouped.get(partner) || {
       partner: partner,
       level: 0,
+      price_adjusted_level: 0,
+      factor_impact: 0,
       employment_impact: 0
     };
     current.level += row.level;
+    current.price_adjusted_level += row.price_adjusted_level;
+    current.factor_impact += row.factor_impact;
     current.employment_impact += row.employment_impact;
     grouped.set(partner, current);
   });
@@ -1039,6 +1173,8 @@ function renderPartnerChart(rows) {
           "<b>" + stateLabel(source.partner) + "</b>",
           METRICS[activeSelection.metric].label + ": <b>" + fmtMetricValue(source[activeSelection.metric], activeSelection.metric) + "</b>",
           "Trade Level: <b>" + fmtMetricValue(source.level, "level") + "</b>",
+          "Price-adjusted Level: <b>" + fmtMetricValue(source.price_adjusted_level, "price_adjusted_level") + "</b>",
+          "Factor Impact: <b>" + fmtMetricValue(source.factor_impact, "factor_impact") + "</b>",
           "Employment Impact: <b>" + fmtMetricValue(source.employment_impact, "employment_impact") + "</b>"
         ].join("<br/>");
       }
@@ -1245,28 +1381,24 @@ function updateFromControls(writeHash) {
 }
 
 async function loadData() {
+  const bundledPayloads = localStateTradePayloads();
+  if (window.location.protocol === "file:" && bundledPayloads) {
+    applyStateTradePayloads(bundledPayloads, "Bundled state trade flow data is empty.");
+    return;
+  }
+
   const payloads = await Promise.all([
-    fetchTextWithFallback([dataLocalPath(TRADE_FLOW_FILE), dataRawPath(TRADE_FLOW_FILE)]),
-    fetchTextWithFallback([dataLocalPath(STATE_CODES_FILE), dataRawPath(STATE_CODES_FILE)]),
-    fetchTextWithFallback([dataLocalPath(IMPACT_FILE), dataRawPath(IMPACT_FILE)]),
-    fetchTextWithFallback([dataLocalPath(SPECIALIZATION_FILE), dataRawPath(SPECIALIZATION_FILE)])
+    fetchTextWithFallback(dataPathCandidates(TRADE_FLOW_FILE)),
+    fetchTextWithFallback(dataPathCandidates(STATE_CODES_FILE)),
+    fetchTextWithFallback(dataPathCandidates(IMPACT_FILE)),
+    fetchTextWithFallback(dataPathCandidates(SPECIALIZATION_FILE))
   ]);
 
-  if (payloads.some(function (text) { return !text; })) {
-    throw new Error("Missing state CSV input.");
+  if (payloads.some(function (text) { return !text; }) && bundledPayloads) {
+    applyStateTradePayloads(bundledPayloads, "Bundled state trade flow data is empty.");
+    return;
   }
-
-  const parsedFlows = parseTradeFlows(payloads[0]);
-  if (!parsedFlows.rows.length || !parsedFlows.states.length) {
-    throw new Error("State trade flow data is empty.");
-  }
-  aggregatedFlows = parsedFlows.rows;
-  availableStates = parsedFlows.states;
-  availableIndustries = parsedFlows.industries;
-  availableFlowTypes = parsedFlows.flowTypes;
-  parseStateCodes(payloads[1]);
-  parseImpactRows(payloads[2]);
-  parseSpecializations(payloads[3]);
+  applyStateTradePayloads(payloads, "State trade flow data is empty.");
 }
 
 stateSelect.addEventListener("change", function () {

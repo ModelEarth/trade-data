@@ -193,6 +193,24 @@
         .toolbar-select-wrap[hidden] {
             display: none;
         }
+        #clear-filters-btn {
+            padding: 6px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #22314c;
+            background: #fff;
+            cursor: pointer;
+            transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+        }
+        #clear-filters-btn:hover {
+            background: #f1f5fb;
+            border-color: #94a3b8;
+        }
+        #clear-filters-btn:active {
+            background: #e2e8f0;
+        }
         #industry-bar-note {
             flex: 1 1 100%;
             font-size: 11px;
@@ -459,7 +477,6 @@
     </div>
 
     <div class="industry-bar">
-        <div class="industry-bar-title">Trade View</div>
         <div class="industry-bar-controls">
             <label class="toolbar-select-wrap" for="view-mode-select">
                 <span>View</span>
@@ -495,6 +512,7 @@
                     <option value="ALL">All industries</option>
                 </select>
             </label>
+            <button type="button" id="clear-filters-btn" title="Reset filters and clear stored selections">Clear</button>
         </div>
         <div id="industry-bar-note">State fill scales with partner activity for the selected state. Switch to By industry to isolate one sector, and use the partner list to hide specific inbound or outbound links.</div>
     </div>
@@ -566,7 +584,7 @@ const appState = {
     stateCodes: [],
     industries: [],
     visiblePartners: new Set(),
-    selectedState: "CA",
+    selectedState: "CO",
     direction: "both",
     metric: "level",
     viewMode: "all",
@@ -639,6 +657,142 @@ function stateLabel(code) {
 
 function metricDef() {
     return METRICS[appState.metric] || METRICS.level;
+}
+
+const FILTER_STORAGE_KEY = "stateTradeMap.filters";
+const FILTER_DEFAULTS = {
+    state: "CO",
+    direction: "both",
+    metric: "level",
+    view: "all",
+    industry: ALL_INDUSTRY_VALUE
+};
+const FILTER_KEYS = Object.keys(FILTER_DEFAULTS);
+const VALID_DIRECTIONS = new Set(["both", "outbound", "inbound"]);
+const VALID_VIEW_MODES = new Set(["all", "industry"]);
+
+function readFilterCache() {
+    try {
+        const raw = localStorage.getItem(FILTER_STORAGE_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (error) {
+        return {};
+    }
+}
+
+function writeFilterCache(filters) {
+    const cleaned = {};
+    FILTER_KEYS.forEach(function (key) {
+        if (filters[key] && filters[key] !== FILTER_DEFAULTS[key]) {
+            cleaned[key] = filters[key];
+        }
+    });
+    try {
+        if (Object.keys(cleaned).length === 0) {
+            localStorage.removeItem(FILTER_STORAGE_KEY);
+        } else {
+            localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(cleaned));
+        }
+    } catch (error) {
+        // localStorage unavailable; ignore
+    }
+}
+
+function clearFilterCache() {
+    try { localStorage.removeItem(FILTER_STORAGE_KEY); } catch (error) {}
+}
+
+function currentFilters() {
+    return {
+        state: appState.selectedState,
+        direction: appState.direction,
+        metric: appState.metric,
+        view: appState.viewMode,
+        industry: appState.selectedIndustry
+    };
+}
+
+function validateFilterValue(key, value) {
+    if (value == null || value === "") return null;
+    if (key === "state") {
+        const code = normalizeCode(value);
+        if (appState.stateNames.size && !appState.stateNames.has(code)) return null;
+        return code;
+    }
+    if (key === "direction") return VALID_DIRECTIONS.has(value) ? value : null;
+    if (key === "metric") return Object.prototype.hasOwnProperty.call(METRICS, value) ? value : null;
+    if (key === "view") return VALID_VIEW_MODES.has(value) ? value : null;
+    if (key === "industry") {
+        if (value === ALL_INDUSTRY_VALUE) return value;
+        const code = normalizeCode(value);
+        if (appState.industries.length && appState.industries.indexOf(code) === -1) return null;
+        return code;
+    }
+    return null;
+}
+
+function applyFilters(filters) {
+    const validated = {};
+    FILTER_KEYS.forEach(function (key) {
+        const value = validateFilterValue(key, filters[key]);
+        validated[key] = value || FILTER_DEFAULTS[key];
+    });
+    appState.selectedState = validated.state;
+    appState.direction = validated.direction;
+    appState.metric = validated.metric;
+    appState.viewMode = validated.view;
+    appState.selectedIndustry = validated.view === "industry" ? validated.industry : ALL_INDUSTRY_VALUE;
+}
+
+function pushFiltersToHash() {
+    if (typeof updateHash !== "function") return;
+    const filters = currentFilters();
+    const update = {};
+    const remove = [];
+    FILTER_KEYS.forEach(function (key) {
+        if (filters[key] && filters[key] !== FILTER_DEFAULTS[key]) {
+            update[key] = filters[key];
+        } else {
+            remove.push(key);
+        }
+    });
+    updateHash(update, true, remove);
+}
+
+function persistFilters() {
+    writeFilterCache(currentFilters());
+    pushFiltersToHash();
+}
+
+function clearAllFilters() {
+    clearFilterCache();
+    applyFilters({});
+    appState.visiblePartners = new Set();
+    pushFiltersToHash();
+    renderAll();
+}
+
+function handleExternalHashChange() {
+    if (typeof getHash !== "function") return;
+    const hash = getHash();
+    const hasAnyFilterKey = FILTER_KEYS.some(function (key) {
+        return Object.prototype.hasOwnProperty.call(hash, key) && hash[key];
+    });
+    if (!hasAnyFilterKey) {
+        clearFilterCache();
+        applyFilters({});
+    } else {
+        const next = {};
+        FILTER_KEYS.forEach(function (key) {
+            if (hash[key]) next[key] = hash[key];
+        });
+        applyFilters(next);
+        writeFilterCache(currentFilters());
+    }
+    appState.visiblePartners = new Set();
+    if (typeof renderAll === "function") renderAll();
 }
 
 function uniquePreserveOrder(values) {
@@ -817,7 +971,7 @@ function summarizeRows(rows) {
 const map = L.map("map", {
     scrollWheelZoom: false,
     zoomSnap: 1,
-    minZoom: 3,
+    minZoom: DEFAULT_MAP_ZOOM,
     worldCopyJump: false,
     maxBoundsViscosity: 1.0
 }).setView(INITIAL_MAP_CENTER, DEFAULT_MAP_ZOOM);
@@ -1116,6 +1270,7 @@ function renderPartnerFilters(summary) {
         label.addEventListener("dblclick", function () {
             appState.selectedState = code;
             appState.visiblePartners = new Set();
+            persistFilters();
             syncControls();
             renderAll();
         });
@@ -1194,6 +1349,7 @@ function renderPartnerChart(summary) {
         if (!partner) return;
         appState.selectedState = partner.code;
         appState.visiblePartners = new Set();
+        persistFilters();
         syncControls();
         renderAll();
     });
@@ -1406,6 +1562,7 @@ function buildStateMap(topoData) {
             layer.on("click", function () {
                 appState.selectedState = code;
                 appState.visiblePartners = new Set();
+                persistFilters();
                 renderAll();
             });
             layer.on("mouseover", function (event) {
@@ -1438,9 +1595,9 @@ function buildStateMap(topoData) {
     }).addTo(stateFillLayer);
 
     g.raise();
-    const usBounds = stateGeoJsonLayer.getBounds().pad(0.06);
-    map.setMaxBounds(usBounds);
-    map.fitBounds(usBounds, { padding: [12, 12] });
+    const contiguousBounds = L.latLngBounds([24.396308, -125.0], [49.384358, -66.93457]).pad(0.1);
+    map.setMaxBounds(contiguousBounds);
+    map.setView(INITIAL_MAP_CENTER, DEFAULT_MAP_ZOOM);
 }
 
 map.on("zoomend moveend", function () {
@@ -1466,17 +1623,20 @@ tooltip.addEventListener("mouseleave", function (event) {
 stateSelect.addEventListener("change", function () {
     appState.selectedState = this.value;
     appState.visiblePartners = new Set();
+    persistFilters();
     renderAll();
 });
 
 metricSelect.addEventListener("change", function () {
     appState.metric = this.value;
+    persistFilters();
     renderAll();
 });
 
 directionSelect.addEventListener("change", function () {
     appState.direction = this.value;
     appState.visiblePartners = new Set();
+    persistFilters();
     renderAll();
 });
 
@@ -1486,14 +1646,18 @@ viewModeSelect.addEventListener("change", function () {
         appState.selectedIndustry = ALL_INDUSTRY_VALUE;
     }
     appState.visiblePartners = new Set();
+    persistFilters();
     renderAll();
 });
 
 industrySelect.addEventListener("change", function () {
     appState.selectedIndustry = this.value;
     appState.visiblePartners = new Set();
+    persistFilters();
     renderAll();
 });
+
+document.getElementById("clear-filters-btn").addEventListener("click", clearAllFilters);
 
 window.addEventListener("resize", function () {
     partnerChart.resize();
@@ -1533,6 +1697,16 @@ async function init() {
         parseTradeRows(flowResult.text);
         appState.topoData = topoData;
 
+        const cache = readFilterCache();
+        const initialHash = typeof getHash === "function" ? getHash() : {};
+        const hashHasFilterKey = FILTER_KEYS.some(function (key) {
+            return Object.prototype.hasOwnProperty.call(initialHash, key) && initialHash[key];
+        });
+        const source = hashHasFilterKey ? initialHash : cache;
+        const merged = {};
+        FILTER_KEYS.forEach(function (key) { merged[key] = source[key]; });
+        applyFilters(merged);
+
         if (!appState.stateNames.has(appState.selectedState) && appState.stateCodes.length) {
             appState.selectedState = appState.stateCodes[0];
         }
@@ -1540,6 +1714,14 @@ async function init() {
         renderStateOptions();
         renderIndustryOptions();
         buildStateMap(topoData);
+
+        if (hashHasFilterKey) {
+            writeFilterCache(currentFilters());
+        }
+        pushFiltersToHash();
+
+        document.addEventListener("hashChangeEvent", handleExternalHashChange);
+
         renderAll();
     } catch (error) {
         console.error(error);

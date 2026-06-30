@@ -1,785 +1,3372 @@
-<!DOCTYPE html>
-<html lang="en-us">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Worldwide Trade Impact And Resource Dashboard</title>
-<script>
-(function () {
-  const hostname = window.location.hostname || "";
-  const isFile = window.location.protocol === "file:";
-  const normalizedPath = (window.location.pathname || "").replace(/\\/g, "/");
-  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
-  const isGitHubPages = /\.github\.io$/i.test(hostname);
-  const firstPathSegment = normalizedPath.split("/").filter(Boolean)[0] || "";
-  const isTradeDataMirror = /\/trade-data\//i.test(normalizedPath) || firstPathSegment.toLowerCase() === "trade-data";
-  const repoRootMarkers = {
-    "": true,
-    "index.html": true,
-    "bea-dashboard": true,
-    "year": true,
-    "concordance": true,
-    "scripts": true,
-    "chart.js": true,
-    "sankey-data.js": true,
-    "trade-resource-data.js": true
-  };
-  const inferredPagesOwner = isGitHubPages
-    ? hostname.replace(/\.github\.io$/i, "")
-    : "";
-  const inferredPagesRepo = isGitHubPages
-    ? (repoRootMarkers[firstPathSegment.toLowerCase()] || /\.[a-z0-9]+$/i.test(firstPathSegment)
-      ? (inferredPagesOwner + ".github.io")
-      : firstPathSegment)
-    : "";
-  const localsiteBase = (isFile || isLocalhost || (isTradeDataMirror && !isGitHubPages))
-    ? "../localsite"
-    : "https://cdn.jsdelivr.net/gh/ModelEarth/localsite@main";
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">  
+    <title>Trade Flow Map</title>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  window.TRADE_LOCALSITE_BASE = localsiteBase;
-  window.TRADE_GITHUB_FALLBACK = window.TRADE_GITHUB_FALLBACK || {
-    owner: inferredPagesOwner || "savar25",
-    name: inferredPagesRepo || "trade-data",
-    branch: "main"
-  };
+    <script>
+    (function () {
+        const hostname = window.location.hostname || "";
+        const isFile = window.location.protocol === "file:";
+        const normalizedPath = (window.location.pathname || "").replace(/\\/g, "/");
+        const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
+        const isGitHubPages = /\.github\.io$/i.test(hostname);
+        const firstPathSegment = normalizedPath.split("/").filter(Boolean)[0] || "";
+        const isLocalsiteProfileMirror = /\/localsite\/profile\//i.test(normalizedPath);
+        const servesLocalsiteAtRoot = isLocalhost || firstPathSegment.toLowerCase() === "localsite" || !isGitHubPages;
+        const localsiteBase = isFile
+            ? (isLocalsiteProfileMirror ? "../../.." : "../../../localsite")
+            : (servesLocalsiteAtRoot ? "/localsite" : "https://cdn.jsdelivr.net/gh/ModelEarth/localsite@main");
+        const stateMapUrl = "state.html";
 
-  document.write('<link type="text/css" rel="stylesheet" href="' + localsiteBase + '/css/base.css" />');
-  document.write('<script type="text/javascript" src="' + localsiteBase + '/js/localsite.js?showheader=true&showsearch=true&showfilters=true"><\/script>');
-})();
-</script>
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  crossorigin=""
->
-<style>
-  body {
-    background: #fafbfc;
-  }
-  .content.contentpadding {
-    max-width: 1480px;
-  }
-  .sankey-page-header {
-    margin: 1em 0 0.4em;
-  }
-  .sankey-page-header h2 {
-    margin: 0 0 0.2em;
-    font-size: 1.7em;
-  }
-  .sankey-page-header p {
-    margin: 0;
-    color: #555;
-    font-size: 0.96em;
-    line-height: 1.6;
-    max-width: 980px;
-  }
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75em;
-    margin: 0.9em 0 1.1em;
-  }
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.2em;
-    padding: 0.35em 0.9em;
-    border: 1px solid #d7dee8;
-    border-radius: 999px;
-    background: #f4f7fb;
-    color: #36506c;
-    font-size: 0.92em;
-    font-weight: 600;
-  }
-  #sankey-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.2em;
-    align-items: end;
-    padding: 0.9em 1em;
-    background: #f4f6f8;
-    border: 1px solid #dde1e7;
-    border-radius: 6px;
-    margin-bottom: 0.75em;
-  }
-  #sankey-controls .control {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35em;
-    min-width: 170px;
-  }
-  #sankey-controls label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #556070;
-  }
-  #sankey-controls select {
-    padding: 0.45em 0.65em;
-    font-size: 0.94em;
-    border: 1px solid #cfd6df;
-    border-radius: 4px;
-    background: #fff;
-    color: #223242;
-  }
-  #sankey-controls input[type=range] {
-    width: 140px;
-    cursor: pointer;
-  }
-  #topn-label {
-    min-width: 2.2em;
-    color: #223242;
-    font-size: 0.94em;
-    font-weight: 700;
-    text-align: right;
-  }
-  #status-text {
-    font-size: 0.9em;
-    color: #5c6775;
-    font-style: italic;
-    margin: 0 0 0.85em;
-    min-height: 1.4em;
-  }
-  #chart-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1em;
-  }
-  .panel {
-    display: flex;
-    flex-direction: column;
-    min-height: 570px;
-    padding: 1em;
-    background: #fff;
-    border: 1px solid #e3e8ee;
-    border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
-  }
-  .panel[data-panel="5"] {
-    grid-column: 1 / -1;
-    min-height: 660px;
-  }
-  .panel[data-panel="5"] .chart-wrap {
-    min-height: 520px;
-  }
-  .panel[data-panel="6"] {
-    grid-column: 1 / -1;
-    min-height: 680px;
-  }
-  .panel[data-panel="6"] .chart-wrap {
-    min-height: 520px;
-  }
-  .panel-head {
-    display: flex;
-    justify-content: space-between;
-    gap: 1em;
-    align-items: flex-start;
-    margin-bottom: 0.9em;
-  }
-  .panel-copy h2 {
-    margin: 0 0 0.3em;
-    font-size: 1.08em;
-    color: #243447;
-  }
-  .panel-copy p {
-    margin: 0;
-    color: #677382;
-    font-size: 0.9em;
-    line-height: 1.5;
-  }
-  .panel-head .control {
-    min-width: 180px;
-  }
-  .panel-head .control label {
-    display: block;
-    margin-bottom: 0.35em;
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #5a6676;
-  }
-  .panel-head .control select {
-    width: 100%;
-    padding: 0.42em 0.6em;
-    font-size: 0.92em;
-    border: 1px solid #cfd6df;
-    border-radius: 4px;
-    background: #fff;
-  }
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75em;
-    margin-bottom: 0.85em;
-  }
-  .stat {
-    min-height: 4.6em;
-    padding: 0.75em 0.85em;
-    border: 1px solid #e4e8ee;
-    border-radius: 6px;
-    background: #f8fafc;
-  }
-  .stat .label {
-    display: block;
-    margin-bottom: 0.35em;
-    color: #6b7786;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .stat .value {
-    display: block;
-    color: #223242;
-    font-size: 0.97rem;
-    font-weight: 700;
-    line-height: 1.35;
-  }
-  .chart-wrap {
-    position: relative;
-    flex: 1;
-    min-height: 430px;
-    overflow: hidden;
-    border: 1px solid #e5e9ef;
-    border-radius: 6px;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 252, 0.98)),
-      repeating-linear-gradient(
-        0deg,
-        rgba(35, 52, 71, 0.03),
-        rgba(35, 52, 71, 0.03) 1px,
-        transparent 1px,
-        transparent 28px
-      );
-  }
-  .chart-wrap svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  .map-host {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .map-host .leaflet-container {
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
-    font: inherit;
-    background:
-      radial-gradient(circle at top, rgba(223, 239, 250, 0.8), rgba(234, 243, 248, 0.65) 45%, rgba(248, 250, 252, 0.95) 100%);
-  }
-  .map-host .leaflet-control-attribution {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(4px);
-  }
-  .map-host .leaflet-control-zoom a {
-    color: #223242;
-    font-weight: 700;
-  }
-  .map-host .leaflet-partner-tooltip {
-    padding: 0.45em 0.6em;
-    border: 1px solid rgba(35, 50, 66, 0.16);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
-    color: #223242;
-    font-size: 0.84rem;
-    font-weight: 700;
-  }
-  .map-host .leaflet-partner-label {
-    padding: 0.18em 0.38em;
-    border: 1px solid rgba(208, 219, 230, 0.94);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
-    color: #17324d;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
-  }
-  .map-host .leaflet-partner-label:before,
-  .map-host .leaflet-partner-tooltip:before {
-    display: none;
-  }
-  .map-host .leaflet-partner-popup .leaflet-popup-content-wrapper {
-    border-radius: 12px;
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
-  }
-  .map-host .leaflet-partner-popup .leaflet-popup-content {
-    margin: 0;
-    min-width: 230px;
-  }
-  .map-popup {
-    padding: 0.9em 1em;
-  }
-  .map-popup h3 {
-    margin: 0 0 0.7em;
-    color: #223242;
-    font-size: 0.98rem;
-    font-weight: 800;
-  }
-  .map-popup dl {
-    display: grid;
-    grid-template-columns: minmax(84px, auto) 1fr;
-    gap: 0.45em 0.75em;
-    margin: 0;
-  }
-  .map-popup dt {
-    color: #677382;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .map-popup dd {
-    margin: 0;
-    color: #223242;
-    font-size: 0.86rem;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-  .leaflet-map-legend {
-    padding: 0.7em 0.8em;
-    border: 1px solid rgba(35, 50, 66, 0.12);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
-    color: #223242;
-    line-height: 1.45;
-    backdrop-filter: blur(6px);
-  }
-  .leaflet-map-legend strong {
-    display: block;
-    margin-bottom: 0.25em;
-    font-size: 0.74rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #516071;
-  }
-  .leaflet-map-legend span {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 600;
-  }
-  .tooltip {
-    position: fixed;
-    z-index: 1000;
-    width: min(320px, calc(100vw - 24px));
-    padding: 0.85em 0.95em;
-    border: 1px solid rgba(35, 52, 71, 0.16);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
-    backdrop-filter: blur(6px);
-    pointer-events: none;
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.14s ease, transform 0.14s ease;
-  }
-  .tooltip.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .tooltip.is-click {
-    border-color: rgba(37, 99, 235, 0.2);
-    background: rgba(248, 251, 255, 0.99);
-  }
-  .tooltip-title {
-    margin: 0 0 0.65em;
-    font-size: 0.98rem;
-    font-weight: 800;
-    color: #223242;
-  }
-  .tooltip-body {
-    display: grid;
-    gap: 0.5em;
-  }
-  .tooltip-row {
-    display: grid;
-    grid-template-columns: 96px 1fr;
-    gap: 0.7em;
-    align-items: start;
-  }
-  .tooltip-key {
-    color: #677382;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .tooltip-value {
-    color: #223242;
-    font-size: 0.9rem;
-    font-weight: 600;
-    line-height: 1.35;
-    word-break: break-word;
-  }
-  .sankey-link {
-    cursor: pointer;
-    transition: filter 0.18s ease, stroke-width 0.18s ease;
-  }
-  .interactive-mark {
-    cursor: pointer;
-    transition: opacity 0.18s ease, stroke-opacity 0.18s ease, fill-opacity 0.18s ease;
-  }
-  .sankey-link:hover {
-    stroke-width: 4px;
-    filter: drop-shadow(0 0 4px rgba(37, 99, 235, 0.28));
-  }
-  .sankey-link.is-selected,
-  .bar-mark.is-selected {
-    filter: drop-shadow(0 0 7px rgba(37, 99, 235, 0.2));
-  }
-  .sankey-node {
-    transition: opacity 0.18s ease;
-  }
-  .sankey-node:hover {
-    opacity: 0.96;
-  }
-  .node-label {
-    font-size: 12px;
-    fill: #243040;
-    font-weight: 700;
-    dominant-baseline: middle;
-  }
-  .node-value {
-    font-size: 11px;
-    fill: #5f6977;
-    dominant-baseline: middle;
-  }
-  .bar-grid-line {
-    stroke: rgba(35, 52, 71, 0.08);
-    stroke-dasharray: 4 6;
-  }
-  .bar-grid-text {
-    fill: #7a8390;
-    font-size: 11px;
-  }
-  .bar-label {
-    fill: #243040;
-    font-size: 12px;
-    font-weight: 700;
-    dominant-baseline: middle;
-  }
-  .bar-value {
-    fill: #5f6977;
-    font-size: 11px;
-    font-weight: 700;
-    dominant-baseline: middle;
-  }
-  .bar-hint {
-    fill: #7a8390;
-    font-size: 10px;
-    dominant-baseline: middle;
-  }
-  #sankey-attribution {
-    margin-top: 1em;
-    padding-top: 0.75em;
-    border-top: 1px solid #dde1e7;
-    font-size: 0.85em;
-    color: #666;
-    line-height: 1.8;
-  }
-  #sankey-attribution a {
-    color: #2563eb;
-    text-decoration: none;
-  }
-  #sankey-attribution a:hover {
-    text-decoration: underline;
-  }
-  @media (max-width: 1180px) {
-    #chart-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 760px) {
-    #sankey-controls,
-    .panel-head {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    #sankey-controls .control,
-    .panel-head .control {
-      min-width: 100%;
-    }
-    .stats {
-      grid-template-columns: 1fr;
-    }
-    .panel {
-      min-height: 520px;
-    }
-  }
-</style>
+        window.TRADE_MAP_LOCALSITE_BASE = localsiteBase;
+        window.TRADE_MAP_STATE_MAP_URL = stateMapUrl;
+
+        document.write('<link type="text/css" rel="stylesheet" href="' + localsiteBase + '/css/base.css" />');
+        document.write('<script type="text/javascript" src="' + localsiteBase + '/js/localsite.js?showheader=true&showsearch=true"><\/script>');
+    })();
+    </script>
+    <script>
+    window.addEventListener("load", function() {
+        // localsite.js sets theroot incorrectly when loaded from jsDelivr CDN
+        // (strips the /gh/ModelEarth/localsite@main path). Fix it using the
+        // base URL we already computed correctly in TRADE_MAP_LOCALSITE_BASE.
+        if (typeof theroot !== "undefined" &&
+            theroot.indexOf("cdn.jsdelivr.net") !== -1 &&
+            theroot.indexOf("/gh/") === -1 &&
+            window.TRADE_MAP_LOCALSITE_BASE) {
+            theroot = window.TRADE_MAP_LOCALSITE_BASE + "/";
+        }
+        if (typeof loadMarkdown === "function") {
+            loadMarkdown("README.md", "readmeDiv", "_parent");
+        }
+    });
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- the id uses v5 to prevent dual loading by localsite.js -->
+    <script src="https://d3js.org/d3.v7.min.js" id="localsite/js/d3.v5.min.js"></script>
+    <script>
+    document.write('<script src="' + window.TRADE_MAP_LOCALSITE_BASE + '/js/trade.js"><\/script>');
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <style>
+        body { margin: 0; font-family: sans-serif; }
+
+        #map {
+            position: relative;
+            height: calc(100vh - var(--shared-controls-height));
+            width: 100%;
+        }
+
+        :root {
+            --shared-controls-height: 0px;
+            --imports-base: #2563eb;
+            --exports-base: #dd6b20;
+        }
+
+        /* Smooth opacity/stroke transitions on all arrows */
+        .arrow {
+            fill: none;
+            stroke-linecap: round;
+            pointer-events: all;
+            cursor: pointer !important;
+            transition: opacity 0.18s ease, stroke-width 0.18s ease, filter 0.18s ease, stroke-dashoffset 0.26s ease;
+            will-change: opacity, stroke-width, filter;
+        }
+        .leaflet-pane > svg path.arrow,
+        .leaflet-pane > svg path.arrow-hit {
+            pointer-events: stroke !important;
+        }
+        .arrow-hit {
+            fill: none;
+            stroke: #000;
+            stroke-opacity: 0.001;
+            stroke-linecap: round;
+            pointer-events: stroke;
+            cursor: pointer !important;
+        }
+        .arrow.is-active {
+            filter: drop-shadow(0 0 7px rgba(255,255,255,0.9)) drop-shadow(0 0 14px rgba(0,0,0,0.28));
+        }
+
+        .control-panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            z-index: 1000;
+            min-width: 200px;
+            max-width: 280px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        /* Page config gear button + panel — pattern reused from model.earth/project's #showConfig */
+        #showConfig {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1003;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid #ccc;
+            border-radius: 999px;
+            background: white;
+            color: #333;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        #showConfig:hover,
+        #showConfig:focus-visible {
+            background: #f3f4f6;
+            outline: none;
+        }
+        #showConfig.active {
+            background: #e0e7ff;
+            border-color: #6366f1;
+        }
+        .page-config {
+            display: none;
+            position: absolute;
+            top: 56px;
+            right: 10px;
+            z-index: 1003;
+            min-width: 220px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid rgba(19, 42, 43, 0.12);
+            box-shadow: 0 16px 32px rgba(16, 35, 39, 0.18);
+            color: #222;
+            font-size: 0.92rem;
+        }
+        .page-config.active { display: block; }
+        .page-config-top {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .layout-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .layout-toggle-btn:hover { background: #f3f4f6; }
+        .layout-toggle-btn[aria-pressed="true"] {
+            background: #e0e7ff;
+            border-color: #6366f1;
+        }
+
+        /* Margins layout mode — adds breathing room around the map only,
+           not the rest of the page (shared controls, charts, README). */
+        #map-wrapper.map-margins {
+            padding: 24px;
+            box-sizing: border-box;
+            background: #eef1f5;
+        }
+        #map-wrapper.map-margins #map {
+            height: calc(100vh - var(--shared-controls-height) - 48px);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.18);
+        }
+        .industry-bar {
+            position: absolute;
+            top: 10px;
+            left: 312px;
+            right: 12px;
+            z-index: 1000;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 14px;
+            padding: 10px 12px;
+            border: 1px solid rgba(31, 41, 55, 0.12);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.96);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.14);
+            backdrop-filter: blur(8px);
+        }
+        .industry-bar-title {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #3b4b67;
+        }
+        .industry-bar-controls {
+            display: flex;
+            flex: 1 1 420px;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 14px;
+        }
+        .toolbar-select-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            margin: 0;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .toolbar-select-wrap span {
+            white-space: nowrap;
+        }
+        #view-mode-select,
+        #direction-select,
+        #country-select,
+        #industry-select,
+        #clear-filters-btn,
+        #state-map-link {
+            min-width: 170px;
+            max-width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #22314c;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        #clear-filters-btn,
+        #state-map-link {
+            min-width: auto;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #clear-filters-btn:hover,
+        #state-map-link:hover {
+            background: #f1f5fb;
+            border-color: #94a3b8;
+        }
+        .dark #clear-filters-btn,
+        .dark #state-map-link {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: #777;
+        }
+        #view-mode-select,
+        #direction-select {
+            min-width: 140px;
+        }
+        #industry-select {
+            min-width: 220px;
+        }
+        #view-mode-select:disabled,
+        #direction-select:disabled,
+        #country-select:disabled,
+        #industry-select:disabled {
+            color: #94a3b8;
+            background: #f8fafc;
+        }
+        .toolbar-select-wrap[hidden] {
+            display: none;
+        }
+        #industry-bar-note {
+            flex: 1 1 100%;
+            font-size: 11px;
+            line-height: 1.35;
+            color: #607086;
+        }
+        .control-panel h4 {
+            margin: 0 0 8px;
+            font-size: 13px;
+            color: #333;
+        }
+        #status-msg {
+            font-size: 11px;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 8px;
+            min-height: 1.4em;
+        }
+        #source-filters {
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+        #source-filters label {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+            padding: 7px 8px;
+            border: 1px solid rgba(31, 41, 55, 0.08);
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease, border-color 0.12s ease;
+        }
+        #source-filters label:hover {
+            background: #f7faff;
+            border-color: rgba(91, 124, 255, 0.2);
+            transform: translateX(1px);
+        }
+        #source-filters label.highlighted {
+            background: #e8f0ff;
+            box-shadow: inset 0 0 0 1px rgba(91, 124, 255, 0.35);
+            border-left: 3px solid var(--row-accent, #5b7cff);
+        }
+        #source-filters label input[type=checkbox] {
+            margin: 2px 0 0;
+            flex: 0 0 auto;
+            accent-color: var(--row-accent, #5b7cff);
+        }
+        .filter-swatch {
+            flex: 0 0 18px;
+            width: 18px;
+            height: 0;
+            margin-top: 1px;
+            border-top-width: 3px;
+            border-top-style: solid;
+            border-top-color: var(--row-accent, #5b7cff);
+            border-radius: 999px;
+            opacity: 0.95;
+        }
+        .filter-copy {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex: 1 1 auto;
+        }
+        .filter-topline {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .filter-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #23314d;
+            line-height: 1.2;
+            min-width: 0;
+        }
+        .filter-meta {
+            font-size: 11px;
+            color: #5b6577;
+            line-height: 1.35;
+        }
+
+        .label-text {
+            fill: #222;
+            font-size: 11px;
+            font-weight: bold;
+            paint-order: stroke;
+            stroke: white;
+            stroke-width: 2.5px;
+            pointer-events: none;
+        }
+        .label-path {
+            pointer-events: none;
+        }
+        .arrow-label {
+            pointer-events: none;
+        }
+        #map-legend {
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            background: white;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            z-index: 1000;
+            font-size: 11px;
+            color: #555;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        #legend-style {
+            margin-top: 3px;
+            max-width: 270px;
+            color: #6a7180;
+            line-height: 1.35;
+        }
+
+        /* Shared trade controls inside the map panel */
+        .control-panel #trade-shared-controls {
+            flex-direction: column;
+            gap: 5px;
+            padding: 6px 0 2px;
+            background: none;
+            border: none;
+            border-top: 1px solid #eee;
+            border-radius: 0;
+            margin-bottom: 4px;
+        }
+        .control-panel #trade-shared-controls label {
+            font-size: 12px;
+            gap: 5px;
+            color: #444;
+        }
+        .control-panel #trade-shared-controls select {
+            font-size: 12px;
+            padding: 2px 4px;
+            flex: 1;
+        }
+        .control-panel #trade-shared-controls input[type=range] {
+            width: 80px;
+        }
+        .control-panel #trade-topn-label {
+            min-width: 1.5em;
+        }
+        #zoom-toast {
+            position: absolute;
+            left: 50%;
+            bottom: 26px;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.88);
+            color: #fff;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            z-index: 1100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.22s ease;
+        }
+        #zoom-toast.visible {
+            opacity: 1;
+        }
+
+        #map-tooltip {
+            position: fixed;
+            pointer-events: auto;
+            background: rgba(20, 20, 20, 0.9);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+            z-index: 2000;
+            display: none;
+            max-width: 290px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        }
+        #map-tooltip .tt-direction {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        #map-tooltip .tt-co2 {
+            color: #adf;
+            font-weight: 700;
+        }
+        #map-tooltip .tt-muted {
+            color: rgba(255,255,255,0.78);
+        }
+        #map-tooltip .tt-subhead {
+            margin-top: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #f3d79f;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        #map-tooltip .tt-chip {
+            display: block;
+            margin-top: 2px;
+        }
+        #map-tooltip .tt-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #bfdbfe;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        #map-tooltip .tt-link:hover {
+            color: #dbeafe;
+            text-decoration: underline;
+        }
+        @media (max-width: 960px) {
+            .industry-bar {
+                top: 176px;
+                left: 10px;
+                right: 10px;
+            }
+        }
+
+        #partner-chart-panel {
+            margin-top: 1.5em;
+        }
+        #partner-chart-panel[hidden] {
+            display: none;
+        }
+        #partner-chart-header {
+            margin: 0 0 0.35em;
+            font-size: 1.1em;
+        }
+        #partner-chart-note {
+            margin: 0 0 0.75em;
+            font-size: 0.92em;
+        }
+        #partner-chart-status {
+            font-size: 0.88em;
+            font-style: italic;
+            margin: 0 0 0.5em;
+            min-height: 1.3em;
+        }
+        #partner-chart {
+            width: 100%;
+            height: 430px;
+            border: 1px solid #e8eaed;
+            border-radius: 4px;
+            background: #fff;
+        }
+
+        /* ---- Sankey section ---- */
+        #sankey-section {
+            padding: 1.5em 1em 2em;
+        }
+        #sankey-section h2 {
+            margin: 0 0 0.25em;
+        }
+        #sankey-only-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5em;
+            align-items: center;
+            padding: 0.6em 0 0;
+            border-top: 1px solid #eee;
+            margin-top: 0.5em;
+        }
+        #sankey-only-controls label {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            font-size: 0.93em;
+        }
+        #sankey-only-controls select {
+            padding: 0.25em 0.5em;
+            font-size: 0.93em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+        }
+        #sankey-status {
+            font-size: 0.88em;
+            font-style: italic;
+            margin: 0.5em 0;
+            min-height: 1.3em;
+        }
+        #sankey-chart {
+            width: 100%;
+            height: 720px;
+            box-sizing: border-box;
+            border: 1px solid #e8eaed;
+            border-radius: 6px;
+            background: #fff;
+        }
+        #sankey-partner-chart-panel { margin-top: 1.25em; }
+        #sankey-partner-chart-panel[hidden] { display: none; }
+        #sankey-partner-chart-header { margin: 0 0 0.35em; font-size: 1.1em; }
+        #sankey-partner-chart-note { margin: 0 0 0.75em; font-size: 0.92em; }
+        #sankey-partner-chart-status {
+            font-size: 0.88em; font-style: italic; margin: 0 0 0.5em; min-height: 1.3em;
+        }
+        #sankey-partner-chart {
+            width: 100%; height: 430px;
+            border: 1px solid #e8eaed; border-radius: 4px; background: #fff;
+        }
+        #sankey-about-wrap { margin-top: 1em; }
+        #sankey-score-help-panel {
+            position: relative; padding: 0.85em 2.5em 0.85em 1em;
+            border: 1px solid #dde1e7; border-radius: 6px;
+            font-size: 0.92em; line-height: 1.55;
+        }
+        #sankey-score-help-panel[hidden] { display: none; }
+        #sankey-score-help-panel p { margin: 0 0 0.45em; }
+        #sankey-score-help-close {
+            position: absolute; top: 8px; right: 8px;
+            width: 26px; height: 26px; border-radius: 50%;
+            border: 2px solid #ccc; background: transparent;
+            font-size: 22px; line-height: 1; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #sankey-score-help-button[hidden] { display: none; }
+        #sankey-attribution a { color: #2563eb; text-decoration: none; }
+        #sankey-attribution a:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
-<div class="content contentpadding">
+    <div id="trade-shared-controls" style="padding-left:16px"></div>
+    <div id="map-wrapper" style="position:relative">
+        <div id="map">
+            <div id="map-legend">
+                <span id="legend-metric">Arrow thickness = CO&#x2082; Emissions &middot; </span><span id="legend-dir">exporter &rarr; importer</span>
+                <div id="legend-style">Color blends flow direction with the dominant trade type. Most arrows stay solid, with only service-heavy flows lightly dashed.</div>
+            </div>
+        </div>
 
-  <div class="sankey-page-header">
-    <h2>Worldwide Trade Impact And Resource Dashboard</h2>
-    <p>
-      Compare trade impact pathways, resource profiles, and import/export partner scores using the same country, year, and flow controls across the dashboard.
-      Data is loaded from repository-hosted trade-data assets and aligned with the Sankey page layout.
+        <div class="industry-bar">
+            <div class="industry-bar-title">Trade View</div>
+            <div class="industry-bar-controls">
+                <label class="toolbar-select-wrap" for="view-mode-select">
+                    <span>View</span>
+                    <select id="view-mode-select">
+                        <option value="all">All trade</option>
+                        <option value="industry">By industry</option>
+                    </select>
+                </label>
+                <label class="toolbar-select-wrap" for="country-select">
+                    <span id="country-label-text">Importing country</span>
+                    <select id="country-select">
+                        <option value="US">United States (US)</option>
+                        <option value="CN">China (CN)</option>
+                        <option value="DE">Germany (DE)</option>
+                        <option value="IN">India (IN)</option>
+                        <option value="RU">Russia (RU)</option>
+                    </select>
+                </label>
+                <label class="toolbar-select-wrap" for="direction-select">
+                    <span>Direction</span>
+                    <select id="direction-select"></select>
+                </label>
+                <label class="toolbar-select-wrap" for="industry-select" id="industry-select-wrap" hidden>
+                    <span>Industry</span>
+                    <select id="industry-select" disabled>
+                        <option value="ALL">All exporting industries</option>
+                    </select>
+                </label>
+                <a id="state-map-link" href="state.html" hidden>State map</a>
+                <button type="button" id="clear-filters-btn" title="Reset filters and clear stored selections">Clear</button>
+            </div>
+            <div id="industry-bar-note">Use By industry to isolate one exporting industry between countries. In that mode, color and arrowhead shape show direction, width shows quantity traded, and most lines stay solid for readability.</div>
+        </div>
+
+        <div class="control-panel">
+            <h4>Visible Partners</h4>
+            <div id="status-msg">Loading&hellip;</div>
+            <div id="source-filters"></div>
+        </div>
+
+        <button type="button" id="showConfig" aria-expanded="false" aria-controls="pageConfig" title="Page settings">&#9881;</button>
+        <div id="pageConfig" class="page-config" aria-label="Page configuration">
+            <div class="page-config-top">Page Config</div>
+            <div class="page-config-section">
+                <button type="button" id="marginsToggleBtn" class="layout-toggle-btn" aria-pressed="false">
+                    <span id="marginsToggleText">No Margins</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="zoom-toast" aria-live="polite"></div>
+        <div id="map-tooltip"></div>
+    </div>
+
+<div class="content contentpadding large-list">
+  <div id="partner-chart-panel" hidden>
+    <h3 id="partner-chart-header">Top Partner Countries</h3>
+    <p id="partner-chart-note">
+      Top 10 partner countries for the selected import/export view, showing the selected indicator alongside amount spent.
     </p>
+    <div id="partner-chart-status"></div>
+    <div id="partner-chart"></div>
   </div>
+  <!-- Sankey Chart Section — above README, wired to shared trade:change events -->
+  <div id="sankey-section" class="content contentpadding" style="padding-left:0;padding-right:0;">
+    <h2>Exiobase Industry Trade Flow Sankey</h2>
+    <p>
+      Global industry-to-industry embodied environmental factors from our
+      <a href="https://model.earth/exiobase/tradeflow/">trade flow csv files</a>.
+      Use the Year / Factor / Currency / Inflows controls in the map panel above to filter both charts together.
+    </p>
 
-  <div class="hero-meta">
-    <span id="selection-pill" class="pill">Selection: --</span>
-  </div>
-
-  <div id="sankey-controls" aria-label="Dataset controls">
-    <div class="control">
-      <label for="country-select">Country</label>
-      <select id="country-select"></select>
-    </div>
-    <div id="other-country-control" class="control" hidden>
-      <label for="other-country" id="other-country-label">From</label>
-      <select id="other-country">
-        <option value="">All</option>
-      </select>
-    </div>
-    <div class="control">
-      <label for="year-select">Year</label>
-      <select id="year-select"></select>
-    </div>
-    <div class="control">
-      <label for="flow-select">Flow</label>
-      <select id="flow-select">
-        <option value="domestic">Domestic</option>
-        <option value="imports">Imports</option>
-        <option value="exports">Exports</option>
-      </select>
-    </div>
-    <div class="control">
-      <label for="metric-select">Indicator</label>
-      <select id="metric-select"></select>
-    </div>
-    <div id="currency-control" class="control">
-      <label for="currency-select">Currency</label>
-      <select id="currency-select"></select>
-    </div>
-    <div class="control">
-      <label for="industry-label-select">Industry Labels</label>
-      <select id="industry-label-select">
-        <option value="title">Title</option>
-        <option value="short">Short name</option>
-        <option value="verbose">Complete verbose name</option>
-      </select>
-    </div>
-    <div class="control">
-      <label for="topn-slider">Inflows</label>
-      <div>
-        <input type="range" id="topn-slider" min="5" max="50" step="1" value="5">
-        <span id="topn-label">5</span>
+    <div style="background:#f5f7fa;border-radius:6px;padding:10px 14px;margin-bottom:10px;">
+      <div id="sankey-only-controls">
+        <label>
+          Country:
+          <select id="sankey-country-select"></select>
+        </label>
+        <label id="sankey-other-country-wrap" hidden>
+          <span id="sankey-other-country-label">From:</span>
+          <select id="sankey-other-country">
+            <option value="">All</option>
+          </select>
+        </label>
+        <label>
+          Flow:
+          <select id="sankey-flow-select"></select>
+        </label>
+        <label>
+          Industry labels:
+          <select id="sankey-industry-label-select">
+            <option value="title">Title</option>
+            <option value="short">Short name</option>
+            <option value="verbose">Complete verbose name</option>
+          </select>
+        </label>
       </div>
     </div>
-  </div>
 
-  <div id="status-text">Preparing dashboard...</div>
-  <div id="chart-grid" aria-label="Trade dashboard panels"></div>
+    <div id="sankey-status">Loading data&hellip;</div>
+    <div id="sankey-chart"></div>
 
-  <div id="sankey-attribution">
-    <strong>Data source:</strong>
-    <a href="https://github.com/savar25/trade-data" target="_blank" rel="noopener">savar25/trade-data</a>
-    &middot; impact data loaded directly from <code>year/[year]/[country]/[flow]/trade_impact.csv</code>
-    &middot; dataset inventory discovered from repo <code>year/.../trade_impact.csv</code> paths
-    &middot; industry labels from <code>year/[year]/industry.csv</code>
-    &middot; panel rendering shared with <a href="./bea-dashboard/sankey.html">bea-dashboard/sankey.html</a>
-  </div>
+    <div id="sankey-partner-chart-panel" hidden>
+      <h3 id="sankey-partner-chart-header">Top Partner Countries</h3>
+      <p id="sankey-partner-chart-note">
+        Top 10 partner countries for the selected import/export view, showing the selected indicator alongside amount spent.
+      </p>
+      <div id="sankey-partner-chart-status"></div>
+      <div id="sankey-partner-chart"></div>
+    </div>
 
+    <div id="sankey-about-wrap">
+      <button id="sankey-score-help-button" type="button">About Chart</button>
+      <div id="sankey-score-help-panel" hidden>
+        <button id="sankey-score-help-close" aria-label="Close">&times;</button>
+        <p id="sankey-attribution">
+          <strong>Data source:</strong>
+          <a href="https://model.earth/exiobase/tradeflow/">Trade flow data pull</a> from
+          <a href="https://exiobase.eu">EXIOBASE 3</a>
+          (multi-regional input-output database, 44 countries, 163 sectors)<br>
+          Industry labels from <code>trade-data/year/[year]/industry.csv</code><br>
+          Currency rates from <code>trade-data/concordance/eur_annual_rates.csv</code><br>
+          Trade-data CSV: <code id="sankey-csv-path-label">trade-data/year/.../trade_impact.csv</code>
+        </p>
+        <div>
+          <p><strong>How the partner-country score works:</strong> the score ranks import/export partner countries from best to worst on a 0 to 100 scale.</p>
+          <p><strong>Amount Spent:</strong> score = 100 x partner trade value / largest partner trade value.</p>
+          <p><strong>CO&#x2082; Emissions and Water Use:</strong> score = 100 x (0.6 x trade strength + 0.4 x lower impact per amount-spent efficiency).</p>
+          <p><strong>Employment:</strong> score = 100 x (0.6 x trade strength + 0.4 x higher jobs per amount-spent efficiency).</p>
+        </div>
+      </div>
+    </div>
+  </div><!-- end #sankey-section -->
+
+  <div id="readmeDiv"></div>
 </div>
 
-<div id="hover-tooltip" class="tooltip" aria-hidden="true"></div>
-<div id="click-tooltip" class="tooltip is-click" aria-hidden="true"></div>
-
 <script>
-(function () {
-  const repo = window.TRADE_GITHUB_FALLBACK || {
-    owner: "savar25",
-    name: "trade-data",
-    branch: "main"
-  };
-  const isFile = window.location.protocol === "file:";
-  const remoteBase = "https://raw.githubusercontent.com/" + repo.owner + "/" + repo.name + "/" + repo.branch;
-  window.TRADE_DASHBOARD_CONFIG = {
-    yearBasePath: "./year",
-    rawYearBasePath: isFile ? (remoteBase + "/year") : "./year",
-    concordanceBasePath: "./concordance",
-    rawConcordanceBasePath: isFile ? (remoteBase + "/concordance") : "./concordance"
-  };
-}());
-</script>
-<script src="./sankey-data.js"></script>
-<script src="./trade-resource-data.js"></script>
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  crossorigin=""
-></script>
-<script>
-(function () {
-  const repo = window.TRADE_GITHUB_FALLBACK || {
-    owner: "savar25",
-    name: "trade-data",
-    branch: "main"
-  };
-  const REPO_OWNER = repo.owner;
-  const REPO_NAME = repo.name;
-  const REPO_BRANCH = repo.branch || "main";
-  const SUPPORTED_FLOWS = ["domestic", "imports", "exports"];
-  const TRADE_IMPACT_PATH_PATTERN = /^year\/([^/]+)\/([^/]+)\/(domestic|imports|exports)\/trade_impact\.csv$/;
+// ---------------------------------------------------------------------------
+// Country coordinates [lon, lat]
+// ---------------------------------------------------------------------------
+const COORDS = {
+    US: [-99.9018, 37.0902], CN: [104.1954, 35.8617], DE: [10.4515,  51.1657],
+    IN: [78.9629,  20.5937], RU: [105.3188, 61.5240], CA: [-96.8,    56.1   ],
+    JP: [138.2529, 36.2048], GB: [-3.4359,  55.3781], FR: [2.2137,   46.2276],
+    BR: [-51.9253, -14.235], AU: [133.7751, -25.274], MX: [-102.553, 23.6345],
+    KR: [127.7669, 35.9078], IT: [12.5674,  41.8719], ES: [-3.7492,  40.4637],
+    NL: [5.2913,   52.1326], SA: [45.0792,  23.8859], ZA: [22.9375,  -30.560],
+    AR: [-63.617,  -38.416], TR: [35.2433,  38.9637], ID: [113.921,  -0.7893],
+    PL: [19.1451,  51.9194], BE: [4.4699,   50.5039], SE: [18.6435,  60.1282],
+    NO: [8.4689,   60.4720], CH: [8.2275,   46.8182], AT: [14.5501,  47.5162],
+    CZ: [15.4730,  49.8175], FI: [25.7482,  61.9241], DK: [9.5018,   56.2639],
+    TW: [120.960,  23.6978], TH: [100.993,  15.8700], MY: [109.698,  4.21050],
+    SG: [103.820,  1.35210], PH: [121.774,  12.8797], VN: [108.277,  14.0583],
+    NG: [8.6753,   9.08200], EG: [30.8025,  26.8206], GR: [21.8243,  39.0742],
+    PT: [-8.2245,  39.3999], HU: [19.5033,  47.1625], RO: [24.9668,  45.9432],
+    WA: [120,      5      ],
+    WE: [25,       52     ],
+    WF: [20,       5      ],
+    WL: [-65,      -10    ],
+    WM: [45,       28     ],
+};
 
-  function createDefaultManifest() {
-    return {
-      countries: ["US"],
-      yearsByCountry: { US: ["2022"] },
-      flowsByCountryYear: { "US|2022": ["domestic"] },
-      supportedFlows: SUPPORTED_FLOWS.slice(),
-      excludedSources: ["CONST", "WHOLE"],
-      sourceLimit: 15,
-      defaultSelection: { country: "US", year: "2022", flow: "domestic" }
-    };
-  }
+function countryLabel(code) { return TradePartner.countryFullName(code); }
 
-  function normalizeCode(value) {
-    return String(value || "").trim();
-  }
+function normalizeCode(value) {
+    return String(value || "").trim().toUpperCase();
+}
 
-  function sortYears(years) {
-    return years.slice().sort(function (left, right) {
-      const leftNumber = Number(left);
-      const rightNumber = Number(right);
-      if (Number.isFinite(leftNumber) && Number.isFinite(rightNumber) && leftNumber !== rightNumber) {
-        return leftNumber - rightNumber;
-      }
-      return String(left).localeCompare(String(right));
-    });
-  }
+function fmtCO2(val) {
+    if (val >= 1e15) return (val / 1e15).toFixed(2) + " Tt CO\u2082";
+    if (val >= 1e12) return (val / 1e12).toFixed(2) + " Gt CO\u2082";
+    if (val >= 1e9)  return (val / 1e9).toFixed(2)  + " Mt CO\u2082";
+    return val.toExponential(2) + " CO\u2082";
+}
 
-  function buildManifestFromPaths(paths) {
-    const discoveredCountries = new Set();
-    const yearsByCountry = {};
-    const flowsByCountryYear = {};
+function getCurrencyRate(year, code) {
+    if (!code || code === "EUR") return 1;
+    const yearRates = mapCurrencyRates[String(year)] || {};
+    return parseFloat(yearRates[code]) || 1;
+}
 
-    paths.forEach(function (path) {
-      const match = String(path || "").match(TRADE_IMPACT_PATH_PATTERN);
-      if (!match) {
-        return;
-      }
-
-      const year = normalizeCode(match[1]);
-      const country = normalizeCode(match[2]);
-      const flow = normalizeCode(match[3]);
-      if (!year || !country || !flow) {
-        return;
-      }
-
-      discoveredCountries.add(country);
-
-      if (!yearsByCountry[country]) {
-        yearsByCountry[country] = [];
-      }
-      if (!yearsByCountry[country].includes(year)) {
-        yearsByCountry[country].push(year);
-      }
-
-      const key = country + "|" + year;
-      if (!flowsByCountryYear[key]) {
-        flowsByCountryYear[key] = [];
-      }
-      if (!flowsByCountryYear[key].includes(flow)) {
-        flowsByCountryYear[key].push(flow);
-      }
-    });
-
-    const countries = Array.from(discoveredCountries).sort();
-    countries.forEach(function (country) {
-      yearsByCountry[country] = sortYears(yearsByCountry[country] || []);
-    });
-    Object.keys(flowsByCountryYear).forEach(function (key) {
-      flowsByCountryYear[key].sort(function (left, right) {
-        return SUPPORTED_FLOWS.indexOf(left) - SUPPORTED_FLOWS.indexOf(right);
-      });
-    });
-
-    const fallback = createDefaultManifest();
-    const defaultCountry = countries.includes("US")
-      ? "US"
-      : (countries[0] || fallback.defaultSelection.country);
-    const defaultYears = yearsByCountry[defaultCountry] || [];
-    const defaultYear = defaultYears.length
-      ? defaultYears[defaultYears.length - 1]
-      : fallback.defaultSelection.year;
-    const defaultFlows = flowsByCountryYear[defaultCountry + "|" + defaultYear] || [];
-    const defaultFlow = defaultFlows.includes("domestic")
-      ? "domestic"
-      : (defaultFlows[0] || fallback.defaultSelection.flow);
-
-    return {
-      countries: countries.length ? countries : fallback.countries.slice(),
-      yearsByCountry: Object.keys(yearsByCountry).length ? yearsByCountry : fallback.yearsByCountry,
-      flowsByCountryYear: Object.keys(flowsByCountryYear).length ? flowsByCountryYear : fallback.flowsByCountryYear,
-      supportedFlows: fallback.supportedFlows.slice(),
-      excludedSources: fallback.excludedSources.slice(),
-      sourceLimit: fallback.sourceLimit,
-      defaultSelection: {
-        country: defaultCountry,
-        year: defaultYear,
-        flow: defaultFlow
-      }
-    };
-  }
-
-  async function fetchJSON(url) {
-    const response = await fetch(url, {
-      headers: {
-        Accept: "application/json"
-      }
-    });
-    if (!response.ok) {
-      throw new Error("Unable to load " + url);
+function fmtIndicator(val) {
+    const state = TradeShared.getState();
+    const metricKey = state.metric;
+    const metric = TradeShared.METRICS[metricKey];
+    if (!metric || metricKey === "CO2_total") return fmtCO2(val);
+    if (metricKey === "amount") {
+        const rate = getCurrencyRate(state.year, state.currency);
+        const converted = val * rate;
+        const scaled = converted / metric.scale;
+        return scaled.toFixed(2) + "\u00A0M\u00A0" + state.currency;
     }
-    return response.json();
-  }
+    const scaled = val / metric.scale;
+    return scaled.toFixed(2) + "\u00A0" + metric.unit;
+}
 
-  async function discoverTradeImpactPaths() {
-    const payload = await fetchJSON(
-      "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO_NAME + "/git/trees/" + REPO_BRANCH + "?recursive=1"
+function indicatorSourceKey() {
+    const metricKey = TradeShared.getState().metric;
+    const metric = TradeShared.METRICS[metricKey];
+    return (metric && metric.sourceKeys && metric.sourceKeys[0]) || "CO2_total";
+}
+
+function indicatorLabel() {
+    const state = TradeShared.getState();
+    const metricKey = state.metric;
+    if (metricKey === "amount") {
+        return "Total Amount (" + state.currency + ")";
+    }
+    return (TradeShared.METRICS[metricKey] && TradeShared.METRICS[metricKey].label) || "CO\u2082 Emissions";
+}
+
+function fmtAmountValue(val) {
+    const state = TradeShared.getState();
+    const rate = getCurrencyRate(state.year, state.currency);
+    const converted = (parseFloat(val) || 0) * rate;
+    return converted.toFixed(2) + "\u00A0M\u00A0" + state.currency;
+}
+
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+const DEFAULT_MAP_ZOOM = 2;
+const INITIAL_MAP_CENTER = [20, -55];
+const PACIFIC_ROUTE_MIN_LON = 70;
+const COUNTRY_CENTER_OFFSET_FACTOR = 0.26;
+const BALANCE_NEGATIVE_DARK = "#c96256";
+const BALANCE_NEGATIVE_LIGHT = "#f3c6bf";
+const BALANCE_POSITIVE_DARK = "#0f6b57";
+const BALANCE_POSITIVE_LIGHT = "#bfe3d1";
+const REGION_START_COLOR = "#f97316";
+const REGION_END_COLOR = "#2563eb";
+const REGION_NEUTRAL_COLOR = "#1e293b";
+const ALL_INDUSTRY_VALUE = "ALL";
+const STANDARD_ARROW_HEAD_PATH = "M0,-4.4L13,0L0,4.4Z";
+const INDUSTRY_IMPORT_ARROW_HEAD_PATH = "M0,-3.9L12.2,0L0,3.9Z";
+const INDUSTRY_EXPORT_ARROW_HEAD_PATH = "M0,-4.9L13.8,0L0,4.9Z";
+const FLOW_BASE_COLORS = {
+    imports: "#2563eb",
+    exports: "#dd6b20",
+};
+const TYPE_STYLE_MAP = {
+    resources: {
+        label: "materials",
+        dasharray: "",
+        markerPath: STANDARD_ARROW_HEAD_PATH,
+        swatchStyle: "solid",
+    },
+    manufacturing: {
+        label: "manufacturing",
+        dasharray: "",
+        markerPath: STANDARD_ARROW_HEAD_PATH,
+        swatchStyle: "solid",
+    },
+    consumer: {
+        label: "consumer goods",
+        dasharray: "",
+        markerPath: STANDARD_ARROW_HEAD_PATH,
+        swatchStyle: "solid",
+    },
+    services: {
+        label: "services",
+        dasharray: "10 7",
+        markerPath: STANDARD_ARROW_HEAD_PATH,
+        swatchStyle: "dashed",
+    },
+    mixed: {
+        label: "mixed trade",
+        dasharray: "",
+        markerPath: STANDARD_ARROW_HEAD_PATH,
+        swatchStyle: "solid",
+    },
+};
+
+// ---------------------------------------------------------------------------
+// Map setup
+// ---------------------------------------------------------------------------
+const map = L.map("map", {
+    scrollWheelZoom: false,
+    zoomSnap: 1,
+}).setView(INITIAL_MAP_CENTER, DEFAULT_MAP_ZOOM);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "\u00a9 OpenStreetMap contributors | Data: EXIOBASE 3 / ModelEarth",
+}).addTo(map);
+
+L.svg().addTo(map);
+const tradeRegionHighlightLayer = L.layerGroup().addTo(map);
+const svg = d3.select("#map").select("svg");
+const g   = svg.append("g");
+
+const typeColorScale = d3.scaleOrdinal([
+    "#22c55e", "#06b6d4", "#8b5cf6", "#f43f5e", "#f59e0b",
+    "#14b8a6", "#84cc16", "#ec4899", "#0ea5e9", "#a855f7",
+]);
+const viewModeSelect = document.getElementById("view-mode-select");
+const directionSelect = document.getElementById("direction-select");
+const countryLabelText = document.getElementById("country-label-text");
+const industrySelect = document.getElementById("industry-select");
+const industrySelectWrap = document.getElementById("industry-select-wrap");
+const industryBarNote = document.getElementById("industry-bar-note");
+const zoomToast = document.getElementById("zoom-toast");
+let zoomToastTimer = null;
+
+L.DomEvent.disableClickPropagation(document.querySelector(".control-panel"));
+L.DomEvent.disableScrollPropagation(document.querySelector(".control-panel"));
+L.DomEvent.disableClickPropagation(document.getElementById("map-legend"));
+L.DomEvent.disableScrollPropagation(document.getElementById("map-legend"));
+L.DomEvent.disableClickPropagation(document.querySelector(".industry-bar"));
+L.DomEvent.disableScrollPropagation(document.querySelector(".industry-bar"));
+
+function showZoomToast(enabled) {
+    zoomToast.textContent = enabled ? "Zoom On" : "Zoom Off";
+    zoomToast.classList.add("visible");
+
+    if (zoomToastTimer) {
+        clearTimeout(zoomToastTimer);
+    }
+    zoomToastTimer = setTimeout(() => {
+        zoomToast.classList.remove("visible");
+        zoomToastTimer = null;
+    }, 2000);
+}
+
+function setScrollZoom(enabled) {
+    if (enabled) {
+        map.scrollWheelZoom.enable();
+    } else {
+        map.scrollWheelZoom.disable();
+    }
+    showZoomToast(enabled);
+}
+
+function clickShouldToggleZoom(evt) {
+    const target = evt.originalEvent?.target;
+    if (!(target instanceof Element)) return false;
+    const mapObjectRoot = g.node();
+
+    if (mapObjectRoot && mapObjectRoot.contains(target) && target !== mapObjectRoot) {
+        return false;
+    }
+
+    return !target.closest([
+        ".control-panel",
+        "#map-legend",
+        "#map-tooltip",
+        "#zoom-toast",
+        ".leaflet-marker-icon",
+        ".leaflet-popup",
+        ".leaflet-tooltip",
+        ".leaflet-interactive",
+    ].join(","));
+}
+
+// ---------------------------------------------------------------------------
+// CSV cache — avoids re-fetching when switching back to a visited country
+// ---------------------------------------------------------------------------
+const csvCache = new Map();
+
+// Currency exchange rates keyed by year string, then currency code
+const mapCurrencyRates = {};
+const industryNameByYear = {};
+
+// ---------------------------------------------------------------------------
+// Interaction state
+// ---------------------------------------------------------------------------
+let currentFlowDir = "imports";   // "imports" or "exports"
+let currentFocusCountry = document.getElementById("country-select").value || "US";
+let currentIndustryMode = "all";
+let currentIndustryCode = ALL_INDUSTRY_VALUE;
+let currentIndustryFlowDir = "both";
+let selectedArrow = null;
+let selectedTrade = null;
+let activeTooltipTrade = null;
+const NORMAL_OPACITY    = 0.65;
+const HIGHLIGHT_OPACITY = 1.0;
+const DIM_OPACITY       = 0.08;
+const VALID_FLOW_DIRS = new Set(["imports", "exports", "balance"]);
+const VALID_INDUSTRY_MODES = new Set(["all", "industry"]);
+const VALID_INDUSTRY_FLOW_DIRS = new Set(["both", "imports", "exports"]);
+const FILTER_STORAGE_KEY = "trade-map-state";
+const MAP_FACTOR_TO_METRIC = { co2: "CO2_total", water: "Water_total", emp: "Employment_total", amt: "amount" };
+const MAP_METRIC_TO_FACTOR = { CO2_total: "co2", Water_total: "water", Employment_total: "emp", amount: "amt" };
+const FILTER_DEFAULTS = {
+    country: "US",
+    type: "imports",
+    factor: "amt",
+    currency: "EUR",
+    inflows: "15",
+    view: "all",
+    industry: ALL_INDUSTRY_VALUE,
+    industryflow: "both"
+};
+const FILTER_HASH_KEYS = Object.keys(FILTER_DEFAULTS);
+const COUNTRY_DIRECTION_OPTIONS = [
+    { value: "imports", label: "Imports" },
+    { value: "exports", label: "Exports" },
+    { value: "balance", label: "Balance" },
+];
+const INDUSTRY_DIRECTION_OPTIONS = [
+    { value: "both", label: "Both" },
+    { value: "imports", label: "Imports" },
+    { value: "exports", label: "Exports" },
+];
+
+// ---------------------------------------------------------------------------
+// Tooltip
+// ---------------------------------------------------------------------------
+const tooltip = document.getElementById("map-tooltip");
+const stateMapLink = document.getElementById("state-map-link");
+if (stateMapLink && window.TRADE_MAP_STATE_MAP_URL) {
+    stateMapLink.href = window.TRADE_MAP_STATE_MAP_URL;
+}
+
+function readFilterCache() {
+    try {
+        return JSON.parse(localStorage.getItem(FILTER_STORAGE_KEY) || "{}") || {};
+    } catch (error) {
+        return {};
+    }
+}
+
+function writeFilterCache(filters) {
+    const cleaned = {};
+    FILTER_HASH_KEYS.forEach(function(key) {
+        const value = filters[key];
+        if (value !== undefined && value !== null && value !== "" && String(value) !== String(FILTER_DEFAULTS[key])) {
+            cleaned[key] = value;
+        }
+    });
+    if (Object.keys(cleaned).length) {
+        localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(cleaned));
+    } else {
+        localStorage.removeItem(FILTER_STORAGE_KEY);
+    }
+}
+
+function clearFilterCache() {
+    localStorage.removeItem(FILTER_STORAGE_KEY);
+    localStorage.removeItem("trade-currency");
+}
+
+function hashHasFilterKey(hash) {
+    const candidate = hash || (typeof getHash === "function" ? getHash() : {});
+    return FILTER_HASH_KEYS.some(function(key) {
+        return Object.prototype.hasOwnProperty.call(candidate, key) && candidate[key];
+    });
+}
+
+function readFilterState() {
+    const hash = typeof getHash === "function" ? getHash() : {};
+    const cache = hashHasFilterKey(hash) ? {} : readFilterCache();
+    const merged = {};
+    FILTER_HASH_KEYS.forEach(function(key) {
+        merged[key] = hash[key] || cache[key] || FILTER_DEFAULTS[key];
+    });
+    return merged;
+}
+
+function filteredHashObject(filters) {
+    const hashObj = {};
+    FILTER_HASH_KEYS.forEach(function(key) {
+        const value = filters[key];
+        if (value !== undefined && value !== null && value !== "" && String(value) !== String(FILTER_DEFAULTS[key])) {
+            hashObj[key] = String(value);
+        }
+    });
+    return hashObj;
+}
+
+function writeFilterState(filters) {
+    const hashObj = filteredHashObject(filters);
+    writeFilterCache(hashObj);
+    if (typeof updateHash === "function") {
+        const removeKeys = FILTER_HASH_KEYS.filter(function(key) {
+            return !Object.prototype.hasOwnProperty.call(hashObj, key);
+        });
+        updateHash(hashObj, true, removeKeys);
+    }
+}
+
+function currentFilterState(overrides) {
+    const sharedState = typeof TradeShared !== "undefined" && TradeShared.getState
+        ? TradeShared.getState()
+        : {};
+    const filters = {
+        country: typeof getSelectedCountryValue === "function" ? getSelectedCountryValue() : FILTER_DEFAULTS.country,
+        type: currentFlowDir || FILTER_DEFAULTS.type,
+        factor: sharedState.metric ? (MAP_METRIC_TO_FACTOR[sharedState.metric] || sharedState.metric) : FILTER_DEFAULTS.factor,
+        currency: sharedState.currency || FILTER_DEFAULTS.currency,
+        inflows: String(sharedState.topn || FILTER_DEFAULTS.inflows),
+        view: currentIndustryMode || FILTER_DEFAULTS.view,
+        industry: currentIndustryCode || FILTER_DEFAULTS.industry,
+        industryflow: currentIndustryFlowDir || FILTER_DEFAULTS.industryflow
+    };
+    return Object.assign(filters, overrides || {});
+}
+
+function persistFilterState(overrides) {
+    writeFilterState(currentFilterState(overrides));
+}
+
+function syncStateMapLink() {
+    if (!stateMapLink) return;
+    stateMapLink.hidden = normalizeCode(getSelectedCountryValue()) !== "US";
+}
+
+tooltip.addEventListener("mouseenter", function() {
+    if (activeTooltipTrade) {
+        applyHighlight(activeTooltipTrade.partner, { scroll: false, trade: activeTooltipTrade });
+    }
+});
+
+tooltip.addEventListener("mouseleave", function(evt) {
+    const relatedTarget = evt.relatedTarget;
+    if (relatedTarget instanceof Element && relatedTarget.closest("path.arrow, path.arrow-hit")) {
+        return;
+    }
+    hideTooltip();
+    selectedArrow ? applyHighlight(selectedArrow, { scroll: false, trade: selectedTrade }) : clearHighlight();
+});
+
+function industryLabel(code) {
+    const key = normalizeCode(TradeShared.getState().year);
+    const yearMap = industryNameByYear[key] || {};
+    const normalized = normalizeCode(code);
+    return yearMap[normalized] || normalized || "Unknown";
+}
+
+function classifyTradeFamily(code) {
+    const descriptor = `${normalizeCode(code)} ${industryLabel(code)}`.toLowerCase();
+    if (/(crude|petro|gas|coal|mining|metal|ore|cement|ceram|stone|glass|basic|alum|copp|steel|nicke|lead|zinc|wood|paper|fert|water|seaco|rawmi|forest|fores|pulp)/.test(descriptor)) {
+        return "resources";
+    }
+    if (/(machi|motor|elect|compu|rubbe|plast|chem|pharm|medic|fabric|metal products|machinery|equipment|vehicle|electronics)/.test(descriptor)) {
+        return "manufacturing";
+    }
+    if (/(food|meat|dairy|fish|bever|wear|texti|leath|furni|retai|whole|white|hotel|tour|agri|crop|paddy|wheat|veget|fruit|sugar|grain)/.test(descriptor)) {
+        return "consumer";
+    }
+    if (/(resea|healt|publi|busin|educa|finan|insur|rent|real|post|rail|air|trans|wholesale|retail|trade|hotel|service|admin|support|repair)/.test(descriptor)) {
+        return "services";
+    }
+    return "mixed";
+}
+
+function rankValue(entry) {
+    return Math.max(parseFloat(entry.metricValue) || 0, parseFloat(entry.amountValue) || 0);
+}
+
+function summarizeTypeMap(typeMap, limit) {
+    return Array.from(typeMap.values())
+        .sort((a, b) => rankValue(b) - rankValue(a))
+        .slice(0, limit || 3)
+        .map(entry => ({
+            code: entry.code,
+            label: industryLabel(entry.code),
+            metricValue: entry.metricValue,
+            amountValue: entry.amountValue,
+        }));
+}
+
+function formatTypeChips(items, labelPrefix) {
+    if (!items || !items.length) {
+        return `<div class="tt-chip">${escapeHtml(labelPrefix)} not available</div>`;
+    }
+    return items.map(item => {
+        return `<div class="tt-chip">${escapeHtml(item.label)}: ${escapeHtml(fmtIndicator(item.metricValue))}</div>`;
+    }).join("");
+}
+
+function createPartnerSummary(partner) {
+    return {
+        partner,
+        co2: 0,
+        amount: 0,
+        rowCount: 0,
+        typeMap: new Map(),
+    };
+}
+
+function getPartnerSummary(mapRef, partner) {
+    if (!mapRef.has(partner)) {
+        mapRef.set(partner, createPartnerSummary(partner));
+    }
+    return mapRef.get(partner);
+}
+
+function loadIndustryNamesForYear(year) {
+    const key = normalizeCode(year);
+    if (!key) return Promise.resolve({});
+    if (industryNameByYear[key]) return Promise.resolve(industryNameByYear[key]);
+
+    const url = `https://raw.githubusercontent.com/ModelEarth/trade-data/main/year/${key}/industry.csv`;
+    return d3.csv(url).then(rows => {
+        const yearMap = {};
+        rows.forEach(row => {
+            const industryId = normalizeCode(row.industry_id);
+            const name = String(row.name || row.industry_name || "").trim();
+            if (industryId) {
+                yearMap[industryId] = name || industryId;
+            }
+        });
+        industryNameByYear[key] = yearMap;
+        return yearMap;
+    }).catch(() => {
+        industryNameByYear[key] = {};
+        return industryNameByYear[key];
+    });
+}
+
+function prepareDirectionalSummary(summary) {
+    summary.topTypes = summarizeTypeMap(summary.typeMap, 3);
+    summary.dominantType = summary.topTypes[0]?.code || "";
+    summary.dominantTypeLabel = summary.topTypes[0]?.label || "Mixed trade";
+    summary.typeFamily = classifyTradeFamily(summary.dominantType);
+    return summary;
+}
+
+function getSelectedIndustryLabel(industryCode) {
+    const normalized = normalizeCode(industryCode);
+    return normalized === ALL_INDUSTRY_VALUE
+        ? "All exporting industries"
+        : industryLabel(normalized);
+}
+
+function updateIndustryBarNote() {
+    if (currentIndustryMode === "industry") {
+        const selectedLabel = getSelectedIndustryLabel(currentIndustryCode);
+        const flowCopy = currentIndustryFlowDir === "imports"
+            ? "imports"
+            : currentIndustryFlowDir === "exports"
+                ? "exports"
+                : "imports and exports";
+        industryBarNote.textContent =
+            `${selectedLabel} view shows ${flowCopy}. Color and arrowhead shape show direction, width shows quantity traded, and most lines stay solid for readability.`;
+        return;
+    }
+
+    industryBarNote.textContent =
+        "All trade keeps the existing country view. Switch to By industry to compare imports and exports together, then narrow the map with the industry dropdown.";
+}
+
+function syncDirectionOptions() {
+    const options = currentIndustryMode === "industry"
+        ? INDUSTRY_DIRECTION_OPTIONS
+        : COUNTRY_DIRECTION_OPTIONS;
+    const preferredValue = currentIndustryMode === "industry" ? currentIndustryFlowDir : currentFlowDir;
+
+    directionSelect.innerHTML = "";
+    options.forEach(entry => {
+        const option = document.createElement("option");
+        option.value = entry.value;
+        option.textContent = entry.label;
+        directionSelect.appendChild(option);
+    });
+
+    directionSelect.value = options.some(entry => entry.value === preferredValue)
+        ? preferredValue
+        : options[0].value;
+}
+
+function syncToolbarVisibility() {
+    const industryMode = currentIndustryMode === "industry";
+    industrySelectWrap.hidden = !industryMode;
+    industrySelect.disabled = !industryMode;
+    countryLabelText.textContent = industryMode ? "Focus country" : getCountryLabelText(currentFlowDir);
+    syncDirectionOptions();
+}
+
+function setIndustryModeState(mode) {
+    const nextMode = VALID_INDUSTRY_MODES.has(mode) ? mode : "all";
+    currentIndustryMode = nextMode;
+    viewModeSelect.value = nextMode;
+    syncToolbarVisibility();
+    updateIndustryBarNote();
+    return true;
+}
+
+function setIndustrySelectionState(industryCode) {
+    const normalized = normalizeCode(industryCode) || ALL_INDUSTRY_VALUE;
+    currentIndustryCode = normalized;
+    const matchingOption = Array.from(industrySelect.options).find(option => normalizeCode(option.value) === normalized);
+    if (matchingOption) {
+        industrySelect.value = matchingOption.value;
+    }
+    updateIndustryBarNote();
+    return true;
+}
+
+function setIndustryFlowState(flowDir) {
+    const nextFlowDir = VALID_INDUSTRY_FLOW_DIRS.has(flowDir) ? flowDir : "both";
+    currentIndustryFlowDir = nextFlowDir;
+    if (currentIndustryMode === "industry") {
+        syncDirectionOptions();
+    }
+    updateIndustryBarNote();
+    return true;
+}
+
+function syncIndustryOptions(preferredIndustryCode) {
+    const yearKey = normalizeCode(TradeShared.getState().year);
+    const yearMap = industryNameByYear[yearKey] || {};
+    const preferred = normalizeCode(preferredIndustryCode) || ALL_INDUSTRY_VALUE;
+    const options = Object.entries(yearMap)
+        .sort((a, b) => String(a[1]).localeCompare(String(b[1])))
+        .map(([code, label]) => ({ code, label }));
+
+    industrySelect.innerHTML = "";
+
+    const allOption = document.createElement("option");
+    allOption.value = ALL_INDUSTRY_VALUE;
+    allOption.textContent = "All exporting industries";
+    industrySelect.appendChild(allOption);
+
+    options.forEach(entry => {
+        const option = document.createElement("option");
+        option.value = entry.code;
+        option.textContent = `${entry.label} (${entry.code})`;
+        industrySelect.appendChild(option);
+    });
+
+    const fallbackCode = options[0]?.code || ALL_INDUSTRY_VALUE;
+    setIndustrySelectionState(options.some(entry => entry.code === preferred) || preferred === ALL_INDUSTRY_VALUE
+        ? preferred
+        : fallbackCode);
+}
+
+function getHashIndustryMode() {
+    if (typeof getHash !== "function") return "";
+    const mode = normalizeCode(getHash().view).toLowerCase();
+    return VALID_INDUSTRY_MODES.has(mode) ? mode : "";
+}
+
+function getHashIndustryCode() {
+    if (typeof getHash !== "function") return "";
+    return normalizeCode(getHash().industry);
+}
+
+function getHashIndustryFlowDir() {
+    if (typeof getHash !== "function") return "";
+    const flowDir = String(getHash().industryflow || "").trim().toLowerCase();
+    return VALID_INDUSTRY_FLOW_DIRS.has(flowDir) ? flowDir : "";
+}
+
+function syncIndustryModeToHash(mode) {
+    persistFilterState({
+        view: VALID_INDUSTRY_MODES.has(mode) ? mode : "all"
+    });
+}
+
+function syncIndustryCodeToHash(industryCode) {
+    persistFilterState({
+        industry: normalizeCode(industryCode) || ALL_INDUSTRY_VALUE
+    });
+}
+
+function syncIndustryFlowDirToHash(flowDir) {
+    persistFilterState({
+        industryflow: VALID_INDUSTRY_FLOW_DIRS.has(flowDir) ? flowDir : "both"
+    });
+}
+
+function sankeyFactorForMetric(metricKey) {
+    return ({
+        CO2_total: "co2",
+        Water_total: "water",
+        Employment_total: "emp",
+        amount: "amt",
+    })[metricKey] || metricKey;
+}
+
+function getSankeySelectionForTrade(trade) {
+    const focusCountry = currentFocusCountry;
+    const partner = normalizeCode(trade && trade.partner);
+    if (!focusCountry || !partner) return null;
+
+    let flow = currentFlowDir;
+    if (trade && trade.viewMode === "industry" && trade.flowDir) {
+        flow = trade.flowDir;
+    } else if (currentFlowDir === "balance") {
+        flow = normalizeCode(trade && trade.from) === normalizeCode(focusCountry) ? "exports" : "imports";
+    }
+
+    if (flow !== "imports" && flow !== "exports") {
+        return null;
+    }
+
+    return {
+        country: focusCountry,
+        otherCountry: partner,
+        flow,
+    };
+}
+
+// ---------------------------------------------------------------------------
+// Hover-to-Sankey: update the embedded Sankey as the user hovers a trade
+// arrow, instead of requiring a click. Debounced so moving the cursor across
+// several arrows doesn't fire a fetch per arrow.
+// ---------------------------------------------------------------------------
+let sankeyHoverTimer = null;
+const SANKEY_HOVER_DEBOUNCE_MS = 300;
+
+function scheduleSankeyHoverUpdate(trade) {
+    cancelSankeyHoverUpdate();
+    sankeyHoverTimer = setTimeout(function() {
+        applySankeyHoverSelection(trade);
+    }, SANKEY_HOVER_DEBOUNCE_MS);
+}
+
+function cancelSankeyHoverUpdate() {
+    if (sankeyHoverTimer) {
+        clearTimeout(sankeyHoverTimer);
+        sankeyHoverTimer = null;
+    }
+}
+
+function applySankeyHoverSelection(trade) {
+    if (typeof skLoadSelection !== "function") return;
+    const selection = getSankeySelectionForTrade(trade);
+    if (!selection) return;
+
+    const state = TradeShared.getState();
+    skLoadSelection({
+        country: selection.country,
+        otherCountry: selection.otherCountry,
+        year: state.year || "2022",
+        flow: selection.flow,
+        metric: state.metric || "amount",
+        currency: state.currency || "EUR",
+        industryLabelMode: "title",
+        topn: state.topn || 15
+    });
+}
+
+function buildSankeyLink(trade) {
+    const selection = getSankeySelectionForTrade(trade);
+    if (!selection) return "";
+
+    const state = TradeShared.getState();
+    const url = new URL("../../charts/sankey/index.html", window.location.href);
+    const hashParts = [
+        `country=${encodeURIComponent(selection.country)}`,
+        `othercountry=${encodeURIComponent(selection.otherCountry)}`,
+        `year=${encodeURIComponent(state.year || "2022")}`,
+        `flow=${encodeURIComponent(selection.flow)}`,
+        `factor=${encodeURIComponent(sankeyFactorForMetric(state.metric || "amount"))}`,
+        `currency=${encodeURIComponent(state.currency || "EUR")}`,
+        `inflows=${encodeURIComponent(String(state.topn || 15))}`,
+    ];
+    url.hash = hashParts.join("&");
+    return url.href;
+}
+
+function buildGenericHighlightTrade(partnerCode) {
+    const partner = normalizeCode(partnerCode);
+    if (!partner || !COORDS[partner] || !COORDS[currentFocusCountry]) return null;
+
+    if (currentIndustryMode === "industry") {
+        if (currentIndustryFlowDir === "imports") {
+            return { from: partner, to: currentFocusCountry, neutralHighlight: false };
+        }
+        if (currentIndustryFlowDir === "exports") {
+            return { from: currentFocusCountry, to: partner, neutralHighlight: false };
+        }
+        return { from: currentFocusCountry, to: partner, neutralHighlight: true };
+    }
+
+    if (currentFlowDir === "imports") {
+        return { from: partner, to: currentFocusCountry, neutralHighlight: false };
+    }
+    if (currentFlowDir === "exports") {
+        return { from: currentFocusCountry, to: partner, neutralHighlight: false };
+    }
+    return { from: currentFocusCountry, to: partner, neutralHighlight: true };
+}
+
+function addRegionMarker(countryCode, color, radius, fillOpacity) {
+    const coords = COORDS[normalizeCode(countryCode)];
+    if (!coords) return;
+    const latLng = [coords[1], coords[0]];
+    L.circleMarker(latLng, {
+        radius,
+        color: "#ffffff",
+        weight: radius > 10 ? 2.4 : 1.6,
+        fillColor: color,
+        fillOpacity,
+        opacity: 0.95,
+        interactive: false,
+        bubblingMouseEvents: false,
+    }).addTo(tradeRegionHighlightLayer);
+}
+
+function highlightTradeRegions(trade) {
+    tradeRegionHighlightLayer.clearLayers();
+    if (!trade) return;
+
+    const fromCode = normalizeCode(trade.from);
+    const toCode = normalizeCode(trade.to);
+    if (!COORDS[fromCode] || !COORDS[toCode]) return;
+
+    const neutral = !!trade.neutralHighlight;
+    const fromColor = neutral ? REGION_NEUTRAL_COLOR : REGION_START_COLOR;
+    const toColor = neutral ? REGION_NEUTRAL_COLOR : REGION_END_COLOR;
+
+    addRegionMarker(fromCode, fromColor, 13, neutral ? 0.16 : 0.2);
+    addRegionMarker(fromCode, fromColor, 8, neutral ? 0.78 : 0.88);
+
+    if (toCode !== fromCode) {
+        addRegionMarker(toCode, toColor, 13, neutral ? 0.16 : 0.2);
+        addRegionMarker(toCode, toColor, 8, neutral ? 0.78 : 0.88);
+    }
+}
+
+function showTooltip(trade, focusCountry, flowDir, evt) {
+    const label = `${countryLabel(trade.from)} \u2192 ${countryLabel(trade.to)}`;
+    const sankeyLink = buildSankeyLink(trade);
+    const sankeyLinkMarkup = sankeyLink
+        ? `<a class="tt-link" href="${escapeHtml(sankeyLink)}" target="_blank" rel="noopener noreferrer">Open Sankey chart</a>`
+        : "";
+    if (trade.viewMode === "industry") {
+        const tradeLabel = trade.flowDir === "imports" ? "Imports" : "Exports";
+        tooltip.innerHTML =
+            `<div class="tt-direction">${label}</div>` +
+            `<div class="tt-co2">${tradeLabel}: ${fmtAmountValue(trade.amount || 0)}</div>` +
+            `<div class="tt-muted">Industry: ${escapeHtml(trade.industryLabel || trade.dominantTypeLabel || "Mixed trade")}</div>` +
+            `<div class="tt-muted">${escapeHtml(indicatorLabel())}: ${escapeHtml(fmtIndicator(trade.co2 || 0))}</div>` +
+            `<div class="tt-muted">Arrow style: ${escapeHtml(trade.typeFamilyLabel || "mixed trade")} family</div>` +
+            sankeyLinkMarkup;
+    } else if (flowDir === "balance") {
+        const balanceLabel = trade.netCo2 >= 0 ? "Trade surplus" : "Trade deficit";
+        tooltip.innerHTML =
+            `<div class="tt-direction">${label}</div>` +
+            `<div class="tt-co2">${balanceLabel}: ${fmtIndicator(trade.co2)}</div>` +
+            `<div class="tt-muted">Exports: ${fmtIndicator(trade.exportsCo2 || 0)} | ${fmtAmountValue(trade.exportsAmount || 0)}</div>` +
+            `<div class="tt-muted">Imports: ${fmtIndicator(trade.importsCo2 || 0)} | ${fmtAmountValue(trade.importsAmount || 0)}</div>` +
+            `<div class="tt-muted">Arrow style: ${escapeHtml(trade.typeFamilyLabel || "mixed trade")} in ${escapeHtml(trade.balanceSign || "balance")} mode</div>` +
+            `<div class="tt-subhead">Top export types</div>` +
+            formatTypeChips(trade.exportTopTypes, "Exports") +
+            `<div class="tt-subhead">Top import types</div>` +
+            formatTypeChips(trade.importTopTypes, "Imports") +
+            sankeyLinkMarkup;
+    } else {
+        const tradeLabel = flowDir === "imports" ? "Imports" : "Exports";
+        tooltip.innerHTML =
+            `<div class="tt-direction">${label}</div>` +
+            `<div class="tt-co2">${tradeLabel}: ${fmtIndicator(trade.co2)}</div>` +
+            `<div class="tt-muted">Total Amount: ${fmtAmountValue(trade.amount || 0)}</div>` +
+            `<div class="tt-muted">Dominant type: ${escapeHtml(trade.dominantTypeLabel || "Mixed trade")} (${escapeHtml(trade.typeFamilyLabel || "mixed trade")})</div>` +
+            `<div class="tt-subhead">Top ${tradeLabel.toLowerCase()} types</div>` +
+            formatTypeChips(trade.topTypes, tradeLabel) +
+            sankeyLinkMarkup;
+    }
+    activeTooltipTrade = trade;
+    tooltip.style.display = "block";
+    moveTooltip(evt);
+}
+
+function moveTooltip(evt) {
+    const pad    = 14;
+    const tw     = tooltip.offsetWidth;
+    const th     = tooltip.offsetHeight;
+    const vw     = window.innerWidth;
+    const vh     = window.innerHeight;
+    // Flip left if tooltip would overflow right edge
+    const x = evt.clientX + pad + tw > vw
+        ? evt.clientX - tw - pad
+        : evt.clientX + pad;
+    // Flip up if tooltip would overflow bottom
+    const y = evt.clientY + th + pad > vh
+        ? evt.clientY - th - pad
+        : evt.clientY - 10;
+    tooltip.style.left = x + "px";
+    tooltip.style.top  = y + "px";
+}
+
+function hideTooltip() {
+    tooltip.style.display = "none";
+    activeTooltipTrade = null;
+}
+
+// Close the tooltip when the page scrolls so it doesn't stay stuck
+// floating over content it no longer points at.
+window.addEventListener("scroll", function() {
+    if (!activeTooltipTrade) return;
+    hideTooltip();
+    selectedArrow ? applyHighlight(selectedArrow, { trade: selectedTrade }) : clearHighlight();
+    cancelSankeyHoverUpdate();
+}, { passive: true });
+
+// ---------------------------------------------------------------------------
+// Highlight / clear
+// ---------------------------------------------------------------------------
+function getFilterRow(partnerCode) {
+    return document.querySelector(`#source-filters label[data-partner='${partnerCode}']`);
+}
+
+function applyHighlight(partnerCode, options) {
+    const settings = Object.assign({ scroll: true, trade: null }, options);
+    g.selectAll("path.arrow")
+        .classed("is-active", false)
+        .style("opacity", DIM_OPACITY)
+        .style("stroke-width", function() {
+            return `${parseFloat(this.getAttribute("data-base-sw")) || 2}px`;
+        });
+
+    const targetPaths = g.selectAll("path.arrow-" + partnerCode);
+    if (!targetPaths.empty()) {
+        g.selectAll(".arrow-" + partnerCode).raise();
+        targetPaths
+            .classed("is-active", true)
+            .style("opacity", HIGHLIGHT_OPACITY);
+    }
+
+    highlightTradeRegions(settings.trade || buildGenericHighlightTrade(partnerCode));
+
+    document.querySelectorAll("#source-filters label").forEach(el => {
+        const isMatch = el.dataset.partner === partnerCode;
+        el.classList.toggle("highlighted", isMatch);
+        if (isMatch && settings.scroll) {
+            el.scrollIntoView({ block: "nearest" });
+        }
+    });
+}
+
+function clearHighlight() {
+    g.selectAll("path.arrow")
+        .classed("is-active", false)
+        .style("opacity", NORMAL_OPACITY)
+        .style("stroke-width", function() {
+            return `${parseFloat(this.getAttribute("data-base-sw")) || 2}px`;
+        });
+    tradeRegionHighlightLayer.clearLayers();
+    document.querySelectorAll("#source-filters label")
+        .forEach(el => el.classList.remove("highlighted"));
+    hideTooltip();
+}
+
+// ---------------------------------------------------------------------------
+// Curve drawing
+// ---------------------------------------------------------------------------
+function projectPoint(lon, lat) {
+    return map.latLngToLayerPoint(new L.LatLng(lat, lon));
+}
+
+function projectTradePoint(countryCode, lonShift) {
+    const [lon, lat] = COORDS[countryCode];
+    return projectPoint(lon + (lonShift || 0), lat);
+}
+
+function isAmericasCountry(countryCode) {
+    const coords = COORDS[countryCode];
+    if (!coords) return false;
+    const [lon, lat] = coords;
+    return lon <= -30 && lat <= 75 && lat >= -60;
+}
+
+function isAsiaPacificCountry(countryCode) {
+    const coords = COORDS[countryCode];
+    return Boolean(coords && coords[0] >= PACIFIC_ROUTE_MIN_LON);
+}
+
+function getPacificPartnerLonShift(focusCountry, partnerCode) {
+    if (isAmericasCountry(focusCountry) && isAsiaPacificCountry(partnerCode)) {
+        return -360;
+    }
+    if (isAsiaPacificCountry(focusCountry) && isAmericasCountry(partnerCode)) {
+        return 360;
+    }
+    return 0;
+}
+
+function getTradePoints(d) {
+    return {
+        from: projectTradePoint(d.from, d.fromLonShift),
+        to: projectTradePoint(d.to, d.toLonShift),
+    };
+}
+
+function getIndustryCurveOffset(from, to, direction) {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const distance = Math.sqrt((dx * dx) + (dy * dy)) || 1;
+    const magnitude = Math.max(24, Math.min(82, distance * 0.16));
+    return magnitude * direction;
+}
+
+function buildQuadraticPath(from, to, offset) {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const distance = Math.sqrt((dx * dx) + (dy * dy)) || 1;
+    const nx = -dy / distance;
+    const ny = dx / distance;
+    const cx = ((from.x + to.x) / 2) + (nx * offset);
+    const cy = ((from.y + to.y) / 2) + (ny * offset);
+    return `M${from.x},${from.y}Q${cx},${cy} ${to.x},${to.y}`;
+}
+
+function drawCurve(d) {
+    const { from, to } = getTradePoints(d);
+    if (d.viewMode === "industry") {
+        const offsetDirection = d.flowDir === "imports" ? -1 : 1;
+        return buildQuadraticPath(from, to, getIndustryCurveOffset(from, to, offsetDirection));
+    }
+    return buildArcPath(from, to, d.curveSweep == null ? 1 : d.curveSweep);
+}
+
+function buildArcPath(from, to, sweepFlag) {
+    const dx   = to.x - from.x;
+    const dy   = to.y - from.y;
+    const dr   = Math.sqrt(dx * dx + dy * dy);
+    return `M${from.x},${from.y}A${dr},${dr} 0 0,${sweepFlag} ${to.x},${to.y}`;
+}
+
+function drawLabelCurve(d, flipLabel) {
+    const { from, to } = getTradePoints(d);
+    if (d.viewMode === "industry") {
+        const offsetDirection = d.flowDir === "imports" ? -1 : 1;
+        const offset = getIndustryCurveOffset(from, to, offsetDirection);
+        return flipLabel
+            ? buildQuadraticPath(to, from, -offset)
+            : buildQuadraticPath(from, to, offset);
+    }
+    const sweep = d.curveSweep == null ? 1 : d.curveSweep;
+    return flipLabel
+        ? buildArcPath(to, from, sweep === 1 ? 0 : 1)
+        : buildArcPath(from, to, sweep);
+}
+
+function pathMidAngle(pathNode) {
+    const total = pathNode.getTotalLength();
+    const delta = Math.max(1, Math.min(18, total * 0.025));
+    const p1 = pathNode.getPointAtLength(Math.max(0, total / 2 - delta));
+    const p2 = pathNode.getPointAtLength(Math.min(total, total / 2 + delta));
+    return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+}
+
+function labelNeedsFlip(pathNode) {
+    const angle = pathMidAngle(pathNode);
+    return angle > 90 || angle < -90;
+}
+
+function update() {
+    g.selectAll("path.arrow").attr("d", drawCurve);
+    g.selectAll("path.arrow-hit").attr("d", drawCurve);
+    g.selectAll("path.label-path").attr("d", function(d) {
+        return drawLabelCurve(d, this.dataset.flipLabel === "true");
+    });
+}
+map.on("zoomend", update);
+map.on("moveend", update);
+
+function getLeftOverlayInset() {
+    return [document.querySelector(".control-panel"), document.getElementById("map-legend")]
+        .filter(Boolean)
+        .reduce((maxInset, el) => {
+            const rect = el.getBoundingClientRect();
+            return Math.max(maxInset, rect.right + 24);
+        }, 0);
+}
+
+function centerMapForCountry(countryCode) {
+    const coords = COORDS[countryCode];
+    if (!coords) return;
+
+    const focusLatLng = new L.LatLng(coords[1], coords[0]);
+    map.setView(focusLatLng, DEFAULT_MAP_ZOOM, { animate: false });
+
+    const mapSize = map.getSize();
+    const desiredPoint = L.point(
+        Math.min(mapSize.x - 80, (mapSize.x / 2) + (getLeftOverlayInset() * COUNTRY_CENTER_OFFSET_FACTOR)),
+        mapSize.y / 2
     );
-    const tree = Array.isArray(payload && payload.tree) ? payload.tree : [];
-    return tree
-      .filter(function (entry) {
-        return entry && entry.type === "blob" && TRADE_IMPACT_PATH_PATTERN.test(entry.path);
-      })
-      .map(function (entry) {
-        return entry.path;
-      });
-  }
+    const currentPoint = map.latLngToContainerPoint(focusLatLng);
+    const panDelta = currentPoint.subtract(desiredPoint);
 
-  function loadDashboardScript() {
-    const script = document.createElement("script");
-    script.src = "./chart.js";
-    document.body.appendChild(script);
-  }
+    if (Math.abs(panDelta.x) > 1 || Math.abs(panDelta.y) > 1) {
+        map.panBy(panDelta, { animate: false });
+    }
+}
 
-  if (window.TRADE_SANKEY_MANIFEST) {
-    loadDashboardScript();
-    return;
-  }
+function getSelectedCountryValue() {
+    return document.getElementById("country-select").value;
+}
 
-  discoverTradeImpactPaths()
-    .then(function (paths) {
-      window.TRADE_SANKEY_MANIFEST = buildManifestFromPaths(paths);
-    })
-    .catch(function () {
-      window.TRADE_SANKEY_MANIFEST = createDefaultManifest();
-    })
-    .finally(loadDashboardScript);
-}());
+function getSelectedFlowDirValue() {
+    return currentIndustryMode === "industry"
+        ? currentFlowDir
+        : (directionSelect.value || "imports");
+}
+
+function setSelectedCountryValue(countryCode) {
+    const select = document.getElementById("country-select");
+    const hasOption = Array.from(select.options).some(option => option.value === countryCode);
+    if (!hasOption) return false;
+    select.value = countryCode;
+    syncStateMapLink();
+    return true;
+}
+
+function setSelectedFlowDirValue(flowDir) {
+    if (!VALID_FLOW_DIRS.has(flowDir)) return false;
+    if (currentIndustryMode !== "industry") {
+        syncDirectionOptions();
+        directionSelect.value = flowDir;
+    }
+    return true;
+}
+
+function getHashCountry() {
+    if (typeof getHash !== "function") return "";
+    return getHash().country || "";
+}
+
+function getHashFlowDir() {
+    if (typeof getHash !== "function") return "";
+    const flowDir = getHash().type || "";
+    return VALID_FLOW_DIRS.has(flowDir) ? flowDir : "";
+}
+
+function syncCountryToHash(countryCode) {
+    persistFilterState({ country: countryCode });
+}
+
+function syncFlowDirToHash(flowDir) {
+    if (VALID_FLOW_DIRS.has(flowDir)) {
+        persistFilterState({ type: flowDir });
+    }
+}
+
+function setFlowDirState(flowDir) {
+    if (!setSelectedFlowDirValue(flowDir)) return false;
+    currentFlowDir = flowDir;
+    if (currentIndustryMode !== "industry") {
+        countryLabelText.textContent = getCountryLabelText(flowDir);
+    }
+    return true;
+}
+
+function applySelections(countryCode, flowDir) {
+    if (!setSelectedCountryValue(countryCode)) return false;
+    if (!setFlowDirState(flowDir)) return false;
+    loadFlows(countryCode, flowDir);
+    return true;
+}
+
+function collectDirectionalSummaries(data, focusCountry, flowDir, options) {
+    const settings = Object.assign({ industryCode: ALL_INDUSTRY_VALUE }, options);
+    const srcKey = indicatorSourceKey();
+    const partnerKey = flowDir === "imports" ? "region1" : "region2";
+    const typeKey = "industry1";
+    const flowMap = new Map();
+
+    for (const row of data) {
+        const partner = normalizeCode(row[partnerKey]);
+        if (!partner || partner === focusCountry || !COORDS[partner]) continue;
+
+        const metricValue = parseFloat(row[srcKey]) || 0;
+        const amountValue = parseFloat(row.amount) || 0;
+        if (metricValue <= 0 && amountValue <= 0) continue;
+
+        const typeCode = normalizeCode(row[typeKey]) || "UNKNOWN";
+        if (settings.industryCode !== ALL_INDUSTRY_VALUE && typeCode !== settings.industryCode) continue;
+        const summary = getPartnerSummary(flowMap, partner);
+
+        summary.co2 += metricValue;
+        summary.amount += amountValue;
+        summary.rowCount += 1;
+
+        if (!summary.typeMap.has(typeCode)) {
+            summary.typeMap.set(typeCode, {
+                code: typeCode,
+                metricValue: 0,
+                amountValue: 0,
+            });
+        }
+        const current = summary.typeMap.get(typeCode);
+        current.metricValue += metricValue;
+        current.amountValue += amountValue;
+    }
+
+    flowMap.forEach(summary => prepareDirectionalSummary(summary));
+    return flowMap;
+}
+
+function getCountryLabelText(flowDir) {
+    if (flowDir === "exports") return "Exporting country:";
+    if (flowDir === "balance") return "Balance country:";
+    return "Importing country:";
+}
+
+function buildDirectionalTrades(flowMap, focusCountry, flowDir) {
+    const topn = TradeShared.getState().topn;
+    return Array.from(flowMap.values())
+        .sort((a, b) => b.co2 - a.co2)
+        .slice(0, topn)
+        .map(summary => {
+            const partner = summary.partner;
+            const partnerLonShift = getPacificPartnerLonShift(focusCountry, partner);
+            return {
+                from: flowDir === "imports" ? partner : focusCountry,
+                to: flowDir === "imports" ? focusCountry : partner,
+                fromLonShift: flowDir === "imports" ? partnerLonShift : 0,
+                toLonShift: flowDir === "exports" ? partnerLonShift : 0,
+                co2: summary.co2,
+                amount: summary.amount,
+                topTypes: summary.topTypes,
+                dominantType: summary.dominantType,
+                dominantTypeLabel: summary.dominantTypeLabel,
+                typeFamily: summary.typeFamily,
+                partner,
+                viewMode: "all",
+            };
+        });
+}
+
+function buildBalanceTrades(importsData, exportsData, focusCountry) {
+    const importMap = collectDirectionalSummaries(importsData, focusCountry, "imports");
+    const exportMap = collectDirectionalSummaries(exportsData, focusCountry, "exports");
+    const partners = new Set([...importMap.keys(), ...exportMap.keys()]);
+    const topn = TradeShared.getState().topn;
+
+    return Array.from(partners)
+        .map(partner => {
+            const importsSummary = importMap.get(partner) || createPartnerSummary(partner);
+            const exportsSummary = exportMap.get(partner) || createPartnerSummary(partner);
+            const importsCo2 = importsSummary.co2 || 0;
+            const exportsCo2 = exportsSummary.co2 || 0;
+            const netCo2 = exportsCo2 - importsCo2;
+            if (netCo2 === 0) return null;
+
+            const partnerLonShift = getPacificPartnerLonShift(focusCountry, partner);
+            const isSurplus = netCo2 > 0;
+            const dominantSummary = isSurplus ? exportsSummary : importsSummary;
+            prepareDirectionalSummary(importsSummary);
+            prepareDirectionalSummary(exportsSummary);
+            return {
+                from: isSurplus ? focusCountry : partner,
+                to: isSurplus ? partner : focusCountry,
+                fromLonShift: isSurplus ? 0 : partnerLonShift,
+                toLonShift: isSurplus ? partnerLonShift : 0,
+                co2: Math.abs(netCo2),
+                netCo2,
+                importsCo2,
+                exportsCo2,
+                importsAmount: importsSummary.amount || 0,
+                exportsAmount: exportsSummary.amount || 0,
+                importTopTypes: importsSummary.topTypes || [],
+                exportTopTypes: exportsSummary.topTypes || [],
+                topTypes: dominantSummary.topTypes || [],
+                dominantType: dominantSummary.dominantType || "",
+                dominantTypeLabel: dominantSummary.dominantTypeLabel || "Mixed trade",
+                typeFamily: dominantSummary.typeFamily || "mixed",
+                balanceSign: isSurplus ? "positive" : "negative",
+                partner,
+                viewMode: "all",
+            };
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.co2 - a.co2)
+        .slice(0, topn);
+}
+
+function createIndustryTrade(summary, focusCountry, flowDir, industryCode) {
+    const partner = summary.partner;
+    const partnerLonShift = getPacificPartnerLonShift(focusCountry, partner);
+    const normalizedIndustry = normalizeCode(industryCode) || ALL_INDUSTRY_VALUE;
+    const visibleIndustryCode = normalizedIndustry === ALL_INDUSTRY_VALUE
+        ? (summary.dominantType || ALL_INDUSTRY_VALUE)
+        : normalizedIndustry;
+
+    return {
+        from: flowDir === "imports" ? partner : focusCountry,
+        to: flowDir === "imports" ? focusCountry : partner,
+        fromLonShift: flowDir === "imports" ? partnerLonShift : 0,
+        toLonShift: flowDir === "exports" ? partnerLonShift : 0,
+        co2: summary.co2,
+        amount: summary.amount,
+        topTypes: summary.topTypes,
+        dominantType: summary.dominantType,
+        dominantTypeLabel: summary.dominantTypeLabel,
+        typeFamily: summary.typeFamily,
+        partner,
+        flowDir,
+        curveSweep: flowDir === "imports" ? 0 : 1,
+        industryCode: visibleIndustryCode,
+        industryLabel: normalizedIndustry === ALL_INDUSTRY_VALUE
+            ? (summary.dominantTypeLabel || "All exporting industries")
+            : industryLabel(normalizedIndustry),
+        viewMode: "industry",
+    };
+}
+
+function buildIndustryTrades(importsData, exportsData, focusCountry, industryCode, industryFlowDir) {
+    const selectedIndustryCode = normalizeCode(industryCode) || ALL_INDUSTRY_VALUE;
+    const selectedFlowDir = VALID_INDUSTRY_FLOW_DIRS.has(industryFlowDir) ? industryFlowDir : "both";
+    const importsMap = collectDirectionalSummaries(importsData, focusCountry, "imports", { industryCode: selectedIndustryCode });
+    const exportsMap = collectDirectionalSummaries(exportsData, focusCountry, "exports", { industryCode: selectedIndustryCode });
+    const topn = TradeShared.getState().topn;
+    const rankedPartners = Array.from(new Set([...importsMap.keys(), ...exportsMap.keys()]))
+        .map(partner => {
+            const importsSummary = importsMap.get(partner) || createPartnerSummary(partner);
+            const exportsSummary = exportsMap.get(partner) || createPartnerSummary(partner);
+            const amount = selectedFlowDir === "imports"
+                ? (importsSummary.amount || 0)
+                : selectedFlowDir === "exports"
+                    ? (exportsSummary.amount || 0)
+                    : (importsSummary.amount || 0) + (exportsSummary.amount || 0);
+            const metric = selectedFlowDir === "imports"
+                ? (importsSummary.co2 || 0)
+                : selectedFlowDir === "exports"
+                    ? (exportsSummary.co2 || 0)
+                    : (importsSummary.co2 || 0) + (exportsSummary.co2 || 0);
+            return {
+                partner,
+                amount,
+                metric,
+            };
+        })
+        .filter(entry => entry.amount > 0 || entry.metric > 0)
+        .sort((a, b) => (b.amount - a.amount) || (b.metric - a.metric))
+        .slice(0, topn)
+        .map(entry => entry.partner);
+
+    const trades = [];
+    rankedPartners.forEach(partner => {
+        const importsSummary = importsMap.get(partner);
+        const exportsSummary = exportsMap.get(partner);
+        if (selectedFlowDir !== "exports" && importsSummary && (importsSummary.amount > 0 || importsSummary.co2 > 0)) {
+            trades.push(createIndustryTrade(importsSummary, focusCountry, "imports", selectedIndustryCode));
+        }
+        if (selectedFlowDir !== "imports" && exportsSummary && (exportsSummary.amount > 0 || exportsSummary.co2 > 0)) {
+            trades.push(createIndustryTrade(exportsSummary, focusCountry, "exports", selectedIndustryCode));
+        }
+    });
+
+    return trades.sort((a, b) => (b.amount - a.amount) || (b.co2 - a.co2));
+}
+
+function getTradeWidthValue(trade) {
+    return trade.viewMode === "industry"
+        ? (parseFloat(trade.amount) || 0)
+        : (parseFloat(trade.co2) || 0);
+}
+
+function getWidthScale(trades) {
+    const maxValue = d3.max(trades, getTradeWidthValue) || 0;
+    const minValue = d3.min(trades, getTradeWidthValue) || 0;
+    if (maxValue === minValue) {
+        return () => (maxValue > 0 ? 8 : 0);
+    }
+    return d3.scaleLinear()
+        .domain([minValue, maxValue])
+        .range([1.5, 14]);
+}
+
+function getBalanceColorScale(trades, sign) {
+    const signedTrades = trades.filter(trade => trade.balanceSign === sign);
+    const maxMagnitude = d3.max(signedTrades, d => d.co2) || 0;
+    const darkColor = sign === "negative" ? BALANCE_NEGATIVE_DARK : BALANCE_POSITIVE_DARK;
+    const lightColor = sign === "negative" ? BALANCE_NEGATIVE_LIGHT : BALANCE_POSITIVE_LIGHT;
+
+    if (maxMagnitude <= 0) {
+        return () => darkColor;
+    }
+
+    return magnitude => {
+        const t = Math.max(0, Math.min(1, magnitude / maxMagnitude));
+        return d3.interpolateRgb(darkColor, lightColor)(t);
+    };
+}
+
+function getTradeTypeStyle(trade, flowDir, negativeBalanceColor, positiveBalanceColor) {
+    const family = TYPE_STYLE_MAP[trade.typeFamily] || TYPE_STYLE_MAP.mixed;
+    const accent = typeColorScale(trade.dominantType || trade.partner);
+    const flowBaseColor = FLOW_BASE_COLORS[flowDir] || FLOW_BASE_COLORS.imports;
+    let color = flowDir === "balance"
+        ? (trade.balanceSign === "negative" ? negativeBalanceColor(trade.co2) : positiveBalanceColor(trade.co2))
+        : d3.interpolateRgb(flowBaseColor, accent)(0.35);
+    let markerPath = family.markerPath;
+
+    if (trade.viewMode === "industry") {
+        color = FLOW_BASE_COLORS[trade.flowDir] || FLOW_BASE_COLORS.imports;
+        markerPath = trade.flowDir === "imports"
+            ? INDUSTRY_IMPORT_ARROW_HEAD_PATH
+            : INDUSTRY_EXPORT_ARROW_HEAD_PATH;
+    }
+
+    return {
+        color,
+        dasharray: family.dasharray,
+        markerPath,
+        typeFamilyLabel: family.label,
+        swatchStyle: family.swatchStyle,
+    };
+}
+
+function getArrowMarkerSize(strokeWidth) {
+    return Math.max(11, Math.min(20, 9 + (strokeWidth * 0.58)));
+}
+
+function getArrowMarkerRefX(strokeWidth) {
+    return Math.max(8.6, Math.min(9.8, 8.6 + (strokeWidth * 0.08)));
+}
+
+// ---------------------------------------------------------------------------
+// Render arrows
+// ---------------------------------------------------------------------------
+function renderArrows(trades, focusCountry, flowDir) {
+    g.selectAll("*").remove();
+    svg.selectAll("defs").remove();
+
+    if (trades.length === 0) return;
+
+    const widthScale = getWidthScale(trades);
+    const negativeBalanceColor = getBalanceColorScale(trades, "negative");
+    const positiveBalanceColor = getBalanceColorScale(trades, "positive");
+
+    // Single <defs> for all markers
+    const defs = svg.append("defs");
+
+    function bindArrowInteractions(selection, trade) {
+        selection
+            .on("mouseover", function(evt) {
+                map.getContainer().style.cursor = "pointer";
+                applyHighlight(trade.partner, { trade });
+                showTooltip(trade, focusCountry, flowDir, evt);
+                scheduleSankeyHoverUpdate(trade);
+            })
+            .on("mousemove", function(evt) {
+                moveTooltip(evt);
+            })
+            .on("mouseout", function(evt) {
+                map.getContainer().style.cursor = "";
+                const relatedTarget = evt.relatedTarget;
+                if (relatedTarget instanceof Element && tooltip.contains(relatedTarget)) {
+                    return;
+                }
+                hideTooltip();
+                selectedArrow ? applyHighlight(selectedArrow, { trade: selectedTrade }) : clearHighlight();
+                cancelSankeyHoverUpdate();
+            })
+            .on("click", function(evt) {
+                if (evt && typeof evt.stopPropagation === "function") {
+                    evt.stopPropagation();
+                }
+                if (selectedArrow === trade.partner) {
+                    selectedArrow = null;
+                    selectedTrade = null;
+                    clearHighlight();
+                } else {
+                    selectedArrow = trade.partner;
+                    selectedTrade = trade;
+                    applyHighlight(trade.partner, { trade });
+                }
+            });
+    }
+
+    trades.forEach((trade, i) => {
+        const pathId   = `trade-path-${i}`;
+        const markerId = `arrowhead-${i}`;
+        const effectiveFlowDir = trade.viewMode === "industry" ? trade.flowDir : flowDir;
+        const style    = getTradeTypeStyle(trade, effectiveFlowDir, negativeBalanceColor, positiveBalanceColor);
+        const color    = style.color;
+        const sw       = widthScale(getTradeWidthValue(trade));
+        const markerSize = getArrowMarkerSize(sw);
+        const markerRefX = getArrowMarkerRefX(sw);
+
+        trade.strokeColor = color;
+        trade.strokeDasharray = style.dasharray;
+        trade.markerPath = style.markerPath;
+        trade.typeFamilyLabel = style.typeFamilyLabel;
+        trade.swatchStyle = style.swatchStyle;
+
+        defs.append("marker")
+            .attr("id", markerId)
+            .attr("viewBox", "0 -6 14 12")
+            .attr("refX", markerRefX).attr("refY", 0)
+            .attr("markerUnits", "userSpaceOnUse")
+            .attr("markerWidth", markerSize).attr("markerHeight", markerSize)
+            .attr("overflow", "visible")
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", trade.markerPath)
+            .attr("fill", color)
+            .attr("stroke", "none")
+            .attr("opacity", 0.88);
+
+        const path = g.append("path")
+            .datum(trade)
+            .attr("id", pathId)
+            .attr("class", `leaflet-interactive arrow arrow-${trade.partner}`)
+            .attr("d", drawCurve(trade))
+            .attr("stroke", color)
+            .attr("stroke-width", sw)
+            .attr("data-base-sw", sw)
+            .attr("data-partner", trade.partner)
+            .attr("stroke-dasharray", trade.strokeDasharray || null)
+            .attr("marker-end", `url(#${markerId})`)
+            .style("opacity", NORMAL_OPACITY);
+
+        const hitPath = g.append("path")
+            .datum(trade)
+            .attr("class", `leaflet-interactive arrow-hit arrow-${trade.partner}`)
+            .attr("d", drawCurve(trade))
+            .attr("stroke-width", Math.max(14, sw + 10))
+            .attr("data-base-sw", sw)
+            .attr("data-partner", trade.partner)
+            .style("opacity", 0.001);
+
+        bindArrowInteractions(path, trade);
+        bindArrowInteractions(hitPath, trade);
+
+        const flipLabel = labelNeedsFlip(path.node());
+        const labelPathId = `${pathId}-label`;
+
+        g.append("path")
+            .datum(trade)
+            .attr("id", labelPathId)
+            .attr("class", `label-path arrow-${trade.partner}`)
+            .attr("d", drawLabelCurve(trade, flipLabel))
+            .attr("fill", "none")
+            .attr("stroke", "none")
+            .attr("data-flip-label", flipLabel ? "true" : "false");
+
+        g.append("text")
+            .attr("class", `arrow-label arrow-${trade.partner}`)
+            .append("textPath")
+            .attr("xlink:href", `#${labelPathId}`)
+            .attr("startOffset", flipLabel ? "58%" : "42%")
+            .attr("class", "label-text")
+            .attr("text-anchor", "middle")
+            .text(trade.partner);
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Build checkboxes
+// ---------------------------------------------------------------------------
+function buildCheckboxes(trades, focusCountry, flowDir) {
+    const container = document.getElementById("source-filters");
+    container.innerHTML = "";
+    if (trades.length === 0) return;
+
+    const header = document.createElement("div");
+    header.style.cssText = "font-size:11px;font-weight:600;margin-bottom:6px;color:#333;";
+    header.textContent = currentIndustryMode === "industry"
+        ? "Toggle trade partners:"
+        : flowDir === "imports"
+            ? "Toggle exporters:"
+            : flowDir === "exports"
+                ? "Toggle importers:"
+                : "Toggle balance partners:";
+    container.appendChild(header);
+
+    const displayTrades = currentIndustryMode === "industry"
+        ? Array.from(trades.reduce((partnerMap, trade) => {
+            if (!partnerMap.has(trade.partner)) {
+                partnerMap.set(trade.partner, {
+                    partner: trade.partner,
+                    importsAmount: 0,
+                    exportsAmount: 0,
+                    importsMetric: 0,
+                    exportsMetric: 0,
+                    totalAmount: 0,
+                    totalMetric: 0,
+                    strokeColor: trade.strokeColor,
+                    swatchStyle: trade.swatchStyle,
+                    typeFamilyLabel: trade.typeFamilyLabel,
+                });
+            }
+            const summary = partnerMap.get(trade.partner);
+            if (trade.flowDir === "imports") {
+                summary.importsAmount += trade.amount || 0;
+                summary.importsMetric += trade.co2 || 0;
+            } else {
+                summary.exportsAmount += trade.amount || 0;
+                summary.exportsMetric += trade.co2 || 0;
+            }
+            summary.totalAmount += trade.amount || 0;
+            summary.totalMetric += trade.co2 || 0;
+            return partnerMap;
+        }, new Map()).values()).sort((a, b) => b.totalAmount - a.totalAmount)
+        : trades;
+
+    displayTrades.forEach(trade => {
+        const label    = document.createElement("label");
+        const checkbox = document.createElement("input");
+        const swatch   = document.createElement("span");
+        const copy     = document.createElement("span");
+        const topline  = document.createElement("span");
+        const name     = document.createElement("span");
+        const meta     = document.createElement("span");
+        checkbox.type    = "checkbox";
+        checkbox.checked = true;
+        checkbox.value   = trade.partner;
+        label.dataset.partner = trade.partner;
+        label.style.setProperty("--row-accent", trade.strokeColor || "#5b7cff");
+        swatch.className = "filter-swatch";
+        swatch.style.borderTopColor = trade.strokeColor || "#5b7cff";
+        swatch.style.borderTopStyle = trade.swatchStyle || "solid";
+        copy.className = "filter-copy";
+        topline.className = "filter-topline";
+        name.className = "filter-name";
+        meta.className = "filter-meta";
+        name.textContent = `${countryLabel(trade.partner)} (${trade.partner})`;
+        meta.textContent = currentIndustryMode === "industry"
+            ? currentIndustryFlowDir === "imports"
+                ? `Imports ${fmtAmountValue(trade.importsAmount || 0)} | ${fmtIndicator(trade.importsMetric || trade.totalMetric || 0)}`
+                : currentIndustryFlowDir === "exports"
+                    ? `Exports ${fmtAmountValue(trade.exportsAmount || 0)} | ${fmtIndicator(trade.exportsMetric || trade.totalMetric || 0)}`
+                    : [
+                        trade.importsAmount > 0 ? `Imports ${fmtAmountValue(trade.importsAmount)}` : "",
+                        trade.exportsAmount > 0 ? `Exports ${fmtAmountValue(trade.exportsAmount)}` : "",
+                        fmtIndicator(trade.totalMetric || 0),
+                      ].filter(Boolean).join(" | ")
+            : flowDir === "balance"
+                ? `${trade.netCo2 >= 0 ? "Net exporter" : "Net importer"} | ${trade.dominantTypeLabel || "Mixed trade"} | ${fmtIndicator(trade.co2)}`
+                : `${trade.dominantTypeLabel || "Mixed trade"} | ${fmtIndicator(trade.co2)} | ${fmtAmountValue(trade.amount || 0)}`;
+
+        checkbox.addEventListener("change", function() {
+            const vis = this.checked ? "visible" : "hidden";
+            d3.selectAll(`.arrow-${trade.partner}`).attr("visibility", vis);
+        });
+
+        label.appendChild(checkbox);
+        topline.appendChild(swatch);
+        topline.appendChild(name);
+        copy.appendChild(topline);
+        copy.appendChild(meta);
+        label.appendChild(copy);
+
+        label.addEventListener("mouseenter", () => applyHighlight(trade.partner, { scroll: false }));
+        label.addEventListener("mouseleave", () => {
+            selectedArrow ? applyHighlight(selectedArrow, { trade: selectedTrade }) : clearHighlight();
+        });
+
+        container.appendChild(label);
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Load CSV — with cache
+// ---------------------------------------------------------------------------
+function setStatus(msg) {
+    document.getElementById("status-msg").textContent = msg;
+}
+
+function renderPartnerChart(data, focusCountry, flowDir) {
+    var state = TradeShared.getState();
+    var chartData = data;
+    var chartFlow = flowDir;
+    if (currentIndustryMode === "industry") {
+        chartData = null;
+    }
+    TradePartner.render(chartData, {
+        country: focusCountry,
+        otherCountry: "",
+        year: state.year || "2022",
+        flow: chartFlow,
+        metric: state.metric || "amount",
+        currency: state.currency || "EUR",
+        industryLabelMode: "",
+        topn: state.topn || 10
+    });
+}
+
+function processAndRender(data, focusCountry, flowDir) {
+    let trades = [];
+
+    if (currentIndustryMode === "industry") {
+        trades = buildIndustryTrades(data.importsData, data.exportsData, focusCountry, currentIndustryCode, currentIndustryFlowDir);
+    } else if (flowDir === "imports") {
+        trades = buildDirectionalTrades(collectDirectionalSummaries(data, focusCountry, flowDir), focusCountry, flowDir);
+    } else if (flowDir === "exports") {
+        trades = buildDirectionalTrades(collectDirectionalSummaries(data, focusCountry, flowDir), focusCountry, flowDir);
+    } else {
+        trades = buildBalanceTrades(data.importsData, data.exportsData, focusCountry);
+    }
+
+    if (trades.length === 0) { setStatus("No data found."); renderPartnerChart(null, focusCountry, flowDir); return; }
+
+    const arrow = currentIndustryMode === "industry"
+        ? currentIndustryFlowDir === "imports"
+            ? `${trades.length} import arrows for ${getSelectedIndustryLabel(currentIndustryCode)}`
+            : currentIndustryFlowDir === "exports"
+                ? `${trades.length} export arrows for ${getSelectedIndustryLabel(currentIndustryCode)}`
+                : `${trades.filter(trade => trade.flowDir === "imports").length} import arrows and ${trades.filter(trade => trade.flowDir === "exports").length} export arrows for ${getSelectedIndustryLabel(currentIndustryCode)}`
+        : flowDir === "imports"
+            ? `${trades.length} exporters \u2192 ${countryLabel(focusCountry)}`
+            : flowDir === "exports"
+                ? `${countryLabel(focusCountry)} \u2192 ${trades.length} importers`
+                : `${trades.filter(trade => trade.netCo2 > 0).length} surplus / ${trades.filter(trade => trade.netCo2 < 0).length} deficit partners`;
+    setStatus(arrow);
+
+    const legendDir = currentIndustryMode === "industry"
+        ? currentIndustryFlowDir === "imports"
+            ? "blue imports for the selected industry"
+            : currentIndustryFlowDir === "exports"
+                ? "orange exports for the selected industry"
+                : "blue imports + orange exports for the selected industry"
+        : flowDir === "balance"
+            ? "net exporter \u2192 net importer"
+            : "exporter \u2192 importer";
+    document.getElementById("legend-dir").textContent = legendDir;
+    document.getElementById("legend-metric").textContent =
+        "Arrow thickness = " + (currentIndustryMode === "industry" ? "quantity traded" : indicatorLabel()) + " \u00B7 ";
+    document.getElementById("legend-style").textContent = currentIndustryMode === "industry"
+        ? currentIndustryFlowDir === "both"
+            ? "Color and arrowhead shape distinguish imports from exports. Most lines stay solid, with only service-heavy flows using a light dash."
+            : `The ${currentIndustryFlowDir === "imports" ? "import" : "export"} selection keeps the same quantity scaling and simplified line styles.`
+        : flowDir === "balance"
+            ? "Green arrows show net export advantage, red arrows show net import dependence, and line styling stays mostly solid for readability."
+            : `Base color tracks ${flowDir === "imports" ? "imports" : "exports"}, while the tint reflects the dominant trade type. Only service-heavy flows use a light dash.`;
+
+    renderArrows(trades, focusCountry, flowDir);
+    buildCheckboxes(trades, focusCountry, flowDir);
+    renderPartnerChart(data, focusCountry, flowDir);
+}
+
+function fetchTradeCsv(focusCountry, flowDir) {
+    const year = TradeShared.getState().year || "2022";
+    const cacheKey = `${year}/${focusCountry}/${flowDir}`;
+    if (csvCache.has(cacheKey)) {
+        return Promise.resolve(csvCache.get(cacheKey));
+    }
+
+    const url = `https://raw.githubusercontent.com/ModelEarth/trade-data/main/year/${year}/${focusCountry}/${flowDir}/trade_impact.csv`;
+    return d3.csv(url).then(function(data) {
+        csvCache.set(cacheKey, data);
+        return data;
+    });
+}
+
+function loadFlows(focusCountry, flowDir) {
+    const year = TradeShared.getState().year || "2022";
+    currentFocusCountry = focusCountry;
+    selectedArrow = null;
+    selectedTrade = null;
+    hideTooltip();
+    tradeRegionHighlightLayer.clearLayers();
+    g.selectAll("*").remove();
+    svg.selectAll("defs").remove();
+    document.getElementById("source-filters").innerHTML = "";
+    centerMapForCountry(focusCountry);
+
+    setStatus("Loading\u2026");
+
+    const needsDualFlowData = currentIndustryMode === "industry" || flowDir === "balance";
+    const loadRequest = needsDualFlowData
+        ? Promise.all([
+            fetchTradeCsv(focusCountry, "imports"),
+            fetchTradeCsv(focusCountry, "exports"),
+        ]).then(function([importsData, exportsData]) {
+            return { importsData, exportsData };
+        })
+        : fetchTradeCsv(focusCountry, flowDir);
+
+    Promise.all([
+        loadIndustryNamesForYear(year),
+        loadRequest,
+    ]).then(function([_, data]) {
+        syncIndustryOptions(currentIndustryCode);
+        processAndRender(data, focusCountry, flowDir);
+    }).catch(function(err) {
+        setStatus("Error loading data.");
+        renderPartnerChart(null, focusCountry, flowDir);
+        console.error("Trade flow fetch failed:", err);
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Country selector + flow direction toggle
+// ---------------------------------------------------------------------------
+function resetSharedTradeControls() {
+    const factorSelect = document.getElementById("factor");
+    const currencySelect = document.getElementById("trade-currency-select");
+    const topnSlider = document.getElementById("trade-topn-slider");
+    const topnLabel = document.getElementById("trade-topn-label");
+
+    if (factorSelect) {
+        factorSelect.value = "amount";
+        factorSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    if (currencySelect) {
+        currencySelect.value = "EUR";
+        currencySelect.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    if (topnSlider) {
+        topnSlider.value = FILTER_DEFAULTS.inflows;
+        if (topnLabel) topnLabel.textContent = FILTER_DEFAULTS.inflows;
+        topnSlider.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+}
+
+function clearAllFilters() {
+    clearFilterCache();
+    if (typeof updateHash === "function") {
+        updateHash({}, true, FILTER_HASH_KEYS);
+    }
+    setIndustryModeState(FILTER_DEFAULTS.view);
+    setIndustrySelectionState(FILTER_DEFAULTS.industry);
+    setIndustryFlowState(FILTER_DEFAULTS.industryflow);
+    setFlowDirState(FILTER_DEFAULTS.type);
+    setSelectedCountryValue(FILTER_DEFAULTS.country);
+    resetSharedTradeControls();
+    writeFilterState(Object.assign({}, FILTER_DEFAULTS));
+    loadFlows(FILTER_DEFAULTS.country, FILTER_DEFAULTS.type);
+}
+
+document.getElementById("clear-filters-btn").addEventListener("click", clearAllFilters);
+
+// ---------------------------------------------------------------------------
+// Page config gear: toggle the settings panel, and a Margins / No Margins
+// layout setting persisted to localStorage.
+// ---------------------------------------------------------------------------
+(function setupPageConfig() {
+    const showConfig = document.getElementById("showConfig");
+    const pageConfig = document.getElementById("pageConfig");
+    const marginsToggleBtn = document.getElementById("marginsToggleBtn");
+    const marginsToggleText = document.getElementById("marginsToggleText");
+    if (!showConfig || !pageConfig || !marginsToggleBtn) return;
+
+    function setPanelOpen(isOpen) {
+        pageConfig.classList.toggle("active", isOpen);
+        showConfig.classList.toggle("active", isOpen);
+        showConfig.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+
+    showConfig.addEventListener("click", function(evt) {
+        evt.stopPropagation();
+        setPanelOpen(!pageConfig.classList.contains("active"));
+    });
+
+    pageConfig.addEventListener("click", function(evt) {
+        evt.stopPropagation();
+    });
+
+    document.addEventListener("click", function() {
+        setPanelOpen(false);
+    });
+
+    function applyMargins(isOn) {
+        const mapWrapper = document.getElementById("map-wrapper");
+        if (mapWrapper) mapWrapper.classList.toggle("map-margins", isOn);
+        marginsToggleBtn.setAttribute("aria-pressed", isOn ? "true" : "false");
+        marginsToggleText.textContent = isOn ? "Margins" : "No Margins";
+    }
+
+    const savedMargins = localStorage.getItem("trade-map-margins") === "true";
+    applyMargins(savedMargins);
+
+    marginsToggleBtn.addEventListener("click", function(evt) {
+        evt.stopPropagation();
+        const nextOn = marginsToggleBtn.getAttribute("aria-pressed") !== "true";
+        applyMargins(nextOn);
+        localStorage.setItem("trade-map-margins", String(nextOn));
+        map.invalidateSize();
+    });
+})();
+
+document.getElementById("country-select").addEventListener("change", function() {
+    syncCountryToHash(this.value);
+    syncStateMapLink();
+    loadFlows(this.value, currentFlowDir);
+});
+
+viewModeSelect.addEventListener("change", function() {
+    if (!setIndustryModeState(this.value)) return;
+    syncIndustryModeToHash(currentIndustryMode);
+    syncIndustryCodeToHash(currentIndustryCode);
+    syncIndustryFlowDirToHash(currentIndustryFlowDir);
+    loadFlows(getSelectedCountryValue(), currentFlowDir);
+});
+
+industrySelect.addEventListener("change", function() {
+    setIndustrySelectionState(this.value);
+    syncIndustryModeToHash(currentIndustryMode);
+    syncIndustryCodeToHash(currentIndustryCode);
+    syncIndustryFlowDirToHash(currentIndustryFlowDir);
+    loadFlows(getSelectedCountryValue(), currentFlowDir);
+});
+
+directionSelect.addEventListener("change", function() {
+    if (currentIndustryMode === "industry") {
+        setIndustryFlowState(this.value);
+        syncIndustryModeToHash(currentIndustryMode);
+        syncIndustryCodeToHash(currentIndustryCode);
+        syncIndustryFlowDirToHash(currentIndustryFlowDir);
+    } else {
+        setFlowDirState(this.value);
+        syncFlowDirToHash(currentFlowDir);
+    }
+    loadFlows(document.getElementById("country-select").value, currentFlowDir);
+});
+
+map.on("click", function(evt) {
+    if (!clickShouldToggleZoom(evt)) return;
+    setScrollZoom(!map.scrollWheelZoom.enabled());
+});
+
+map.on("resize", function() {
+    centerMapForCountry(currentFocusCountry);
+});
+
+document.addEventListener("hashChangeEvent", function() {
+    const hash = getHash();
+    if (!hashHasFilterKey(hash)) {
+        clearFilterCache();
+    }
+    const filters = readFilterState();
+    const nextCountry = getHashCountry() || filters.country || getSelectedCountryValue();
+    const nextFlowDir = getHashFlowDir() || filters.type || currentFlowDir;
+    const nextIndustryMode = getHashIndustryMode() || filters.view || currentIndustryMode;
+    const nextIndustryCode = getHashIndustryCode() || filters.industry || currentIndustryCode;
+    const nextIndustryFlowDir = getHashIndustryFlowDir() || filters.industryflow || currentIndustryFlowDir;
+    const countryChanged = nextCountry !== currentFocusCountry;
+    const flowChanged = nextFlowDir !== currentFlowDir;
+    const industryModeChanged = nextIndustryMode !== currentIndustryMode;
+    const industryChanged = nextIndustryCode !== currentIndustryCode;
+    const industryFlowChanged = nextIndustryFlowDir !== currentIndustryFlowDir;
+
+    if (!countryChanged && !flowChanged && !industryModeChanged && !industryChanged && !industryFlowChanged) {
+        return;
+    }
+
+    if (
+        hash.country === window.priorHash?.country &&
+        hash.type === window.priorHash?.type &&
+        hash.view === window.priorHash?.view &&
+        hash.industry === window.priorHash?.industry &&
+        hash.industryflow === window.priorHash?.industryflow
+    ) {
+        return;
+    }
+
+    setIndustryModeState(nextIndustryMode);
+    setIndustrySelectionState(nextIndustryCode);
+    setIndustryFlowState(nextIndustryFlowDir);
+    applySelections(nextCountry, nextFlowDir);
+});
+
+TradePartner.initChart("partner-chart");
+
+// Initialize shared trade controls
+const _initHash = typeof getHash === 'function' ? getHash() : {};
+const _initSaved = readFilterState();
+const _initCurrency = _initHash.currency || _initSaved.currency || null;
+TradeShared.init({
+    years: ["2022"],
+    currencies: ["EUR"],
+    initialState: {
+        year: "2022",
+        metric: MAP_FACTOR_TO_METRIC[_initHash.factor || _initSaved.factor] || "amount",
+        currency: _initCurrency,
+        topn: parseInt(_initHash.inflows, 10) || parseInt(_initSaved.inflows, 10) || 15
+    }
+});
+
+// The map's height fills the viewport minus the shared controls bar above
+// it, since that bar's height isn't fixed (it wraps on narrow screens and
+// gains a currency dropdown once that loads). Re-measure on resize and
+// whenever its content could have changed size.
+function syncMapHeightToControls() {
+    const controls = document.getElementById("trade-shared-controls");
+    if (!controls) return;
+    document.documentElement.style.setProperty("--shared-controls-height", controls.offsetHeight + "px");
+    // Defer invalidateSize to the next frame so the browser has applied the
+    // new CSS height first — calling it synchronously reads the stale size
+    // and leaves Leaflet's tile grid under-filled until the next zoom/pan.
+    requestAnimationFrame(function() {
+        if (map && typeof map.invalidateSize === "function") map.invalidateSize();
+    });
+}
+syncMapHeightToControls();
+window.addEventListener("resize", syncMapHeightToControls);
+
+// Load full currency list and rates once #trade-currency-select is in the DOM
+waitForElm('#trade-currency-select').then(function() {
+    d3.csv('https://raw.githubusercontent.com/ModelEarth/trade-data/refs/heads/main/concordance/eur_annual_rates.csv')
+        .then(function(rows) {
+            const cols = (rows.columns || []).filter(function(c) { return c !== 'Year'; });
+            rows.forEach(function(row) {
+                const yr = String(row.Year || '').trim();
+                if (!yr) return;
+                const rates = {};
+                cols.forEach(function(c) {
+                    const v = parseFloat(row[c]);
+                    if (v > 0) rates[c] = v;
+                });
+                mapCurrencyRates[yr] = rates;
+            });
+            const codes = ['EUR'].concat(cols);
+            TradeShared.setCurrencies(codes);
+        })
+        .catch(function() {});
+});
+
+// Reload map when shared state changes; sync currency to hash + localStorage
+document.addEventListener("trade:change", function(evt) {
+    const state = (evt && evt.detail) || TradeShared.getState();
+    writeFilterState(currentFilterState({
+        factor: MAP_METRIC_TO_FACTOR[state.metric] || state.metric,
+        currency: state.currency || FILTER_DEFAULTS.currency,
+        inflows: String(state.topn || FILTER_DEFAULTS.inflows)
+    }));
+    loadFlows(currentFocusCountry, currentFlowDir);
+    syncMapHeightToControls();
+});
+
+setIndustryModeState(getHashIndustryMode() || _initSaved.view || "all");
+setIndustrySelectionState(getHashIndustryCode() || _initSaved.industry || ALL_INDUSTRY_VALUE);
+setIndustryFlowState(getHashIndustryFlowDir() || _initSaved.industryflow || "both");
+
+const initialFlowDir = getHashFlowDir() || _initSaved.type || getSelectedFlowDirValue();
+const initialCountry = getHashCountry() || _initSaved.country || getSelectedCountryValue();
+if (!applySelections(initialCountry, initialFlowDir)) {
+    applySelections(getSelectedCountryValue(), getSelectedFlowDirValue());
+}
+syncCountryToHash(getSelectedCountryValue());
+syncFlowDirToHash(currentFlowDir);
+syncIndustryModeToHash(currentIndustryMode);
+syncIndustryCodeToHash(currentIndustryCode);
+syncIndustryFlowDirToHash(currentIndustryFlowDir);
+
+window.addEventListener("resize", function () {
+    TradePartner.resize();
+});
 </script>
+
+<script>
+// =============================================================================
+// Sankey chart — integrated from io/charts/sankey/desktop/index.html
+//
+// Shared controls (Year, Factor, Currency, Inflows) are already rendered by
+// the map's TradeShared.init() call above. This script reads their values via
+// TradeShared.getState() and re-renders on every "trade:change" event so both
+// charts stay in sync. Sankey-specific controls use prefixed IDs to avoid
+// conflicts with the map's existing elements.
+// =============================================================================
+
+const SANKEY_REPO_OWNER  = "ModelEarth";
+const SANKEY_REPO_NAME   = "trade-data";
+const SANKEY_REPO_BRANCH = "main";
+const SANKEY_SUPPORTED_FLOWS = ["domestic", "imports", "exports"];
+const SANKEY_PATH_PATTERN = /^year\/([^/]+)\/([^/]+)\/(domestic|imports|exports)\/trade_impact\.csv$/;
+
+const SANKEY_METRICS = {
+    amount:           { label: "Amount Spent",       unit: "M EUR",      scale: 1,    sourceKeys: ["amount"],                                       scoreDirection: "higher" },
+    CO2_total:        { label: "CO₂ Emissions", unit: "Gt CO₂",scale: 1e12, sourceKeys: ["CO2_total"],                                   scoreDirection: "lower"  },
+    Water_total:      { label: "Water Use",          unit: "Gm³",   scale: 1e9,  sourceKeys: ["Water_total"],                                  scoreDirection: "lower"  },
+    Employment_total: { label: "Employment",         unit: "M jobs",     scale: 1e6,  sourceKeys: ["Employment_total","Employment_people_total"],   scoreDirection: "higher" }
+};
+
+const SANKEY_INDUSTRY_LABEL_MODES = { short: true, title: true, verbose: true };
+const SANKEY_FACTOR_TO_METRIC = { co2:"CO2_total", water:"Water_total", emp:"Employment_total", amt:"amount" };
+const SANKEY_METRIC_TO_FACTOR = { CO2_total:"co2", Water_total:"water", Employment_total:"emp", amount:"amt" };
+
+const SANKEY_SECTOR_NAMES = {
+    AGRIC:"Agriculture",AGRI:"Agriculture",FORE:"Forestry",FISH:"Fishing",COAL:"Coal Mining",
+    CRUDE:"Crude Oil & Gas",URAN:"Uranium Mining",IRON:"Iron Ore Mining",NFMET:"Non-ferrous Metal Ores",
+    STONE:"Stone Quarrying",SALT:"Salt Mining",NATUR:"Natural Resources",MINNG:"Mining & Quarrying",
+    FOOD:"Food Products",BEVER:"Beverages",TOBAC:"Tobacco",TEXTI:"Textiles",WEAR:"Wearing Apparel",
+    LEATH:"Leather & Footwear",WOOD:"Wood Products",PAPER:"Paper & Pulp",PRINT:"Printing & Publishing",
+    PETRO:"Petroleum Refining",NUCLE:"Nuclear Fuel",CHEMI:"Basic Chemicals",SPCHE:"Specialty Chemicals",
+    PHARMA:"Pharmaceuticals",FERTL:"Fertilizers",RUBBE:"Rubber & Plastics",PLAST:"Plastics",
+    GLASS:"Glass & Ceramics",CEMEN:"Cement & Concrete",STEEL:"Iron & Steel",NFMTL:"Non-ferrous Metals",
+    METAL:"Fabricated Metals",MACHI:"Machinery & Equipment",OFMAC:"Office Machinery",
+    ELECT:"Electrical Equipment",ELEC2:"Electricity",RADIO:"Radio & TV Equipment",
+    MEDIC:"Medical Instruments",MOTOR:"Motor Vehicles",SHIPS:"Shipbuilding",AIRCR:"Aircraft",
+    RAILW:"Railway Equipment",FURNI:"Furniture",RECYC:"Recycling",CONST:"Construction",
+    DISTR:"Trade & Distribution",HOTEL:"Hotels & Restaurants",TRANS:"Transport Services",
+    AIRTX:"Air Transport",WATRX:"Water Transport",POST:"Post & Telecom",FINAN:"Financial Services",
+    INSUR:"Insurance",REALE:"Real Estate",RESEA:"Research & Development",PUBLI:"Public Administration",
+    EDUCA:"Education",HEALT:"Health Services",SEWAG:"Sewage & Waste Treatment",GAS:"Gas Supply",
+    WATR:"Water Supply",GASES:"Industrial Gases",TRAN1:"Land Transport",TRAN2:"Water Transport",
+    TRAN3:"Air Transport",GASDI:"Gas Distribution",RETA1:"Retail Trade",PFERT:"Fertilizers & Nitrogen",
+    POSTT:"Post & Telecommunications",ALUM1:"Aluminium Production",VEGET:"Vegetable & Animal Oils",
+    BASIC:"Basic Pharmaceuticals",WHOLT:"Wholesale Trade",PAPPE:"Paper & Paperboard",
+    COALT:"Coal & Lignite",COKNG:"Coke & Refined Petroleum",ELECTR:"Electricity Distribution",
+    SEWWT:"Sewage & Waste Treatment",PUBAD:"Public Administration",ACTIV:"Business Activities",
+    RENTS:"Renting of Machinery"
+};
+
+// DOM references — all use sankey-prefixed IDs to avoid conflicts with the map
+const skCountrySelect      = document.getElementById("sankey-country-select");
+const skOtherCountryWrap   = document.getElementById("sankey-other-country-wrap");
+const skOtherCountryLabel  = document.getElementById("sankey-other-country-label");
+const skOtherCountrySelect = document.getElementById("sankey-other-country");
+const skFlowSelect         = document.getElementById("sankey-flow-select");
+const skIndustryLabelSelect= document.getElementById("sankey-industry-label-select");
+const skCsvPathLabel       = document.getElementById("sankey-csv-path-label");
+const skScoreHelpButton    = document.getElementById("sankey-score-help-button");
+const skScoreHelpPanel     = document.getElementById("sankey-score-help-panel");
+const skScoreHelpClose     = document.getElementById("sankey-score-help-close");
+const skChartDom           = document.getElementById("sankey-chart");
+const skChart              = echarts.init(skChartDom);
+
+// Shared controls come from the map's TradeShared panel — read-only here
+const skYearSelect     = document.getElementById("trade-year-select");
+const skMetricSelect   = document.getElementById("factor");
+const skCurrencySelect = document.getElementById("trade-currency-select");
+const skTopnSlider     = document.getElementById("trade-topn-slider");
+
+let skManifest = { countries:["US"], yearsByCountry:{US:["2022"]}, flowsByCountryYear:{"US|2022":["domestic"]}, defaultSelection:{country:"US",year:"2022",flow:"domestic"} };
+let skManifestPromise   = null;
+let skRawData           = null;
+let skRawDataKey        = "";
+let skPendingDataKey    = "";
+let skLoadToken         = 0;
+let skActiveSelection   = null;
+const skIndustryNameByYear = {};
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+function skNorm(v)    { return String(v||"").trim(); }
+function skNum(v)     { const n=Number(v); return isFinite(n)?n:0; }
+function skRepoRaw(p) { return "https://raw.githubusercontent.com/"+SANKEY_REPO_OWNER+"/"+SANKEY_REPO_NAME+"/"+SANKEY_REPO_BRANCH+"/"+p; }
+
+function skCurrencySymbol(code) {
+    const map={EUR:"€",USD:"$",GBP:"£",JPY:"¥",CNY:"¥"};
+    const k=skNorm(code).toUpperCase(); return map[k]||(k?k+" ":"");
+}
+
+function skFmtMagnitude(v) {
+    const n=skNum(v),abs=Math.abs(n);
+    const t=[{s:1e12,l:"Trillion"},{s:1e9,l:"Billion"},{s:1e6,l:"Million"},{s:1e3,l:"Thousand"}].find(x=>abs>=x.s);
+    if(!t) return n.toLocaleString(undefined,{maximumFractionDigits:0});
+    const sc=n/t.s,fd=Math.abs(sc)>=100?0:1,pr=Math.pow(10,fd);
+    return (Math.round(sc*pr)/pr).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:fd})+" "+t.l;
+}
+function skFmtCurrencyWord(v,code)    { return skCurrencySymbol(code)+skFmtMagnitude(skNum(v)*1e6); }
+function skFmtCurrencyCompact(v,code) {
+    const n=skNum(v)*1e6,sym=skCurrencySymbol(code);
+    const fmt=Math.abs(n)>=1e6?{notation:"compact",maximumFractionDigits:1}:{maximumFractionDigits:0};
+    return sym+n.toLocaleString(undefined,fmt);
+}
+
+function skSortYears(years) {
+    return years.slice().sort((a,b)=>{ const la=Number(a),lb=Number(b); return (isFinite(la)&&isFinite(lb)&&la!==lb)?la-lb:String(a).localeCompare(String(b)); });
+}
+
+async function skFetchJSON(url) {
+    const r=await fetch(url,{headers:{Accept:"application/json"}});
+    if(!r.ok) throw new Error("Cannot load "+url);
+    return r.json();
+}
+
+async function skFetchText(paths) {
+    for(const p of paths){try{const r=await fetch(p);if(r.ok)return{text:await r.text(),path:p};}catch(e){}}
+    return null;
+}
+
+// ---------------------------------------------------------------------------
+// Manifest
+// ---------------------------------------------------------------------------
+function skBuildManifest(paths) {
+    const countries=new Set(), ybc={}, fcy={};
+    paths.forEach(p=>{
+        const m=String(p||"").match(SANKEY_PATH_PATTERN);
+        if(!m)return;
+        const [,yr,co,fl]=[...m].map(skNorm);
+        if(!yr||!co||!fl)return;
+        countries.add(co);
+        if(!ybc[co])ybc[co]=[];
+        if(!ybc[co].includes(yr))ybc[co].push(yr);
+        const key=co+"|"+yr;
+        if(!fcy[key])fcy[key]=[];
+        if(!fcy[key].includes(fl))fcy[key].push(fl);
+    });
+    const sorted=Array.from(countries).sort();
+    sorted.forEach(c=>{ ybc[c]=skSortYears(ybc[c]||[]); });
+    Object.keys(fcy).forEach(k=>{ fcy[k].sort((a,b)=>SANKEY_SUPPORTED_FLOWS.indexOf(a)-SANKEY_SUPPORTED_FLOWS.indexOf(b)); });
+    const dc=sorted.includes("US")?"US":(sorted[0]||"US");
+    const dy=(ybc[dc]||[]);
+    const dyr=dy.length?dy[dy.length-1]:"2022";
+    const df=(fcy[dc+"|"+dyr]||[]);
+    const dfl=df.includes("domestic")?"domestic":(df[0]||"domestic");
+    return {countries:sorted.length?sorted:["US"],yearsByCountry:Object.keys(ybc).length?ybc:{US:["2022"]},
+        flowsByCountryYear:Object.keys(fcy).length?fcy:{"US|2022":["domestic"]},
+        defaultSelection:{country:dc,year:dyr,flow:dfl}};
+}
+
+async function skLoadManifest() {
+    if(skManifestPromise)return skManifestPromise;
+    skManifestPromise=(async()=>{
+        if(window.TRADE_SANKEY_MANIFEST){skManifest=window.TRADE_SANKEY_MANIFEST;return skManifest;}
+        try{
+            const payload=await skFetchJSON("https://api.github.com/repos/"+SANKEY_REPO_OWNER+"/"+SANKEY_REPO_NAME+"/git/trees/"+SANKEY_REPO_BRANCH+"?recursive=1");
+            const paths=(Array.isArray(payload&&payload.tree)?payload.tree:[]).filter(e=>e&&e.type==="blob"&&SANKEY_PATH_PATTERN.test(e.path)).map(e=>e.path);
+            skManifest=skBuildManifest(paths);
+        }catch(e){/* keep default */}
+        window.TRADE_SANKEY_MANIFEST=skManifest;
+        return skManifest;
+    })();
+    return skManifestPromise;
+}
+
+// ---------------------------------------------------------------------------
+// Industry names
+// ---------------------------------------------------------------------------
+async function skLoadIndustryNames(year) {
+    const k=skNorm(year);
+    if(!k||skIndustryNameByYear[k])return;
+    const r=await skFetchText([skRepoRaw("year/"+k+"/industry.csv")]);
+    if(!r||!r.text)return;
+    const rows=d3.csvParse(r.text),map={};
+    rows.forEach(row=>{ const id=skNorm(row.industry_id); if(id)map[id]=String(row.name||"").trim()||id; });
+    skIndustryNameByYear[k]=map;
+}
+
+function skResolveIndustryNames(code) {
+    const key=skNorm(code);
+    const yearMap=skActiveSelection&&skActiveSelection.year?skIndustryNameByYear[skNorm(skActiveSelection.year)]:null;
+    const verbose=(yearMap&&yearMap[key])||key;
+    const title=SANKEY_SECTOR_NAMES[key]||String(verbose||"").replace(/\s*\([^)]*\)\s*$/g,"").split(";")[0].trim()||key;
+    return {code:key,title:title||key,verbose:verbose||title||key};
+}
+
+function skSectorLabel(code) {
+    const n=skResolveIndustryNames(code);
+    const mode=skActiveSelection&&skActiveSelection.industryLabelMode?skActiveSelection.industryLabelMode:"title";
+    if(mode==="short")return n.code;
+    if(mode==="verbose")return n.verbose;
+    return n.title;
+}
+
+function skDisplayIndustry(code) {
+    const n=skResolveIndustryNames(code),l=skSectorLabel(code);
+    return l!==n.code?l+" ("+n.code+")":n.code;
+}
+
+function skWrapLabel(text,max) {
+    const words=String(text||"").split(/\s+/).filter(Boolean);
+    if(!words.length)return"";
+    const lines=[];let cur="";
+    words.forEach(w=>{ if(!cur)cur=w; else if(cur.length+1+w.length<=max)cur+=" "+w; else{lines.push(cur);cur=w;} });
+    if(cur)lines.push(cur);
+    return lines.join("\n");
+}
+
+// ---------------------------------------------------------------------------
+// Metric helpers — read from shared TradeShared state
+// ---------------------------------------------------------------------------
+function skSelectedCurrency() { return (skActiveSelection&&skActiveSelection.currency)||(skCurrencySelect&&skCurrencySelect.value)||"EUR"; }
+
+function skMetricUnit(key) {
+    if(key==="amount")return "M "+skSelectedCurrency();
+    return (SANKEY_METRICS[key]&&SANKEY_METRICS[key].unit)||"";
+}
+function skMetricScale(key) {
+    if(key==="amount")return 1;
+    return (SANKEY_METRICS[key]&&SANKEY_METRICS[key].scale)||1;
+}
+function skDisplayMetricValue(v,key) {
+    if(key==="amount"){
+        const rate=TradeShared.currencyRateForYear(skActiveSelection&&skActiveSelection.year,skSelectedCurrency());
+        return skNum(v)*rate;
+    }
+    return skNum(v);
+}
+function skFmtValue(v,key) {
+    const m=SANKEY_METRICS[key];
+    if(!m)return skNum(v).toLocaleString(undefined,{maximumFractionDigits:2});
+    if(key==="amount")return skFmtCurrencyWord(skDisplayMetricValue(v,key),skSelectedCurrency());
+    const sc=skDisplayMetricValue(v,key)/skMetricScale(key);
+    return (sc>=1000?sc.toLocaleString(undefined,{maximumFractionDigits:0}):sc.toLocaleString(undefined,{maximumFractionDigits:2}))+" "+skMetricUnit(key);
+}
+function skFmtCompact(v,key) {
+    const m=SANKEY_METRICS[key];
+    if(!m)return skNum(v).toLocaleString(undefined,{notation:"compact",maximumFractionDigits:1});
+    if(key==="amount")return skFmtCurrencyCompact(skDisplayMetricValue(v,key),skSelectedCurrency());
+    const sc=skDisplayMetricValue(v,key)/skMetricScale(key);
+    return sc.toLocaleString(undefined,{notation:"compact",maximumFractionDigits:1})+" "+skMetricUnit(key);
+}
+function skGetMetricValue(row,key) {
+    const m=SANKEY_METRICS[key]||{};
+    const keys=Array.isArray(m.sourceKeys)&&m.sourceKeys.length?m.sourceKeys:[key];
+    for(const k of keys){const v=skNum(row[k]);if(v)return v;}
+    return 0;
+}
+function skEdgeTooltip(link,metricKey) {
+    const k=SANKEY_METRICS[metricKey]?metricKey:"amount";
+    const lines=["<b>"+skDisplayIndustry(link.source)+"</b> &rarr; <b>"+skDisplayIndustry(link.target)+"</b>",
+        SANKEY_METRICS[k].label+": <b>"+skFmtValue(link.value,k)+"</b>"];
+    if(skActiveSelection&&skActiveSelection.flow!=="domestic"&&skActiveSelection.otherCountry)
+        lines.push((skActiveSelection.flow==="exports"?"To":"From")+" country: <b>"+skActiveSelection.otherCountry+"</b>");
+    Object.keys(SANKEY_METRICS).forEach(mk=>{ if(mk===k)return; const ev=skNum(link[mk]); if(ev>0)lines.push(SANKEY_METRICS[mk].label+": <b>"+skFmtValue(ev,mk)+"</b>"); });
+    return lines.join("<br/>");
+}
+
+function skNodeLabel(node,metricKey,opts) {
+    const label=skWrapLabel(skSectorLabel(node&&node.name),opts.labelWrapChars);
+    const nv=skNum(node&&(node.nodeValue||node.value));
+    return nv>0?label+" "+skFmtCompact(nv,metricKey):label;
+}
+
+// ---------------------------------------------------------------------------
+// Layout config
+// ---------------------------------------------------------------------------
+function skLayoutConfig(linkCount) {
+    const cw=Math.max(skChartDom&&skChartDom.clientWidth?skChartDom.clientWidth:0,760);
+    const ch=Math.max(skChartDom&&skChartDom.clientHeight?skChartDom.clientHeight:0,560);
+    const dp=Math.min(1,Math.max(0,(linkCount-10)/30));
+    const vp=Math.min(1,Math.max(0,((linkCount*24)/ch)-0.75));
+    const np=Math.min(1,Math.max(0,(980-cw)/340));
+    const p=Math.min(1,Math.max(0,Math.max(dp,vp,np*0.85)));
+    return {
+        nodeGap:Math.round(14-p*4),nodeWidth:Math.round(22-p*2),
+        right:(15+p*4).toFixed(1)+"%",labelFontSize:Math.round(12-p*3),
+        labelLineHeight:Math.round(14-p*2),labelWidth:Math.round(220-p*40),
+        labelWrapChars:Math.round(24-p*6),preferCompactAmount:p>0.1||linkCount>12
+    };
+}
+
+// ---------------------------------------------------------------------------
+// Status helpers
+// ---------------------------------------------------------------------------
+function skSetStatus(msg,isErr) {
+    const el=document.getElementById("sankey-status");
+    el.textContent=msg; el.style.color=isErr?"#a3412d":"";
+}
+function skSetPartnerStatus(msg,isErr) {
+    const el=document.getElementById("sankey-partner-chart-status");
+    el.textContent=msg; el.style.color=isErr?"#a3412d":"";
+}
+
+// ---------------------------------------------------------------------------
+// Control sync
+// ---------------------------------------------------------------------------
+function skSyncControlVisibility() {
+    const fl=skNorm(skFlowSelect.value);
+    const isTrade=fl==="imports"||fl==="exports";
+    skOtherCountryWrap.hidden=!isTrade;
+    skOtherCountrySelect.disabled=!isTrade;
+    skOtherCountryLabel.textContent=fl==="exports"?"To:":"From:";
+}
+
+function skSupportedFlows(country,year) {
+    const key=skNorm(country)+"|"+skNorm(year);
+    const f=skManifest.flowsByCountryYear&&skManifest.flowsByCountryYear[key];
+    return f&&f.length?f.slice():["domestic","imports","exports"];
+}
+
+function skSyncCountryOptions() {
+    skCountrySelect.innerHTML="";
+    (skManifest.countries||[]).forEach(c=>{ const o=document.createElement("option"); o.value=c; o.textContent=c; skCountrySelect.appendChild(o); });
+}
+
+function skSyncYearOptions(country,preferred) {
+    const years=skManifest.yearsByCountry[country]||[];
+    if(skYearSelect){
+        skYearSelect.innerHTML="";
+        years.forEach(y=>{ const o=document.createElement("option"); o.value=y; o.textContent=y; skYearSelect.appendChild(o); });
+        skYearSelect.value=years.includes(preferred)?preferred:(years[0]||"");
+    }
+}
+
+function skSyncFlowOptions(country,year,preferred) {
+    const flows=skSupportedFlows(country,year);
+    skFlowSelect.innerHTML="";
+    flows.forEach(f=>{ const o=document.createElement("option"); o.value=f; o.textContent=f.charAt(0).toUpperCase()+f.slice(1); skFlowSelect.appendChild(o); });
+    skFlowSelect.value=flows.includes(preferred)?preferred:(flows[0]||"domestic");
+}
+
+function skSyncOtherCountryOptions(country,preferred,availablePartners) {
+    const self=skNorm(country);
+    const fallback=(skManifest.countries||[]).filter(c=>skNorm(c)&&skNorm(c)!==self);
+    const partners=(availablePartners&&availablePartners.length?availablePartners:fallback)
+        .map(skNorm).filter((c,i,a)=>c&&c!==self&&a.indexOf(c)===i).sort();
+    skOtherCountrySelect.innerHTML="";
+    const all=document.createElement("option"); all.value=""; all.textContent="All"; skOtherCountrySelect.appendChild(all);
+    partners.forEach(p=>{ const o=document.createElement("option"); o.value=p; o.textContent=p; skOtherCountrySelect.appendChild(o); });
+    const resolved=partners.includes(skNorm(preferred))?skNorm(preferred):"";
+    skOtherCountrySelect.value=resolved;
+    return resolved;
+}
+
+// ---------------------------------------------------------------------------
+// Data helpers
+// ---------------------------------------------------------------------------
+function skPartnerCode(row,sel) {
+    const o=skNorm(row.region1),d=skNorm(row.region2),s=skNorm(sel.country);
+    if(sel.flow==="exports"){ if(d&&d!==s)return d; if(o&&o!==s)return o; return d||o; }
+    if(sel.flow==="imports"){ if(o&&o!==s)return o; if(d&&d!==s)return d; return o||d; }
+    return"";
+}
+
+function skAvailablePartners(rows,sel) {
+    const p=new Set();
+    (rows||[]).forEach(row=>{ const c=skPartnerCode(row,sel); if(c)p.add(c); });
+    return Array.from(p).sort();
+}
+
+function skRowMatches(row,sel) {
+    const other=skNorm(sel&&sel.otherCountry);
+    if(!other||!sel||sel.flow==="domestic")return true;
+    const s=skNorm(sel.country),r1=skNorm(row.region1),r2=skNorm(row.region2);
+    return(r1===s&&r2===other)||(r1===other&&r2===s);
+}
+
+function skRowsForSel(sel) { return(skRawData||[]).filter(row=>skRowMatches(row,sel)); }
+
+// ---------------------------------------------------------------------------
+// Sankey data building
+// ---------------------------------------------------------------------------
+function skFindBackEdges(links) {
+    const adj=new Map();
+    for(const l of links){ if(!adj.has(l.source))adj.set(l.source,[]); adj.get(l.source).push(l); }
+    const WHITE=0,GRAY=1,BLACK=2,color=new Map(),back=[];
+    function dfs(n){ color.set(n,GRAY); for(const l of(adj.get(n)||[])){ const c=color.get(l.target)||WHITE; if(c===GRAY)back.push(l); else if(c===WHITE)dfs(l.target); } color.set(n,BLACK); }
+    const nodes=new Set(); for(const l of links){nodes.add(l.source);nodes.add(l.target);}
+    for(const n of nodes)if(!color.get(n))dfs(n);
+    return back;
+}
+
+function skRemoveCycles(links) {
+    let rem=links.slice();
+    for(let g=0;g<links.length;g++){ const back=skFindBackEdges(rem); if(!back.length)break; const worst=back.reduce((m,e)=>e.value<m.value?e:m); rem=rem.filter(l=>l!==worst); }
+    return rem;
+}
+
+function skBuildSankeyData(metricKey,topN) {
+    const mks=Object.keys(SANKEY_METRICS),flowMap=new Map();
+    for(const row of skRowsForSel(skActiveSelection)){
+        const src=row.industry1,tgt=row.industry2;
+        if(!src||!tgt||src===tgt)continue;
+        const val=skGetMetricValue(row,metricKey);
+        if(!isFinite(val)||val<=0)continue;
+        const key=src+"\x00"+tgt;
+        const cur=flowMap.get(key)||{source:skNorm(src),target:skNorm(tgt),value:0,partnerTotals:{}};
+        cur.value+=val;
+        mks.forEach(mk=>{ cur[mk]=(cur[mk]||0)+skGetMetricValue(row,mk); });
+        if(skActiveSelection&&skActiveSelection.flow!=="domestic"){
+            const p=skPartnerCode(row,skActiveSelection);
+            if(p)cur.partnerTotals[p]=(cur.partnerTotals[p]||0)+val;
+        }
+        flowMap.set(key,cur);
+    }
+    const res=new Map();
+    for(const[key,ld]of flowMap){
+        const sep=key.indexOf("\x00"),src=key.slice(0,sep),tgt=key.slice(sep+1),rev=tgt+"\x00"+src;
+        if(res.has(rev)){if(ld.value>res.get(rev).value){res.delete(rev);res.set(key,ld);}}else res.set(key,ld);
+    }
+    let links=Array.from(res.entries()).sort((a,b)=>b[1].value-a[1].value).slice(0,topN).map(([,ld])=>{
+        const link={source:ld.source,target:ld.target,value:ld.value};
+        const pe=Object.entries(ld.partnerTotals||{});
+        if(pe.length){pe.sort((a,b)=>b[1]-a[1]);link.topPartner=pe[0][0];link.topPartnerValue=pe[0][1];}
+        mks.forEach(mk=>{link[mk]=ld[mk]||0;});
+        return link;
+    });
+    links=skRemoveCycles(links);
+    const nodeTotals=new Map();
+    for(const l of links){
+        const s=nodeTotals.get(l.source)||{incoming:0,outgoing:0};
+        const t=nodeTotals.get(l.target)||{incoming:0,outgoing:0};
+        s.outgoing+=l.value; t.incoming+=l.value;
+        nodeTotals.set(l.source,s); nodeTotals.set(l.target,t);
+    }
+    return{
+        nodes:Array.from(nodeTotals.entries()).map(([name,tots])=>{
+            const nv=Math.max(tots.incoming,tots.outgoing),isSink=tots.incoming>0&&tots.outgoing===0;
+            return{name,value:nv,nodeValue:nv,label:{position:isSink?"left":"right",align:isSink?"right":"left"}};
+        }),
+        links
+    };
+}
+
+// ---------------------------------------------------------------------------
+// Render
+// ---------------------------------------------------------------------------
+function skRender() {
+    if(!skRawData||!skActiveSelection)return;
+    const metric=SANKEY_METRICS[skActiveSelection.metric];
+    const{nodes,links}=skBuildSankeyData(skActiveSelection.metric,skActiveSelection.topn);
+    const layout=skLayoutConfig(links.length);
+    if(!links.length){
+        skSetStatus("No data available for this combination.",true);
+        skChart.clear();
+        return;
+    }
+    skChart.setOption({
+        tooltip:{trigger:"item",triggerOn:"mousemove",confine:true,
+            formatter:params=>params.dataType==="edge"?skEdgeTooltip(params.data,skActiveSelection.metric):"<b>"+skDisplayIndustry(params.name)+"</b>"},
+        series:[{
+            type:"sankey",layout:"none",layoutIterations:32,emphasis:{focus:"adjacency"},
+            nodeAlign:"left",nodeGap:layout.nodeGap,nodeWidth:layout.nodeWidth,
+            left:"1%",right:layout.right,top:"2%",bottom:"2%",
+            data:nodes,links,
+            label:{position:"right",fontSize:layout.labelFontSize,width:layout.labelWidth,
+                overflow:"break",lineHeight:layout.labelLineHeight,align:"left",
+                formatter:params=>skNodeLabel(params.data,skActiveSelection.metric,layout)},
+            edgeLabel:{show:false},
+            lineStyle:{color:"gradient",opacity:0.45,curveness:0.5},
+            itemStyle:{borderWidth:1,borderColor:"#aaa"}
+        }]
+    },true);
+    skChart.resize();
+    const pc=skActiveSelection.otherCountry?(skActiveSelection.flow==="exports"?" to ":" from ")+skActiveSelection.otherCountry:"";
+    skSetStatus("Showing top "+links.length+" "+skActiveSelection.flow+" flows by "+metric.label+" for "+skActiveSelection.country+pc+" "+skActiveSelection.year,false);
+
+}
+
+// ---------------------------------------------------------------------------
+// Data loading
+// ---------------------------------------------------------------------------
+async function skLoadSelection(sel) {
+    skActiveSelection=sel;
+    const selKey=[sel.country,sel.year,sel.flow].join("|");
+    const token=++skLoadToken;
+    skPendingDataKey=selKey;
+    if(skCsvPathLabel)skCsvPathLabel.textContent="trade-data/year/"+sel.year+"/"+sel.country+"/"+sel.flow+"/trade_impact.csv";
+    skSetPartnerStatus("");
+    skSetStatus("Loading data…",false);
+    await skLoadIndustryNames(sel.year);
+    const r=await skFetchText([skRepoRaw("year/"+sel.year+"/"+sel.country+"/"+sel.flow+"/trade_impact.csv")]);
+    if(token!==skLoadToken)return;
+    skPendingDataKey="";
+    if(!r||!r.text){
+        skRawData=null;skRawDataKey="";skChart.clear();
+        skSetStatus("Error loading data for "+selKey+".",true);
+        return;
+    }
+    skRawData=d3.csvParse(r.text);
+    const resolvedOther=skSyncOtherCountryOptions(sel.country,sel.otherCountry,skAvailablePartners(skRawData,sel));
+    skActiveSelection=Object.assign({},sel,{otherCountry:sel.flow==="domestic"?"":resolvedOther});
+    skRawDataKey=selKey;
+    skRender();
+}
+
+function skCurrentSelection() {
+    const shared=TradeShared.getState();
+    const year=shared.year||(skYearSelect&&skYearSelect.value)||"2022";
+    const country=skCountrySelect.value||skManifest.defaultSelection.country;
+    const flow=skFlowSelect.value||"domestic";
+    return{
+        country,
+        otherCountry:flow==="domestic"?"":skOtherCountrySelect.value||"",
+        year,
+        flow,
+        metric:shared.metric||"CO2_total",
+        currency:shared.currency||"EUR",
+        industryLabelMode:skIndustryLabelSelect.value||"title",
+        topn:Math.max(5,Math.min(50,shared.topn||15))
+    };
+}
+
+function skReload() { skLoadSelection(skCurrentSelection()); }
+
+// ---------------------------------------------------------------------------
+// Sankey-specific control events
+// ---------------------------------------------------------------------------
+skCountrySelect.addEventListener("change",function(){
+    skSyncOtherCountryOptions(this.value,skOtherCountrySelect.value);
+    skSyncFlowOptions(this.value,skYearSelect?skYearSelect.value:"2022",skFlowSelect.value);
+    skReload();
+});
+
+skFlowSelect.addEventListener("change",function(){
+    if(this.value==="domestic")skOtherCountrySelect.value="";
+    skSyncControlVisibility();
+    skReload();
+});
+
+skOtherCountrySelect.addEventListener("change",function(){
+    if(!skActiveSelection){skReload();return;}
+    skActiveSelection.otherCountry=skFlowSelect.value==="domestic"?"":(this.value||"");
+    skRender();
+});
+
+skIndustryLabelSelect.addEventListener("change",function(){
+    if(!skActiveSelection){skReload();return;}
+    skActiveSelection.industryLabelMode=this.value||"title";
+    skRender();
+});
+
+// Re-render whenever shared controls (Year/Factor/Currency/Inflows) change
+document.addEventListener("trade:change",function(){
+    if(!skManifest||!skManifest.countries.length)return;
+    const shared=TradeShared.getState();
+    const country=skCountrySelect.value||skManifest.defaultSelection.country;
+    const flow=skFlowSelect.value||"domestic";
+    const newSel={
+        country,
+        otherCountry:flow==="domestic"?"":skOtherCountrySelect.value||"",
+        year:shared.year||"2022",
+        flow,
+        metric:shared.metric||"CO2_total",
+        currency:shared.currency||"EUR",
+        industryLabelMode:skIndustryLabelSelect.value||"title",
+        topn:Math.max(5,Math.min(50,shared.topn||15))
+    };
+    // Only re-fetch if data-driving fields changed; otherwise just re-render
+    const dataKey=[newSel.country,newSel.year,newSel.flow].join("|");
+    if(skRawData&&(dataKey===skRawDataKey||dataKey===skPendingDataKey)){
+        skActiveSelection=newSel;
+        skRender();
+    }else{
+        skLoadSelection(newSel);
+    }
+});
+
+// Resize
+window.addEventListener("resize",function(){ skChart.resize(); TradePartner.resize(); });
+
+skScoreHelpButton.addEventListener("click",function(){ skScoreHelpPanel.removeAttribute("hidden"); this.setAttribute("hidden",""); });
+skScoreHelpClose.addEventListener("click",function(){ skScoreHelpPanel.setAttribute("hidden",""); skScoreHelpButton.removeAttribute("hidden"); });
+
+// ---------------------------------------------------------------------------
+// Boot
+// ---------------------------------------------------------------------------
+skLoadManifest().then(function(){
+    skSyncCountryOptions();
+    TradePartner.initCountryNameSwap(skCountrySelect);
+    TradePartner.initCountryNameSwap(skOtherCountrySelect);
+    const saved=JSON.parse(localStorage.getItem("sankey-state")||"{}");
+    const shared=TradeShared.getState();
+    const initCountry=saved.country||skManifest.defaultSelection.country;
+    const initYear=shared.year||saved.year||skManifest.defaultSelection.year;
+    const initFlow=saved.flow||skManifest.defaultSelection.flow;
+    skCountrySelect.value=initCountry;
+    skSyncFlowOptions(initCountry,initYear,initFlow);
+    skSyncControlVisibility();
+    skLoadSelection({
+        country:initCountry,
+        otherCountry:"",
+        year:initYear,
+        flow:initFlow,
+        metric:shared.metric||"CO2_total",
+        currency:shared.currency||"EUR",
+        industryLabelMode:"title",
+        topn:Math.max(5,Math.min(50,shared.topn||15))
+    });
+});
+</script>
+
 </body>
 </html>

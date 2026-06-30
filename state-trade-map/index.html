@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -31,7 +31,7 @@
             ? (pathSegments[0] || "")
             : "";
         const localsiteBase = isFile
-            ? (isLocalsiteProfileMirror ? "../../.." : "../../localsite")
+            ? (isLocalsiteProfileMirror ? "../../.." : "../../../localsite")
             : (localsiteMatch && isLocalhost
                 ? localsiteMatch[1]
                 : "https://cdn.jsdelivr.net/gh/ModelEarth/localsite@main");
@@ -62,7 +62,7 @@
         }
     });
     </script>
-    <script src="../state-trade-data.js"></script>
+    <script src="../../state-trade-data.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -193,7 +193,8 @@
         .toolbar-select-wrap[hidden] {
             display: none;
         }
-        #clear-filters-btn {
+        #clear-filters-btn,
+        .toolbar-link {
             padding: 6px 12px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
@@ -202,13 +203,16 @@
             color: #22314c;
             background: #fff;
             cursor: pointer;
+            text-decoration: none;
             transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
         }
-        #clear-filters-btn:hover {
+        #clear-filters-btn:hover,
+        .toolbar-link:hover {
             background: #f1f5fb;
             border-color: #94a3b8;
         }
-        #clear-filters-btn:active {
+        #clear-filters-btn:active,
+        .toolbar-link:active {
             background: #e2e8f0;
         }
         #industry-bar-note {
@@ -388,6 +392,59 @@
         #map-tooltip .tt-muted {
             color: rgba(255,255,255,0.78);
         }
+        .state-report-action {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin-left: 0.35em;
+        }
+        .state-report-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75em;
+            height: 1.75em;
+            border: 1px solid #cbd5e1;
+            border-radius: 999px;
+            background: #fff;
+            color: #334155;
+            font-size: 0.82em;
+            font-weight: 700;
+            line-height: 1;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+        }
+        .state-report-button:hover,
+        .state-report-button:focus {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            color: #0f172a;
+            text-decoration: none;
+            outline: none;
+        }
+        .state-report-menu {
+            position: absolute;
+            top: calc(100% + 0.35em);
+            right: 0;
+            z-index: 20;
+            display: none;
+            min-width: 9.5em;
+            padding: 0.45em 0.6em;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            background: #fff;
+            color: #1f2937;
+            font-size: 0.86em;
+            font-weight: 600;
+            line-height: 1.25;
+            white-space: nowrap;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+        }
+        .state-report-action:hover .state-report-menu,
+        .state-report-action:focus-within .state-report-menu {
+            display: block;
+        }
 
         .state-label {
             fill: #1f2937;
@@ -488,6 +545,7 @@
             <label class="toolbar-select-wrap" for="country-select">
                 <span id="country-label-text">Focus state</span>
                 <select id="country-select"></select>
+                <span id="selected-state-report-action"></span>
             </label>
             <label class="toolbar-select-wrap" for="metric-select">
                 <span>Indicator</span>
@@ -512,6 +570,8 @@
                     <option value="ALL">All industries</option>
                 </select>
             </label>
+            <a id="international-map-link" class="toolbar-link" href="index.html">International map</a>
+            <a id="state-sankey-link" class="toolbar-link" href="../../charts/sankey/state.html">State Sankey</a>
             <button type="button" id="clear-filters-btn" title="Reset filters and clear stored selections">Clear</button>
         </div>
         <div id="industry-bar-note">State fill scales with partner activity for the selected state. Switch to By industry to isolate one sector, and use the partner list to hide specific inbound or outbound links.</div>
@@ -653,6 +713,51 @@ function titleCase(value) {
 function stateLabel(code) {
     const normalized = normalizeCode(code);
     return appState.stateNames.get(normalized) || normalized;
+}
+
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function stateReportUrl(code) {
+    return "../../footprint/#state=" + encodeURIComponent(normalizeCode(code));
+}
+
+function stateSankeyUrl() {
+    const params = new URLSearchParams();
+    if (appState.selectedState) params.set("state", appState.selectedState);
+    if (appState.direction && appState.direction !== "outbound" && appState.direction !== "both") {
+        params.set("direction", appState.direction);
+    }
+    if (appState.metric && appState.metric !== "level") params.set("metric", appState.metric);
+    if (appState.viewMode === "industry" && appState.selectedIndustry && appState.selectedIndustry !== ALL_INDUSTRY_VALUE) {
+        params.set("industry", appState.selectedIndustry);
+    }
+    const hash = params.toString();
+    return "../../charts/sankey/state.html" + (hash ? "#" + hash : "");
+}
+
+function stateReportAction(code) {
+    const normalized = normalizeCode(code);
+    if (!normalized) {
+        return "";
+    }
+    const label = stateLabel(normalized);
+    return [
+        '<span class="state-report-action">',
+        '<a class="state-report-button" href="' + escapeHtml(stateReportUrl(normalized)) + '" aria-label="Explore state report for ' + escapeHtml(label) + '" title="Explore state report">&#8942;</a>',
+        '<span class="state-report-menu">Explore state report</span>',
+        "</span>"
+    ].join("");
+}
+
+function stateTooltipHeader(code) {
+    return '<b>' + escapeHtml(stateLabel(code)) + '</b>' + stateReportAction(code);
 }
 
 function metricDef() {
@@ -1022,6 +1127,8 @@ const partnerChart = echarts.init(document.getElementById("partner-chart"));
 
 const viewModeSelect = document.getElementById("view-mode-select");
 const stateSelect = document.getElementById("country-select");
+const selectedStateReportAction = document.getElementById("selected-state-report-action");
+const stateSankeyLink = document.getElementById("state-sankey-link");
 const metricSelect = document.getElementById("metric-select");
 const directionSelect = document.getElementById("direction-select");
 const industrySelect = document.getElementById("industry-select");
@@ -1297,10 +1404,13 @@ function renderPartnerChart(summary) {
         tooltip: {
             trigger: "axis",
             axisPointer: { type: "shadow" },
+            enterable: true,
             formatter: function (params) {
                 if (!params.length) return "";
                 const item = params[0];
-                return item.name + "<br>" + metricDef().label + ": <b>" + formatter(item.value) + "</b>";
+                const partner = partners[item.dataIndex];
+                const code = partner ? partner.code : "";
+                return stateTooltipHeader(code) + "<br>" + metricDef().label + ": <b>" + formatter(item.value) + "</b>";
             }
         },
         xAxis: {
@@ -1385,7 +1495,7 @@ function handleFlowEnter(event, row) {
     activeTooltipPartner = partner;
     applyHighlight(partner);
     showTooltip(clientPoint.x, clientPoint.y, [
-        '<div class="tt-direction">' + stateLabel(row.origin_state) + " -> " + stateLabel(row.destination_state) + "</div>",
+        '<div class="tt-direction">' + stateTooltipHeader(row.origin_state) + " -&gt; " + stateTooltipHeader(row.destination_state) + "</div>",
         '<div>' + metricDef().label + ": <b>" + metricDef().formatter(row[appState.metric]) + "</b></div>",
         '<div>Industry: <b>' + titleCase(row.state_industry_code) + "</b></div>",
         '<div class="tt-muted">Direction: ' + direction + "</div>"
@@ -1514,6 +1624,8 @@ function renderMapLayers(summary) {
 
 function syncControls() {
     stateSelect.value = appState.selectedState;
+    selectedStateReportAction.innerHTML = appState.selectedState ? stateReportAction(appState.selectedState) : "";
+    stateSankeyLink.href = stateSankeyUrl();
     metricSelect.value = appState.metric;
     directionSelect.value = appState.direction;
     viewModeSelect.value = appState.viewMode;
@@ -1576,7 +1688,7 @@ function buildStateMap(topoData) {
                     applyHighlight(code);
                 }
                 showTooltip(clientPoint.x, clientPoint.y, [
-                    '<div class="tt-direction">' + stateLabel(code) + "</div>",
+                    '<div class="tt-direction">' + stateTooltipHeader(code) + "</div>",
                     "<div>" + metricDef().label + ": <b>" + metricDef().formatter(value) + "</b></div>",
                     '<div class="tt-muted">' + (code === appState.selectedState ? "Selected state" : "Partner state activity") + "</div>"
                 ].join(""));

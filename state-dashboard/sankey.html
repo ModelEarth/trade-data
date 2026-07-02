@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-us">
 <head>
 <meta charset="utf-8">
@@ -26,7 +26,7 @@
     ? (pathSegments[0] || "")
     : "";
   const localsiteBase = isFile
-    ? "../../localsite"
+    ? "../../../localsite"
     : (localsiteMatch && isLocalhost
       ? localsiteMatch[1]
       : "https://cdn.jsdelivr.net/gh/ModelEarth/localsite@main");
@@ -50,7 +50,7 @@
   document.write('<script type="text/javascript" src="' + localsiteBase + '/js/localsite.js?showheader=true&showsearch=true&showfilters=true"><\/script>');
 }());
 </script>
-<script src="../state-trade-data.js"></script>
+<script src="../../state-trade-data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
 <style>
   .content.contentpadding {
@@ -251,6 +251,62 @@
     font-size: 0.84em;
     font-weight: 600;
   }
+  .state-report-action {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 0.35em;
+  }
+  .state-report-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75em;
+    height: 1.75em;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: #fff;
+    color: #334155;
+    font-size: 0.82em;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  }
+  .state-report-button:hover,
+  .state-report-button:focus {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+    text-decoration: none;
+    outline: none;
+  }
+  .state-report-menu {
+    position: absolute;
+    top: calc(100% + 0.35em);
+    right: 0;
+    z-index: 20;
+    display: none;
+    min-width: 9.5em;
+    padding: 0.45em 0.6em;
+    border: 1px solid #d8dee8;
+    border-radius: 6px;
+    background: #fff;
+    color: #1f2937;
+    font-size: 0.86em;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+  }
+  .state-report-action:hover .state-report-menu,
+  .state-report-action:focus-within .state-report-menu {
+    display: block;
+  }
+  #state-summary-header .state-report-action {
+    top: -0.08em;
+  }
   #sankey-attribution {
     margin-top: 1em;
     padding-top: 0.75em;
@@ -277,6 +333,7 @@
         <h2>US State Trade Flow Sankey</h2>
         <p>
           Domestic inter-state trade flows for the United States, using the current 2019 state-level trade, impact, code, and specialization CSVs.
+          View the <a href="index.html">international Sankey</a> or the <a id="state-map-link" href="../../trade/map/state.html">US state trade map</a>.
         </p>
       </div>
       <button id="state-help-button" type="button" aria-expanded="false" aria-controls="state-help-panel">About This View</button>
@@ -293,6 +350,7 @@
     <label>
       State:
       <select id="state-select"></select>
+      <span id="selected-state-report-action"></span>
     </label>
     <label id="partner-state-wrap" hidden>
       <span id="partner-state-label">To:</span>
@@ -428,6 +486,8 @@ const chart = echarts.init(document.getElementById("sankey-chart"));
 const partnerChart = echarts.init(document.getElementById("partner-chart"));
 
 const stateSelect = document.getElementById("state-select");
+const selectedStateReportAction = document.getElementById("selected-state-report-action");
+const stateMapLink = document.getElementById("state-map-link");
 const partnerStateWrap = document.getElementById("partner-state-wrap");
 const partnerStateLabel = document.getElementById("partner-state-label");
 const partnerStateSelect = document.getElementById("partner-state-select");
@@ -751,6 +811,50 @@ function stateLabel(code) {
   return name;
 }
 
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function stateReportUrl(code) {
+  return "../../footprint/#state=" + encodeURIComponent(normalizeCode(code));
+}
+
+function stateMapUrl(selection) {
+  const params = new URLSearchParams();
+  if (selection && selection.state) params.set("state", selection.state);
+  if (selection && selection.direction && selection.direction !== "outbound") params.set("direction", selection.direction);
+  if (selection && selection.metric && selection.metric !== "level") params.set("metric", selection.metric);
+  if (selection && selection.industry) {
+    params.set("view", "industry");
+    params.set("industry", selection.industry);
+  }
+  const hash = params.toString();
+  return "../../trade/map/state.html" + (hash ? "#" + hash : "");
+}
+
+function stateReportAction(code) {
+  const normalized = normalizeCode(code);
+  if (!normalized) {
+    return "";
+  }
+  const label = stateLabel(normalized);
+  return [
+    '<span class="state-report-action">',
+    '<a class="state-report-button" href="' + escapeHtml(stateReportUrl(normalized)) + '" aria-label="Explore state report for ' + escapeHtml(label) + '" title="Explore state report">&#8942;</a>',
+    '<span class="state-report-menu">Explore state report</span>',
+    "</span>"
+  ].join("");
+}
+
+function stateTooltipHeader(code) {
+  return '<b>' + escapeHtml(stateLabel(code)) + '</b>' + stateReportAction(code);
+}
+
 function industryLabel(code) {
   if (!code) {
     return "All industries";
@@ -1041,6 +1145,8 @@ function syncControls(selection) {
   syncStaticOptions();
   activeSelection = selection;
   syncStateOptions(selection.state);
+  selectedStateReportAction.innerHTML = selection.state ? stateReportAction(selection.state) : "";
+  stateMapLink.href = stateMapUrl(selection);
   syncFlowTypeOptions(selection.flowType, selection);
   selection.flowType = flowTypeSelect.value;
   syncIndustryOptions(selection.industry, selection);
@@ -1164,7 +1270,8 @@ function buildSankeyData(rows, selection) {
 
 function formatEdgeTooltip(data) {
   return [
-    "<b>" + stateLabel(data.source) + " -> " + stateLabel(data.target) + "</b>",
+    '<b>' + escapeHtml(stateLabel(data.source)) + '</b>' + stateReportAction(data.source) +
+      ' -&gt; <b>' + escapeHtml(stateLabel(data.target)) + '</b>' + stateReportAction(data.target),
     METRICS[activeSelection.metric].label + ": <b>" + fmtMetricValue(data.value, activeSelection.metric) + "</b>",
     "Trade Level: <b>" + fmtMetricValue(data.level, "level") + "</b>",
     "Price-adjusted Level: <b>" + fmtMetricValue(data.price_adjusted_level, "price_adjusted_level") + "</b>",
@@ -1239,11 +1346,12 @@ function renderPartnerChart(rows) {
       trigger: "axis",
       axisPointer: { type: "shadow" },
       confine: true,
+      enterable: true,
       formatter: function (params) {
         const item = params[0];
         const source = item.data;
         return [
-          "<b>" + stateLabel(source.partner) + "</b>",
+          stateTooltipHeader(source.partner),
           METRICS[activeSelection.metric].label + ": <b>" + fmtMetricValue(source[activeSelection.metric], activeSelection.metric) + "</b>",
           "Trade Level: <b>" + fmtMetricValue(source.level, "level") + "</b>",
           "Price-adjusted Level: <b>" + fmtMetricValue(source.price_adjusted_level, "price_adjusted_level") + "</b>",
@@ -1306,7 +1414,7 @@ function renderSummary() {
   });
 
   const tags = specializationsByState[activeSelection.state] || [];
-  stateSummaryHeader.textContent = "State Impact Summary for " + stateLabel(activeSelection.state);
+  stateSummaryHeader.innerHTML = "State Impact Summary for " + escapeHtml(stateLabel(activeSelection.state)) + stateReportAction(activeSelection.state);
   stateSummaryNote.textContent = activeSelection.industry
     ? "Impact totals for " + industryLabel(activeSelection.industry) + " in " + stateLabel(activeSelection.state) + "."
     : "Impact totals aggregated across all industries for " + stateLabel(activeSelection.state) + ".";
@@ -1368,11 +1476,12 @@ function render() {
       trigger: "item",
       triggerOn: "mousemove",
       confine: true,
+      enterable: true,
       formatter: function (params) {
         if (params.dataType === "edge") {
           return formatEdgeTooltip(params.data);
         }
-        return "<b>" + stateLabel(params.name) + "</b>";
+        return stateTooltipHeader(params.name);
       }
     },
     series: [{

@@ -1,5 +1,9 @@
 trade_factor_lg.csv
 
+# Full-detail ("-lg") pipeline outputs — see exiobase/tradeflow/PLAN-industry.md.
+# Not "*/year/*-lg" since year/ is this repo's root, not one level down.
+year/**/*-lg.*
+
 # Configuration files
 config/settings.js
 config/keys.json

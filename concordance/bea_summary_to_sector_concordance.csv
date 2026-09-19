@@ -1,0 +1,74 @@
+BEA_Summary,BEA_Summary_Name,BEA_Sector,BEA_Sector_Name
+111CA,Farms,11,"AGRICULTURE, FORESTRY, FISHING, AND HUNTING"
+113FF,"Forestry, fishing, and related activities",11,"AGRICULTURE, FORESTRY, FISHING, AND HUNTING"
+211,Oil and gas extraction,21,MINING
+212,"Mining, except oil and gas",21,MINING
+213,Support activities for mining,21,MINING
+22,Utilities,22,UTILITIES
+23,Construction,23,CONSTRUCTION
+321,Wood products,33DG,DURABLE GOODS
+327,Nonmetallic mineral products,33DG,DURABLE GOODS
+331,Primary metals,33DG,DURABLE GOODS
+332,Fabricated metal products,33DG,DURABLE GOODS
+333,Machinery,33DG,DURABLE GOODS
+334,Computer and electronic products,33DG,DURABLE GOODS
+335,"Electrical equipment, appliances, and components",33DG,DURABLE GOODS
+3361MV,"Motor vehicles, bodies and trailers, and parts",33DG,DURABLE GOODS
+3364OT,Other transportation equipment,33DG,DURABLE GOODS
+337,Furniture and related products,33DG,DURABLE GOODS
+339,Miscellaneous manufacturing,33DG,DURABLE GOODS
+311FT,Food and beverage and tobacco products,31ND,NONDURABLE GOODS
+313TT,Textile mills and textile product mills,31ND,NONDURABLE GOODS
+315AL,Apparel and leather and allied products,31ND,NONDURABLE GOODS
+322,Paper products,31ND,NONDURABLE GOODS
+323,Printing and related support activities,31ND,NONDURABLE GOODS
+324,Petroleum and coal products,31ND,NONDURABLE GOODS
+325,Chemical products,31ND,NONDURABLE GOODS
+326,Plastics and rubber products,31ND,NONDURABLE GOODS
+42,Wholesale trade,42,WHOLESALE TRADE
+441,Motor vehicle and parts dealers,44RT,RETAIL TRADE
+445,Food and beverage stores,44RT,RETAIL TRADE
+452,General merchandise stores,44RT,RETAIL TRADE
+4A0,Other retail,44RT,RETAIL TRADE
+481,Air transportation,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+482,Rail transportation,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+483,Water transportation,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+484,Truck transportation,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+485,Transit and ground passenger transportation,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+486,Pipeline transportation,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+487OS,Other transportation and support activities,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+493,Warehousing and storage,48TW,"TRANSPORTATION AND WAREHOUSING, EXCLUDING POSTAL SERVICE"
+511,"Publishing industries, except internet (includes software)",51,INFORMATION
+512,Motion picture and sound recording industries,51,INFORMATION
+513,Broadcasting and telecommunications,51,INFORMATION
+514,"Data processing, internet publishing, and other information services",51,INFORMATION
+521CI,"Federal Reserve banks, credit intermediation, and related activities",52,FINANCE AND INSURANCE
+523,"Securities, commodity contracts, and investments",52,FINANCE AND INSURANCE
+524,Insurance carriers and related activities,52,FINANCE AND INSURANCE
+525,"Funds, trusts, and other financial vehicles",52,FINANCE AND INSURANCE
+HS,Housing,53,REAL ESTATE AND RENTAL AND LEASING
+ORE,Other real estate,53,REAL ESTATE AND RENTAL AND LEASING
+532RL,Rental and leasing services and lessors of intangible assets,53,REAL ESTATE AND RENTAL AND LEASING
+5411,Legal services,54,PROFESSIONAL AND TECHNICAL SERVICES
+5412OP,"Miscellaneous professional, scientific, and technical services",54,PROFESSIONAL AND TECHNICAL SERVICES
+5415,Computer systems design and related services,54,PROFESSIONAL AND TECHNICAL SERVICES
+55,Management of companies and enterprises,55,MANAGEMENT OF COMPANIES AND ENTREPRISES
+561,Administrative and support services,56,ADMINISTRATIVE AND WASTE SERVICES
+562,Waste management and remediation services,56,ADMINISTRATIVE AND WASTE SERVICES
+61,Educational services,61,EDUCATIONAL SERVICES
+621,Ambulatory health care services,62,HEALTH CARE AND SOCIAL ASSISTANCE
+622,Hospitals,62,HEALTH CARE AND SOCIAL ASSISTANCE
+623,Nursing and residential care facilities,62,HEALTH CARE AND SOCIAL ASSISTANCE
+624,Social assistance,62,HEALTH CARE AND SOCIAL ASSISTANCE
+711AS,"Performing arts, spectator sports, museums, and related activities",71,"ARTS, ENTERTAINMENT, AND RECREATION"
+713,"Amusements, gambling, and recreation industries",71,"ARTS, ENTERTAINMENT, AND RECREATION"
+721,Accommodation,72,ACCOMMODATION AND FOOD SERVICES
+722,Food services and drinking places,72,ACCOMMODATION AND FOOD SERVICES
+81,"Other services, except government",81,"OTHER SERVICES, EXCEPT GOVERNMENT"
+GFGD,Federal general government (defense),G,GOVERNMENT
+GFGN,Federal general government (nondefense),G,GOVERNMENT
+GFE,Federal government enterprises,G,GOVERNMENT
+GSLG,State and local general government,G,GOVERNMENT
+GSLE,State and local government enterprises,G,GOVERNMENT
+Used,"Scrap, used and secondhand goods",Used,"SCRAP, USED AND SECONDHAND GOODS"
+Other,Noncomparable imports and rest-of-the-world adjustment,Other,NONCOMPARABLE IMPORTS AND REST-OF-THE-WORLD ADJUSTMENT

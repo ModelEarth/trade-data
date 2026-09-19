@@ -1,0 +1,178 @@
+flow_uuid,flowable,context,unit,compartment,flow_class,preferred,external_reference,cas_number,formula,synonyms,trade_relevance
+42a50d5b-5823-5701-a853-5360f61d61a7,"Employment (people, jobs-scope — see exiobase_factors.py)",economic,1000 persons,economic,economic,True,Exiobase,,,factor_id:906; extension:employment,20
+c3af8816-e9f1-5074-97cd-10d6c6be8e25,"Energy (gross use, ENRG-scope — see exiobase_factors.py)",resource/energy,terajoules,energy,resource,True,Exiobase,,,factor_id:907; extension:energy,14
+87c73fb0-70a4-5e54-9cd0-7dccb5a3c824,"Water (blue withdrawal, WATR-scope — see exiobase_factors.py)",resource/water,Mm3,water,resource,True,Exiobase,,,factor_id:910; extension:water,14
+b6f010fb-a764-3063-af2d-bcb8309a97b7,Carbon dioxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=46795,124-38-9,CO2,,13
+94c434c1-b50d-3065-91cc-4e2debe66ab0,Diphenylmethane,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=47820,101-81-5,C13H12,"Benzene, 1,1'-methylenebis-",13
+aab83476-ec6c-3742-af85-15d320b7ce80,Methane,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=48548,74-82-8,CH4,,13
+34b32c7c-dfdc-5ed1-a95f-1296598d2e0f,Domestic Extraction Used - Fossil Fuels - Anthracite,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:470; extension:material,9
+87b27f0f-c495-52d1-8d7a-48ccb46b7e3a,Domestic Extraction Used - Fossil Fuels - Coking Coal,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:471; extension:material,9
+62bf3cd1-5e10-5066-b15f-58c89263d222,Domestic Extraction Used - Fossil Fuels - Crude oil,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:476; extension:material,9
+84b12fa2-822f-50d1-870c-b6e3cc9c8ac3,Domestic Extraction Used - Fossil Fuels - Lignite (brown coal),resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:474; extension:material,9
+60f2941f-5e8f-598f-9163-b12d59071f04,Domestic Extraction Used - Fossil Fuels - Natural gas,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:478; extension:material,9
+1eb40b08-04f7-5cc1-9fce-3f58ffb63105,Domestic Extraction Used - Fossil Fuels - Natural gas liquids,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:479; extension:material,9
+ccc6f69b-d1fc-5321-91e7-ab165d971248,Domestic Extraction Used - Fossil Fuels - Oil shale and tar sands,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:477; extension:material,9
+f536758e-d45f-54e0-aea6-22f320e37f0c,Domestic Extraction Used - Fossil Fuels - Other Bituminous Coal,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:472; extension:material,9
+1d756fd9-ff85-56a2-be60-0d29a1ba88e2,Domestic Extraction Used - Fossil Fuels - Other Sub-Bituminous Coal,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:473; extension:material,9
+763a356e-5a0e-5f5d-b56b-fe2f90560195,Domestic Extraction Used - Fossil Fuels - Peat,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:475; extension:material,9
+8d090762-ab95-5de2-a919-c70ca60aaf08,Domestic Extraction Used - Non-Metallic Minerals - Chalk,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:496; extension:material,9
+12afbcf2-765e-50e1-9804-011017534093,Domestic Extraction Used - Non-Metallic Minerals - Chemical minerals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:505; extension:material,9
+b13518fc-3e1e-59db-8662-5335d2e7a15b,Domestic Extraction Used - Non-Metallic Minerals - Dolomite,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:497; extension:material,9
+4f19adaa-1aff-5ded-96ef-50391147dda9,Domestic Extraction Used - Non-Metallic Minerals - Fertilizer minerals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:504; extension:material,9
+ca3f8c57-f25d-517f-a16c-a97716139382,Domestic Extraction Used - Non-Metallic Minerals - Gypsum,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:499; extension:material,9
+484bbf31-eb91-520f-9af2-f2d17f5a94c0,Domestic Extraction Used - Non-Metallic Minerals - Industrial minerals n.e.c,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:506; extension:material,9
+143b118e-e732-54d4-8e6a-bf50322c9486,Domestic Extraction Used - Non-Metallic Minerals - Industrial sand and gravel,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:502; extension:material,9
+a4795edf-feca-50ca-9708-d8978d1c8dc9,Domestic Extraction Used - Non-Metallic Minerals - Limestone,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:498; extension:material,9
+f80226fd-3b56-52dc-95b6-7d9dc1016186,Domestic Extraction Used - Non-Metallic Minerals - Ornamental or building stone,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:495; extension:material,9
+f6e0cb68-28b3-583c-a259-4637e017f225,Domestic Extraction Used - Non-Metallic Minerals - Other non-metallic minerals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:508; extension:material,9
+0f5992df-0780-5949-afe2-303f87527af8,Domestic Extraction Used - Non-Metallic Minerals - Salt,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:507; extension:material,9
+2eb7ee4f-db4f-5839-8412-a63d86b43ab0,Domestic Extraction Used - Non-Metallic Minerals - Sand gravel and crushed rock for construction,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:503; extension:material,9
+124d8d91-ff82-5684-bb60-01022b8c4c77,Domestic Extraction Used - Non-Metallic Minerals - Specialty clays,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:501; extension:material,9
+846c8610-80bd-51c1-a4a7-44235e7289f8,Domestic Extraction Used - Non-Metallic Minerals - Structural clays,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:500; extension:material,9
+68b718a1-98bc-506c-9bae-c499dd52e6be,"Material (metals and minerals, MNRL-scope — see exiobase_factors.py)",resource/natural,kilotonnes,natural resources,resource,True,Exiobase,,,factor_id:909; extension:material,9
+4382ba18-dd21-3837-80b2-94283ef5490e,Nitrogen oxides,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=38802,11104-93-1,-,,8
+0418b561-ecf8-33c8-9c81-225789f15bd3,Particulate matter,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=79627,,,Particulates,8
+5a939c2b-cebf-3060-8862-4a8650caf6dd,"Particulate matter, ≤ 10μm",emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=79583,n.a.,,,8
+49a9c581-7c83-36b0-b1bd-455ea4c665a6,"Particulate matter, ≤ 2.5μm",emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=79581,n.a.,,,8
+f4973035-59f5-3bdc-b257-b274dcc04e0f,Sulfur dioxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36802,7446-09-5,O2S,,8
+8334c424-1603-3274-bec1-15a7bd5c8e86,Sulfur hexafluoride,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=39886,2551-62-4,F6S,"Sulfur fluoride (SF6); Sulfur fluoride (SF6), (OC-6-11)-",8
+42e4c3cb-8468-3004-bd4b-19e6cbb81687,Sulfur oxides,emission/air,kg,air,Groups,False,,n.a.,,,8
+b81db912-264e-5dfc-88e6-ac84ffd544d0,B(b)F - combustion - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:3; extension:air_emissions,5
+1f9f2948-1450-5684-8c46-fccd9d8fcc5a,B(b)F - non combustion - Primary aluminium production - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:43; extension:air_emissions,5
+90a57745-052e-57a2-9371-d973e6c38423,B(b)F - non combustion - Production of coke oven coke - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:44; extension:air_emissions,5
+44077798-b6f0-5caa-b74b-c366981dbddb,B(b)F - non combustion - Production of gascoke - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:45; extension:air_emissions,5
+0f23984f-5def-51a0-ad90-c6c7603fb87c,HFC - air,emission/air,kg CO2-eq,air,environmental,True,Exiobase,,,factor_id:406; extension:air_emissions,5
+ffbdb8d8-46dd-56ff-bcb7-ce74a3694dc9,"HFCs and PFCs, unspecified",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:905; extension:air_emissions,5
+d88131f0-7acb-550a-98e8-a30fdaf50664,NMVOC - combustion - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:19; extension:air_emissions,5
+8bf84e71-5427-5a84-b084-e2e0c9078207,NMVOC - non combustion - Beef and veal - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:123; extension:air_emissions,5
+9de65545-4de5-5c39-b70d-3d5864bf0fb3,NMVOC - non combustion - Coil coating (coating of aluminum and steel) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:124; extension:air_emissions,5
+caa12887-4d84-5d63-8ea1-99ff8beb0eb2,NMVOC - non combustion - Decorative paint applicatoin - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:125; extension:air_emissions,5
+e5cac0c9-a3d0-5ac2-b2ee-4c7b17f97cd5,NMVOC - non combustion - Degreasing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:126; extension:air_emissions,5
+297d7ce0-f29a-5f8f-9cce-79f434ba5ab1,NMVOC - non combustion - Diesel distribution - transport and depots (used in mobile sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:127; extension:air_emissions,5
+8fcf04f5-d4ed-5e0a-8990-2eb659d0550f,NMVOC - non combustion - Diesel distribution - transport and depots (used in stationary sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:128; extension:air_emissions,5
+e51dd3cf-87d2-5ea2-b5c2-d9d9e2db7fbe,NMVOC - non combustion - Dry cleaning - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:129; extension:air_emissions,5
+fbd622c1-d778-5b12-88d5-40b155a58bed,"NMVOC - non combustion - Extraction, proc. and distribution of gaseous fuels - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:130; extension:air_emissions,5
+5151c6a7-2e47-5349-a793-155770bf0c33,"NMVOC - non combustion - Extraction, proc. and distribution of liquid fuels - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:131; extension:air_emissions,5
+0c2e159f-11c1-52cd-90f3-3eac97bb0a1c,NMVOC - non combustion - Extraction/production of (natural) gas - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:132; extension:air_emissions,5
+044daec6-214c-5445-a80d-6d0b943278c6,NMVOC - non combustion - Extraction/production of crude oil - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:133; extension:air_emissions,5
+be7ce6e3-4ccb-58c1-9df5-5adc4614ecc0,"NMVOC - non combustion - Fat, edible and non-edible oil extraction - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:134; extension:air_emissions,5
+abb0c9b6-3e00-534a-8923-cce5dfabe1c5,"NMVOC - non combustion - Fish, dried, salted or in brine; smoked fish; edible fish meal - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:135; extension:air_emissions,5
+b755fb93-0210-5607-986c-89f470e56e36,"NMVOC - non combustion - Fish, fish fillets, other fish meat and fish livers and roes, frozen - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:136; extension:air_emissions,5
+3e89ff5c-acf3-58f5-af37-26881ea9e7cb,"NMVOC - non combustion - Fish, otherwise prepared or preserved; caviar - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:137; extension:air_emissions,5
+3fe69ba7-fbeb-50e2-af9f-f442a6dc1100,NMVOC - non combustion - Flexography and rotogravure in packaging - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:138; extension:air_emissions,5
+b973e8ee-d859-521b-a489-5d50990efcf1,NMVOC - non combustion - Gasoline distribution - service stations - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:139; extension:air_emissions,5
+16e72a43-cc0a-5fc4-9b67-ca66d8f36d9c,NMVOC - non combustion - Gasoline distribution - transport and depots (used in mobile sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:140; extension:air_emissions,5
+e30b8d7d-b0dc-5d01-b926-8cf90958b4ac,NMVOC - non combustion - Gasoline distribution - transport and depots (used in stationary sources) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:141; extension:air_emissions,5
+b39440b9-58b4-55db-ba6c-1c226c4613c6,NMVOC - non combustion - Industrial application of adhesives (use of high performance solvent based adhesives) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:142; extension:air_emissions,5
+d2f265c0-69a3-533f-ae5f-0862d3f60e03,NMVOC - non combustion - Industrial application of adhesives (use of traditional solvent based adhesives) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:143; extension:air_emissions,5
+84a7c931-2496-593b-9b96-77448b493163,"NMVOC - non combustion - Industrial paint application, general industry (continuous processes) - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:144; extension:air_emissions,5
+d4e1aace-340c-5d5f-9860-357a6c7361bd,"NMVOC - non combustion - Industrial paint application, general industry (plastic parts) - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:145; extension:air_emissions,5
+fbe69391-32aa-5d8f-8285-8d6be10e932e,"NMVOC - non combustion - Industrial paint application, general industry - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:146; extension:air_emissions,5
+e8ee6696-63a9-51c1-9b95-110544af9a5f,"NMVOC - non combustion - Inorganic chemical industry, fertilizers and other - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:147; extension:air_emissions,5
+4975ecb6-33b9-56d6-99b8-e0532d43c5a0,NMVOC - non combustion - Leather coating - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:148; extension:air_emissions,5
+6bbb77f5-4f9f-56b8-95ee-fb3070012e81,NMVOC - non combustion - Manufacture of automobiles - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:149; extension:air_emissions,5
+fcc4bb17-9144-5683-b587-8db4333401e6,NMVOC - non combustion - Mutton and lamb - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:150; extension:air_emissions,5
+e8b960e5-1319-5436-9f12-d9f2e237a971,NMVOC - non combustion - Oil refinery - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:151; extension:air_emissions,5
+a916bfea-019c-53a5-a336-3488724297c0,NMVOC - non combustion - Organic chemical industry - downstream units - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:152; extension:air_emissions,5
+f2fffeca-4411-5afe-9d1a-f3417b9f4961,"NMVOC - non combustion - Organic chemical industry, storage - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:153; extension:air_emissions,5
+5e8cd696-3c47-5146-9848-acd73eb8dc7b,NMVOC - non combustion - Other industrial use of solvents - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:154; extension:air_emissions,5
+56223f4b-4935-5342-96ac-14d11ba550d2,NMVOC - non combustion - Pharmaceutical industry - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:155; extension:air_emissions,5
+f2ed0fba-cf18-54d1-97c1-34b1509833c2,NMVOC - non combustion - Polystyrene processing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:156; extension:air_emissions,5
+d8c2a231-e362-52b7-90b7-3a7c64d442cd,NMVOC - non combustion - Polyvinylchloride produceduction by suspension process - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:157; extension:air_emissions,5
+8ccc6cac-13ea-57f9-a26b-08e6cef0945e,NMVOC - non combustion - Pork - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:158; extension:air_emissions,5
+8b99d43d-d936-5623-8935-c3caeb80f0d0,"NMVOC - non combustion - Poultry, dressed - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:159; extension:air_emissions,5
+5ffad4a7-8e97-5704-b43c-9034873cd8d9,"NMVOC - non combustion - Printing, offset - air",emission/air,kg,air,environmental,True,Exiobase,,,factor_id:160; extension:air_emissions,5
+099aa684-e40b-5a74-b1dc-c69a00b9594e,NMVOC - non combustion - Products incorporating solvents - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:161; extension:air_emissions,5
+2d3f05e5-204d-548a-ac4a-f1cf8fb819f5,NMVOC - non combustion - Raw sugar - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:162; extension:air_emissions,5
+a59cac53-e903-59d8-b515-c3db34250fd9,NMVOC - non combustion - Rotogravure in publication - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:163; extension:air_emissions,5
+3482bb93-6920-528e-ae2e-4f52f121b59f,NMVOC - non combustion - Screen printing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:164; extension:air_emissions,5
+7d6cd9c8-6f75-5287-91d3-b2c045777e1f,NMVOC - non combustion - Steam cracking (ethylene and propylene production) - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:165; extension:air_emissions,5
+cc43f796-bbcc-5c67-84cd-b15daf27678b,NMVOC - non combustion - Synthetic rubber - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:166; extension:air_emissions,5
+ac15aa73-9d0f-502f-af8f-1d4dfea20a37,NMVOC - non combustion - Tyre production - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:167; extension:air_emissions,5
+956aae19-5121-5689-917e-769bc323fa30,NMVOC - non combustion - Vehicle refinishing - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:168; extension:air_emissions,5
+88b1217d-7d3f-58c8-abc7-2d99fb0e831a,NMVOC - non combustion - Wire coating - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:169; extension:air_emissions,5
+8e618378-6a3a-58bc-af20-7b89cbd34084,PCDD/F - combustion - air,emission/air,kg,air,environmental,True,Exiobase,,,factor_id:23; extension:air_emissions,5
+5db0a1cd-8725-57c0-8184-c1d7ced90e55,PFC - air,emission/air,kg CO2-eq,air,environmental,True,Exiobase,,,factor_id:407; extension:air_emissions,5
+27470622-9f04-580e-85b1-9234769bb314,Artificial Surfaces,resource/land,km2,land,resource,True,Exiobase,,,factor_id:421; extension:land,4
+f289f412-1fb8-533e-8adf-5242685b9bf7,Cropland - cropped area - Cereal grains nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:422; extension:land,4
+31d0dc0a-554b-562d-8163-9f5b2f337671,Cropland - cropped area - Crops nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:423; extension:land,4
+c043f804-a4a4-5b95-a5d2-78c59e7b39ba,Cropland - cropped area - Oil seeds,resource/land,km2,land,resource,True,Exiobase,,,factor_id:424; extension:land,4
+67f8d3cc-edfb-5678-9a44-34f1be964cda,Cropland - cropped area - Paddy rice,resource/land,km2,land,resource,True,Exiobase,,,factor_id:425; extension:land,4
+6ecaef31-fed2-5995-998b-39b7a29a1ecb,Cropland - cropped area - Plant-based fibers,resource/land,km2,land,resource,True,Exiobase,,,factor_id:426; extension:land,4
+6a80ef03-6367-57b5-9fa4-44ed62876856,"Cropland - cropped area - Sugar cane, sugar beet",resource/land,km2,land,resource,True,Exiobase,,,factor_id:427; extension:land,4
+cc936a5e-97a6-5101-a0f3-21ba5c9e748f,"Cropland - cropped area - Vegetables, fruit, nuts",resource/land,km2,land,resource,True,Exiobase,,,factor_id:428; extension:land,4
+27526e6e-7d78-5370-b1f8-8a2bf53ba19f,Cropland - cropped area - Wheat,resource/land,km2,land,resource,True,Exiobase,,,factor_id:429; extension:land,4
+c885cb61-0ed3-5305-a260-c135b2b87da9,Cropland - fallowed area - Cereal grains nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:430; extension:land,4
+b073dad6-0b54-5046-addb-55dd6780a709,Cropland - fallowed area - Crops nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:431; extension:land,4
+f3b38810-c546-5e04-8d4d-bf3ee42815fc,Cropland - fallowed area - Oil seeds,resource/land,km2,land,resource,True,Exiobase,,,factor_id:432; extension:land,4
+0a95844b-49c3-5b45-b2c0-70505e60fd2a,Cropland - fallowed area - Paddy rice,resource/land,km2,land,resource,True,Exiobase,,,factor_id:433; extension:land,4
+c4251c08-4ccd-5cba-9c25-9c8de5d2bf32,Cropland - fallowed area - Plant-based fibers,resource/land,km2,land,resource,True,Exiobase,,,factor_id:434; extension:land,4
+700157bc-0fae-5f2c-8f1c-053d49ce23ca,"Cropland - fallowed area - Sugar cane, sugar beet",resource/land,km2,land,resource,True,Exiobase,,,factor_id:435; extension:land,4
+801d9b79-8c19-544c-9da1-6b72ff220f2f,"Cropland - fallowed area - Vegetables, fruit, nuts",resource/land,km2,land,resource,True,Exiobase,,,factor_id:436; extension:land,4
+8951a60c-359f-5432-ac97-5904e046e601,Cropland - fallowed area - Wheat,resource/land,km2,land,resource,True,Exiobase,,,factor_id:437; extension:land,4
+02cd1acc-2934-5d03-a8af-8f9872f15558,Cropland - fallowed area-Cattle,resource/land,km2,land,resource,True,Exiobase,,,factor_id:438; extension:land,4
+0d535d1c-8348-5272-87a3-75405e173d8b,Cropland - fallowed area-Meat animals nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:439; extension:land,4
+82f7b67b-34f3-59c3-a35c-e731e3364ec8,Cropland - fallowed area-Pigs,resource/land,km2,land,resource,True,Exiobase,,,factor_id:440; extension:land,4
+b72259a4-0c2c-5243-aa7c-f189fc720e68,Cropland - fallowed area-Poultry,resource/land,km2,land,resource,True,Exiobase,,,factor_id:441; extension:land,4
+82f59e04-0bd9-58cb-826c-310d290ed1cd,Cropland - fallowed area-Raw milk,resource/land,km2,land,resource,True,Exiobase,,,factor_id:442; extension:land,4
+131c8ae3-5c87-5938-a818-9d35bf84b3a9,Domestic Extraction Used - Crop residues - Other crop residues (sugar and fodder beet leaves etc),resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:461; extension:material,4
+967fd1dd-afd9-52eb-93b2-980b31f1661d,Domestic Extraction Used - Crop residues - Straw,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:460; extension:material,4
+093ba718-f0fb-5bad-952d-a9c0a9bec830,Domestic Extraction Used - Fishery - All other aquatic animals,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:468; extension:material,4
+1cc7a758-5716-5084-b56a-50838c7078a9,Domestic Extraction Used - Fishery - Aquatic plants,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:469; extension:material,4
+cdee3fc2-e8b9-5fe9-b94c-69028acd147a,Domestic Extraction Used - Fishery - Wild fish catch,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:467; extension:material,4
+d434b8a8-c57b-550b-95f0-9bdb86b36c1e,Domestic Extraction Used - Fodder crops (including biomass harvest from grassland),resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:462; extension:material,4
+e41a040c-c42f-5d12-aeb1-f779ea39f82c,Domestic Extraction Used - Forestry - Other crops n.e.c,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:464; extension:material,4
+d3321eda-f04f-5118-86c3-2477d3d6f694,Domestic Extraction Used - Forestry - Timber (Industrial roundwood),resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:465; extension:material,4
+c8d9d0b3-d286-561f-a330-0c9c1cc5dd83,Domestic Extraction Used - Forestry - Wood fuel and other extraction,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:466; extension:material,4
+fd8531a8-d171-553a-b5df-acb1802ac4b4,Domestic Extraction Used - Grazed biomass,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:463; extension:material,4
+b1ea9546-1c11-507c-ba04-e502d8284146,Domestic Extraction Used - Metal Ores - Bauxite and other aluminium ores - gross ore,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:484; extension:material,4
+c07a8dc0-4b51-59f9-97d3-4b1d6811c475,Domestic Extraction Used - Metal Ores - Chromium ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:491; extension:material,4
+70be95b4-ddb1-5e19-9e93-25be375e8def,Domestic Extraction Used - Metal Ores - Copper ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:482; extension:material,4
+50c56890-1006-5bf9-8504-af6905e5af41,Domestic Extraction Used - Metal Ores - Gold ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:486; extension:material,4
+c5c9f0ca-92a1-584a-9199-bd5a4e5fff3d,Domestic Extraction Used - Metal Ores - Iron ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:481; extension:material,4
+2f10b81e-798e-57b2-a00f-4ba828d3c7f6,Domestic Extraction Used - Metal Ores - Lead ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:488; extension:material,4
+ea4d44d9-6a42-53c2-bbd7-8bd2c1110760,Domestic Extraction Used - Metal Ores - Manganese ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:492; extension:material,4
+2f3c5b94-7560-5287-b49f-a6eb5c8d0a76,Domestic Extraction Used - Metal Ores - Nickel ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:483; extension:material,4
+74899123-b3ee-593c-9715-1f666b39ff67,Domestic Extraction Used - Metal Ores - Other metal ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:493; extension:material,4
+1e810b22-d3ad-5bfa-9f7f-806953fe72a9,Domestic Extraction Used - Metal Ores - Platinum group metal ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:487; extension:material,4
+4c500710-6266-5169-9af9-df3fec610e0d,Domestic Extraction Used - Metal Ores - Silver ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:485; extension:material,4
+69c1f2c4-a000-5a39-8ee8-1864e6ee7e7b,Domestic Extraction Used - Metal Ores - Tin ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:489; extension:material,4
+bd151af7-372e-5dba-bd95-dbc2d2aa33a3,Domestic Extraction Used - Metal Ores - Titanium ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:494; extension:material,4
+0d583655-7ad2-53a8-a0f7-14230cf8cc8a,Domestic Extraction Used - Metal Ores - Uranium ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:480; extension:material,4
+55072248-3ea1-56d4-846b-ce905b41439b,Domestic Extraction Used - Metal Ores - Zinc ores,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:490; extension:material,4
+d1e29ceb-222e-5d76-8649-77d78292f3df,Domestic Extraction Used - Primary Crops - Cereals n.e.c.,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:449; extension:material,4
+79b856e4-803a-543f-9c10-f1e15f7c7c59,Domestic Extraction Used - Primary Crops - Fibres,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:457; extension:material,4
+ad71f509-5033-56c4-b3b7-6a9dcc01881e,Domestic Extraction Used - Primary Crops - Fruits,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:454; extension:material,4
+0fe369c5-1cfb-581d-9c77-ba52673f65f4,Domestic Extraction Used - Primary Crops - Nuts,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:452; extension:material,4
+3c416f41-aabb-58a8-afbb-54c1d431b2a6,Domestic Extraction Used - Primary Crops - Oil bearing crops,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:455; extension:material,4
+938f8ae6-e291-524f-989c-ae0b5f295a05,Domestic Extraction Used - Primary Crops - Pulses,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:451; extension:material,4
+4932eb02-6b92-510b-98fe-cf0c3c6cb519,Domestic Extraction Used - Primary Crops - Rice,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:447; extension:material,4
+524c5bd1-f6c4-5abe-9bbc-accf116e51f5,Domestic Extraction Used - Primary Crops - Roots and tubers,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:450; extension:material,4
+922efd42-928a-57de-a874-cd32c35c3ec6,Domestic Extraction Used - Primary Crops - Spice - beverage - pharmaceutical crops,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:458; extension:material,4
+0d627de5-549e-510e-910e-23087118fb3b,Domestic Extraction Used - Primary Crops - Sugar crops,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:456; extension:material,4
+bc41a900-066e-52a8-a89c-442b14879195,Domestic Extraction Used - Primary Crops - Tobacco,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:459; extension:material,4
+89bfafcb-5c1c-53f8-97aa-6445faf8d3aa,Domestic Extraction Used - Primary Crops - Vegetables,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:453; extension:material,4
+a639eb04-d897-5b2f-bc8b-631a62e67649,Domestic Extraction Used - Primary Crops - Wheat,resource/natural,kt,natural resources,resource,True,Exiobase,,,factor_id:448; extension:material,4
+177fa9ff-63ee-50f1-b404-2361ba63a9d0,Forest,resource/land,km2,land,resource,True,Exiobase,,,factor_id:443; extension:land,4
+5ef56051-4b81-565f-bc80-bbc5f527e9ef,"Land (total, LAND-scope — see exiobase_factors.py)",resource/land,km2,land,resource,True,Exiobase,,,factor_id:908; extension:land,4
+9f483fdb-b073-5d20-b730-cd51c556148b,Permanent pastures - Grazing-Cattle,resource/land,km2,land,resource,True,Exiobase,,,factor_id:444; extension:land,4
+e5a12d9b-8026-565d-9f20-fb15539e4db7,Permanent pastures - Grazing-Meat animals nec,resource/land,km2,land,resource,True,Exiobase,,,factor_id:445; extension:land,4
+65761d0d-9a36-5606-90ff-5b9c151a969e,Permanent pastures - Grazing-Raw milk,resource/land,km2,land,resource,True,Exiobase,,,factor_id:446; extension:land,4
+65b5d5dd-95b5-36b2-8cb0-7c5501ff1e32,Ammonia,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=38644,7664-41-7,H3N,,3
+2b16d0b5-4713-3bb8-be5b-905382f0e8a8,Arsenic,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36973,7440-38-2,As,,3
+76bd7eb9-a592-319f-9234-9a469de5bd59,Benzo[a]pyrene,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=49190,50-32-8,C20H12,Benzo(a)pyrene,3
+fcf65d36-ae15-3066-80c2-b624e04c6380,Benzo[k]fluoranthene,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=93556,207-08-9,C20H12,Benzo(k)fluoranthene,3
+d5a296be-7219-3921-a430-cff172ac7911,Cadmium,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36835,7440-43-9,Cd,,3
+187c525c-3715-388c-b303-a0671524a615,Carbon monoxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=44569,630-08-0,CO,,3
+98bd36e1-fbe4-32ee-ba78-3b6726917c9b,Chromium,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36831,7440-47-3,Cr,,3
+b15117ec-3b8e-35de-bef2-00aec1b9636e,Copper,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36829,7440-50-8,Cu,,3
+28c8bbdf-1a2b-3c96-baf8-d965df47c0c6,Hexachlorobenzene,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=95480,118-74-1,C6Cl6,"Benzene, 1,2,3,4,5,6-hexachloro-",3
+e962ef47-cedd-36b6-b962-abacbab62a02,"Indeno[1,2,3-cd]pyrene",emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=46349,193-39-5,C22H12,"Indeno(1,2,3-cd)pyrene",3
+fe829136-3042-36e6-b4cb-7ff591e8db98,Lead,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=37012,7439-92-1,Pb,,3
+e2c65e04-f613-33db-9a6e-4cb4577b0005,Mercury,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=37007,7439-97-6,Hg,,3
+50f56ea3-e292-3c09-89d2-74466af5f11e,Nickel,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=37003,7440-02-0,Ni,,3
+cfee0524-7ad6-300b-b050-6249135a2492,Nitrous oxide,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=94780,10024-97-2,N2O,Nitrogen oxide (N2O),3
+18819e98-6dd1-3a8f-a27a-67ca826f3381,Polychlorinated biphenyls,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=16366,1336-36-3,C12,,3
+1c9f6a89-247d-30b0-8e48-f101382721c2,Polycyclic aromatic hydrocarbons - 15-PAH,emission/air,kg,air,Groups,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=78457,,,Polycyclic organic matter - 15-PAH,3
+b6db14bd-73e9-3f02-852a-e8b5e60bbc61,Selenium,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=38145,7782-49-2,Se,,3
+435bfa52-d2d3-3760-abf4-27de892972ac,Zinc,emission/air,kg,air,Chemicals,False,https://ofmpub.epa.gov/sor_internet/registry/substreg/searchandretrieve/substancesearch/search.do?details=displayDetails&selectedSubstanceId=36815,7440-66-6,Zn,,3

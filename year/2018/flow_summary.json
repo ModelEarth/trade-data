@@ -1,0 +1,28 @@
+{
+  "total_flows": 387,
+  "by_context": {
+    "resource/water": 195,
+    "emission/air": 84,
+    "resource/natural": 63,
+    "resource/land": 27,
+    "economic": 13,
+    "resource/energy": 5
+  },
+  "by_compartment": {
+    "water": 195,
+    "air": 84,
+    "natural resources": 63,
+    "land": 27,
+    "economic": 13,
+    "energy": 5
+  },
+  "by_flow_class": {
+    "resource": 290,
+    "environmental": 56,
+    "Chemicals": 21,
+    "economic": 13,
+    "Groups": 7
+  },
+  "high_relevance_flows": 216,
+  "preferred_flows": 359
+}

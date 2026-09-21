@@ -3,6 +3,30 @@ trade_factor_lg.csv
 # Full-detail ("-lg") pipeline outputs — see exiobase/tradeflow/PLAN-industry.md.
 year/**/*-lg.*
 
+# Only track these 14 default countries' folders within any year/ directory
+# (comprehensive mode writes a local folder for all 49 Exiobase regions --
+# see exiobase/tradeflow/PLAN-comprehensive.md -- but everything outside
+# this list is Azure-only, not committed here). The [A-Z][A-Z] class only
+# matches 2-letter country-code directories, so per-year reference files
+# living directly under year/{year}/ (factor.csv, industry.csv, sector.csv,
+# sector_industry.csv, flow.csv, flow_summary.json, flow_validation.json,
+# runnote.md) are untouched.
+year/*/[A-Z][A-Z]
+!year/*/AU
+!year/*/BR
+!year/*/CA
+!year/*/CN
+!year/*/DE
+!year/*/FR
+!year/*/GB
+!year/*/IN
+!year/*/IT
+!year/*/JP
+!year/*/KR
+!year/*/RU
+!year/*/WM
+!year/*/US
+
 # Configuration files
 config/settings.js
 config/keys.json

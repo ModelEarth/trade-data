@@ -1,9 +1,9 @@
 # BEA Trade Analysis Validation Report
 
-**Generated**: 2026-09-19 09:11:02
+**Generated**: 2026-09-21 22:20:12
 **Year**: 2019
 **Country**: US
-**Trade Flows**: exports
+**Trade Flows**: domestic,imports,exports
 **Force Regeneration**: False
 
 ## Optimization Status
@@ -20,8 +20,8 @@
 - Successfully integrated US-BEA API data
 
 ### BEA API Usage Statistics
-- API calls made: 0
-- Cache files created: 22
+- API calls made: 11
+- Cache files created: 66
 
 ## BEA Enhanced Output Files Generated
 

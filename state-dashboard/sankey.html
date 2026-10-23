@@ -315,6 +315,21 @@
     color: #666;
     line-height: 1.8;
   }
+  #sankey-outdated-note {
+    margin-top: 1em;
+    padding: 0.75em 1em;
+    border: 1px solid #e5c07b;
+    border-radius: 6px;
+    background: #fdf6e3;
+    font-size: 0.85em;
+    color: #5c4b1f;
+    line-height: 1.6;
+  }
+
+  #sankey-outdated-note a {
+    color: #2563eb;
+  }
+
   #sankey-attribution a {
     color: #2563eb;
     text-decoration: none;
@@ -431,6 +446,18 @@
     &middot; impact cards from <code>year/2019/US/domestic/state_industry_impacts.csv</code>
     &middot; state names from <code>year/2019/US/domestic/state_codes.csv</code>
     &middot; specialization tags from <code>year/2019/US/domestic/state_specializations.csv</code>
+  </div>
+
+  <div id="sankey-outdated-note">
+    <strong>Note:</strong> this is an older copy of the state Sankey. It still references
+    <code>year/2019/US/domestic/state_trade_flows.csv</code>, which was deleted on 2026-09-19, and the
+    <code>state-trade-data.js</code> snapshot from June 2026, which embeds those flows and the placeholder
+    <code>state_industry_impacts.csv</code> and <code>state_specializations.csv</code> tables (removed 2026-10-23).
+    The current page is <a href="https://github.com/ModelEarth/profile/blob/main/charts/sankey/state.html">profile/charts/sankey/state.html</a>
+    (with the interstate map at <a href="https://github.com/ModelEarth/profile/blob/main/trade/map/state.html">profile/trade/map/state.html</a>).
+    Both build state-to-state flows with <a href="https://github.com/ModelEarth/profile/blob/main/js/state-flows.js">profile/js/state-flows.js</a> from
+    <code>year/2019/US/domestic/trade-us.csv</code>, <code>industry_category.csv</code> and <code>category_state.csv</code>,
+    written by <a href="https://github.com/ModelEarth/exiobase/tree/main/tradeflow/bea">exiobase/tradeflow/bea</a>.
   </div>
 
 </div>

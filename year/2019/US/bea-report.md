@@ -1,6 +1,6 @@
 # BEA Trade Analysis Validation Report
 
-**Generated**: 2026-09-24 01:39:07
+**Generated**: 2026-10-23 02:22:21
 **Year**: 2019
 **Country**: US
 **Trade Flows**: domestic,imports,exports
@@ -20,7 +20,7 @@
 - Successfully integrated US-BEA API data
 
 ### BEA API Usage Statistics
-- API calls made: 0
+- API calls made: 2
 - Cache files created: 66
 
 ## BEA Enhanced Output Files Generated
@@ -33,6 +33,7 @@
 - `import_dependency.csv` - Import dependency analysis
 - `flow.csv` - FEDEFL flow details
 - `industry.csv` - Industry mapping (using existing file from parent directory)
-- `state_industry_impacts.csv` - State economic impacts
-- `trade_price_indices.csv` - Trade price indices
+- `category_state.csv` - BEA state weights by state_industry_code
+- `trade-us.csv` - National purchases by industry pair, US producers and imports
+- `industry_category.csv` - Each industry's state_industry_code
 

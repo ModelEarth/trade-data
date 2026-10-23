@@ -1,6 +1,6 @@
+year/**/*-max.*
 trade_factor_lg.csv
 
-# Full-detail ("-lg") pipeline outputs — see exiobase/tradeflow/PLAN-industry.md.
 year/**/*-lg.*
 
 # Only track these 14 default countries' folders within any year/ directory
